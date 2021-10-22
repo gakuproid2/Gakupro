@@ -1,0 +1,69 @@
+mysqlパスワード設定
+https://www.javadrive.jp/xampp/mysql/index2.html
+
+a5 odbc接続
+https://a5m2.mmatsubara.com/tips/mysql_connect/
+
+Xデバッグ
+https://freemake.co.jp/4161/
+
+SQL文
+show tables from データベース名;
+
+create table テーブルの名前(id int auto_increment, name varchar(10), index(id));
+
+drop table テーブルの名前
+
+
+php名：MainCategory_Master.php
+テーブル名：MainCategory_M
+
+/*Create文*/
+create table MainCategory_M(MainCategory_CD int not null , MainCategory_Name varchar(30) not null , UsageFlag int not null , Changer int,UpdateDate datetime ,PRIMARY KEY ( MainCategory_CD) );
+
+drop table MainCategory_M;
+
+
+
+
+php名：SubCategory_Master.php
+テーブル名：SubCategory_M
+
+/*Create文*/
+create table SubCategory_M(MainCategory_CD int not null , SubCategory_CD int not null ,SubCategory_Name varchar(30) not null , UsageFlag int not null , Changer int,UpdateDate datetime, PRIMARY KEY ( MainCategory_CD , SubCategory_CD ) );
+
+
+drop table SubCategory_M;
+
+
+
+スタッフマスタ
+/*Create文*/
+create table Staff_M(Staff_ID int not null , Staff_Name varchar(30) not null ,Staff_NameYomi varchar(30) not null , NickName varchar(30) not null ,Login_ID varchar(30) not null , Password varchar(8) not null, Authority varchar(1), UsageFlag int not null , PRIMARY KEY (Staff_ID));
+
+drop table Staff_M;
+
+
+画像取得用テーブル
+create table ImageGet_T(Key_Code varchar(15) not null , Password int not null ,PRIMARY KEY( Key_Code));
+
+drop table ImageGet_T
+
+
+WEB画面テーブル
+
+create table Screen_M(Screen_ID int not null , Screen_Name varchar(30)  , Screen_Path varchar(30) ,  Authority varchar(1) , UsageFlag int not null , Changer int,UpdateDate datetime , PRIMARY KEY( Screen_ID));
+
+drop table Screen_M
+
+
+
+insert into gakupro.screen_m(`Screen_ID`,`Screen_Name`,`Screen_Path`,`Authority`,`UsageFlag`,`Changer`,`UpdateDate`) values (1,'ログイン','frm_Login.php','3',1,null,null);
+insert into gakupro.screen_m(`Screen_ID`,`Screen_Name`,`Screen_Path`,`Authority`,`UsageFlag`,`Changer`,`UpdateDate`) values (2,'メインメニュー','frm_MainMenu.php','3',1,null,null);
+insert into gakupro.screen_m(`Screen_ID`,`Screen_Name`,`Screen_Path`,`Authority`,`UsageFlag`,`Changer`,`UpdateDate`) values (3,'DB接続確認','frm_DBcc.php','1',1,null,null);
+insert into gakupro.screen_m(`Screen_ID`,`Screen_Name`,`Screen_Path`,`Authority`,`UsageFlag`,`Changer`,`UpdateDate`) values (4,'大分類マスタ','frm_MainCategory_M.php','2',1,null,null);
+insert into gakupro.screen_m(`Screen_ID`,`Screen_Name`,`Screen_Path`,`Authority`,`UsageFlag`,`Changer`,`UpdateDate`) values (5,'中分類マスタ','frm_SubCategory_M.php','2',1,null,null);
+insert into gakupro.screen_m(`Screen_ID`,`Screen_Name`,`Screen_Path`,`Authority`,`UsageFlag`,`Changer`,`UpdateDate`) values (6,'画像アップロード検証用','frm_ImageUpload.php','1',1,null,null);
+insert into gakupro.screen_m(`Screen_ID`,`Screen_Name`,`Screen_Path`,`Authority`,`UsageFlag`,`Changer`,`UpdateDate`) values (7,'写真取得検証用','frm_ImageGet.php','1',1,null,null);
+insert into gakupro.screen_m(`Screen_ID`,`Screen_Name`,`Screen_Path`,`Authority`,`UsageFlag`,`Changer`,`UpdateDate`) values (8,'QRチケット作成','frm_CreateQR.php','3',1,null,null);
+insert into gakupro.screen_m(`Screen_ID`,`Screen_Name`,`Screen_Path`,`Authority`,`UsageFlag`,`Changer`,`UpdateDate`) values (9,'画面管理','frm_Screen_M.php','2',1,null,null);

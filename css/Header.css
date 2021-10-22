@@ -1,0 +1,23 @@
+
+.Header {
+  background-color:rgb(216, 233, 247) ;
+  border-bottom: double 2px blue;
+  height: 40px;
+  
+}
+
+.Header_PullMenu{
+	position: absolute; LEFT: 10px; top: 5px;	
+}
+
+
+.Header_ScreenName{ 
+  text-align: center;  
+  font-size: 20px;
+}
+
+.Header_StaffName{
+	position: absolute; right: 50px; top: 12px;
+	font-size: 15px;
+  
+}

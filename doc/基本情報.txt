@@ -1,0 +1,39 @@
+-- gmail --
+
+gakuproid1@gmail.com
+passgakupro1
+
+gakuproid2@gmail.com
+passgakupuro2
+
+-- github --
+
+登録メアド
+gakuproid1@gmail.com
+パスワード
+passgakupro1
+ユーザー名
+gakuproid1
+
+登録メアド
+gakuproid2@gmail.com
+パスワード
+passgakupro2
+ユーザー名
+gakuproid2
+
+
+-- mysql --
+
+DB名
+gakupro
+
+ユーザー
+root
+
+パスワード
+pass
+
+-- php --
+メイン画面のURL
+http://localhost/gakupro/form/frm_MainMenu.php
