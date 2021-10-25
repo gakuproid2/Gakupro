@@ -1,0 +1,9 @@
+mysqlパスワード設定
+https://www.javadrive.jp/xampp/mysql/index2.html
+
+a5 odbc接続
+https://a5m2.mmatsubara.com/tips/mysql_connect/
+
+Xデバッグ
+https://freemake.co.jp/4161/
+
