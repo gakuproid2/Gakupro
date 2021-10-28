@@ -70,14 +70,11 @@ if (isset($_POST['PictureGet'])) {
 
 <body>
   <h1>画像取得</h1>
-  <a href="frm_MainMenu.php" class="btn_Top">メインメニュー</a>
-
-
-
-  <button class="btn_Download" id="btn_Download" name="Download">ダウンロード</button>
-
   <?php echo $ImageALL; ?>
 
+  <button class="btn_Download" id="btn_Download" name="Download">一括ダウンロード</button>
+  <p>※一括ダウンロードはPCの場合のみ可能です※<br>
+  PC以外は画像を長押ししてダウンロードしてください。</p>
 
   <script src="../js/jquery-3.6.0.min.js"></script>
 </body>

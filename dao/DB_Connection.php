@@ -5,7 +5,7 @@
     const HOST='localhost';
     const UTF='utf8';
     const USER='root';
-    const PASS='root';
+    const PASS='pass';
     //データベースに接続する関数
     function pdo(){
       /*phpのバージョンが5.3.6よりも古い場合はcharset=".self::UTFが必要無くなり、array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES '.SELF::UTF')が必要になり、5.3.6以上の場合は必要ないがcharset=".self::UTFは必要になる。*/
