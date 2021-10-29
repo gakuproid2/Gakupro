@@ -374,8 +374,7 @@ if (!empty($_POST["Request"])) {
   $(window).on('load', function(event) {
 
     var Judge = JSON.parse('<?php echo $json_Judge; ?>');
-    console.log(Judge)
-
+    
     if (Judge == true) {
 
       var TargetDir = JSON.parse('<?php echo $json_TargetDir; ?>');

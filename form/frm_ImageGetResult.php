@@ -139,11 +139,9 @@ if (isset($_POST['PictureGet'])) {
       document.body.removeChild(a);
 
     });
-
-
-
-
   });
+
+  
 </script>
 
 </html>
