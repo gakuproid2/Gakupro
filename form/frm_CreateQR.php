@@ -2,7 +2,6 @@
 <html lang="ja">
 
 <?php
-
 session_start(); //セッションスタート
 
 //クラスファイルの読み込み
@@ -34,6 +33,11 @@ $JS_Info = $common->Read_JSconnection();
 <?php
 
 $alert = "";
+
+$json_TargetDir ='';
+$QRTicket_Name_array = [];
+$Judge = false;
+$json_Judge = json_encode($Judge);
 
 if (!empty($_POST["Request"])) {
 
@@ -303,12 +307,24 @@ if (!empty($_POST["Request"])) {
       imageLayerEffect($ReCreate_Qr_img, IMG_EFFECT_ALPHABLEND); // 合成する際、透過を考慮する
       imagecopy($Create_img, $ReCreate_Qr_img, 65, 95, 0, 0, $sx, $sy); // 合成する
 
-      imagepng($Create_img, $QrTicket_Dir . "QR_Ticket(" . $Key_Code . ").png");
+      $QRTicket_Name="QR_Ticket(" . $Key_Code . ").png";
+
+      array_push($QRTicket_Name_array, $QRTicket_Name);
+
+      imagepng($Create_img, $QrTicket_Dir . $QRTicket_Name);
       imagedestroy($Create_img);
 
       //テンプレート画像とQRの合成--終了--
-
     }
+
+    //QRcodeチケットの保存場所内を全て操作端末にダウンロードする 
+    $json_TargetDir = json_encode($QrTicket_Dir);
+    $json_QRTicket_Name_array = json_encode($QRTicket_Name_array);
+    $Judge = true;
+    $json_Judge = json_encode($Judge);
+    
+    
+
   }
 }
 ?>
@@ -324,6 +340,7 @@ if (!empty($_POST["Request"])) {
     <p>※※他端末で検証する場合のみホスト名、またはIPアドレスを入力してください。※※</p>
     <p>ホスト名<input type="text" id="txt_HostName" name="HostName" autocomplete="off"></p>
     <button class="btn_Create" id="btn_Create" name="Create">作成</button>
+    
   </form>
 
   <?php echo $JS_Info ?>
@@ -351,6 +368,43 @@ if (!empty($_POST["Request"])) {
     }
 
   });
+
+ 
+  //画面遷移時
+  $(window).on('load', function(event) {
+
+    var Judge = JSON.parse('<?php echo $json_Judge; ?>');
+    console.log(Judge)
+
+    if (Judge == true) {
+
+      var TargetDir = JSON.parse('<?php echo $json_TargetDir; ?>');
+    
+      var QRTicketName_array = JSON.parse('<?php echo $json_QRTicket_Name_array; ?>');
+
+      var count = 0;
+      // 配列の中身を一つずつ処理
+      $.each(QRTicketName_array, function(index, val) {
+
+        var ImageName = (val);
+
+        var a = document.createElement('a');
+        a.download = ImageName;
+        a.href = TargetDir + ImageName;
+
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        count++;
+      });
+
+      window.alert("ダウンロード数：" + count);
+    };
+  });
+
+  
+ 
+
 </script>
 
 </html>
