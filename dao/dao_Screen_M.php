@@ -17,7 +17,7 @@
     ,Screen_m.Authority
     ,CONCAT(subcategory_m.subcategory_Name,'以上') AS AuthorityInfo
     ,Screen_m.UsageFlag
-    ,Screen_m.Changer
+    ,staff_m.Staff_Name AS ChangerName
     ,Screen_m.UpdateDate
     FROM
     Screen_m
@@ -33,6 +33,16 @@
         )AS subcategory_m
      ON
      Screen_m.Authority = subcategory_m.SubCategory_CD
+     LEFT JOIN
+    	(SELECT 
+          Staff_ID
+         ,Staff_Name         
+         FROM
+         staff_m         
+        )AS staff_m
+     ON
+     Screen_m.Changer = staff_m.Staff_ID
+
     ;
     ";
 

@@ -323,8 +323,6 @@ if (!empty($_POST["Request"])) {
     $Judge = true;
     $json_Judge = json_encode($Judge);
     
-    
-
   }
 }
 ?>
@@ -375,6 +373,7 @@ if (!empty($_POST["Request"])) {
 
     var Judge = JSON.parse('<?php echo $json_Judge; ?>');
     
+    //QRチケット作成時は自動ダウンロードする
     if (Judge == true) {
 
       var TargetDir = JSON.parse('<?php echo $json_TargetDir; ?>');

@@ -30,12 +30,12 @@ class common {
           <select name='pullMenu' id='' onChange='screenChange()'>
           <option value=''></option>
           "
-          .  $SlectForm .
+          . $SlectForm .
           "      
           </select>          
         </form>
       </div>      
-      <div class ='Header_StaffName'><p>" .  $NickName . "</p></div>      
+      <div class ='Header_StaffName'><p>" . $NickName . "</p></div>      
     "
     ;
 

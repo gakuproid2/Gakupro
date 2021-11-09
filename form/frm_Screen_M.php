@@ -91,9 +91,10 @@
       <td>" . $val['Screen_Path'] . " </td>
       <td style=display:none>" . $val['Authority'] . "</td>      
       <td>" . $val['AuthorityInfo'] . " </td>
+      <td>" . $val['ChangerName'] . " </td>
+      <td>" . $val['UpdateDate'] . " </td>
     "
     ;
-    
 
     if ($val['UsageFlag'] == 0) {
       $Table .= " <td>×</td>";
@@ -125,6 +126,8 @@
     <th>画面名</th>
     <th>画面パス</th>
     <th>操作権限</th>
+    <th>最終更新者</th>
+    <th>最終更新日</th>
     <th>利用フラグ</th>
     </tr>
     <?php echo $Table; ?>
