@@ -27,7 +27,7 @@
 
     $info = array(
       'Member_ID' => $_POST["Member_ID"],
-      'Name' => $_POST["Name"],
+      'Member_Name' => $_POST["Member_Name"],
       'Furigana' => $_POST["Furigana"],
       'Birthday' => $_POST["Birthday"],
       'School_CD' => $_POST["School_CD"],
@@ -62,7 +62,7 @@
     $Table .=
     "<tr class='Table'>
       <td>" . $val['Member_ID'] . "</td>
-      <td>" . $val['Name'] . " </td>      
+      <td>" . $val['Member_Name'] . " </td>      
       <td>" . $val['Furigana'] . " </td>
       <td>" . $val['Birthday'] . " </td>  
       <td style=display:none>" . $val['School_CD'] . "</td>      

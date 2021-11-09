@@ -12,7 +12,7 @@
     $SQL ="
     SELECT
     Member_m.Member_ID 
-    ,Member_m.Name 
+    ,Member_m.Member_Name 
     ,Member_m.Furigana 
     ,Member_m.Birthday 
     ,Member_m.School_CD 
@@ -94,7 +94,7 @@
     function DataChange($info,$branch){
 
     $Member_ID = $info['Member_ID'];
-    $Name = $info['Name'];
+    $Name = $info['Member_Name'];
     $Furigana = $info['Furigana'];
     $Birthday = $info['Birthday'];
     $School_CD = $info['School_CD'];  
@@ -116,7 +116,7 @@
       INSERT INTO 
       gakupro.Member_M (
       Member_ID 
-      ,Name 
+      ,Member_Name 
       ,Furigana 
       ,Birthday
       ,School_CD
@@ -128,7 +128,7 @@
       ,UpdateDate
       )VALUES( 
       '$Member_ID'
-      ,'$Name'
+      ,'$Member_Name'
       ,'$Furigana'
       ,'$Birthday'
       ,'$School_CD'      
@@ -148,7 +148,7 @@
       gakupro.Member_M 
       SET 
       Member_ID = '$Member_ID'
-      ,Name = '$Name'
+      ,Member_Name = '$Member_Name'
       ,Furigana = '$Furigana'
       ,Birthday = '$Birthday'
       ,School_CD = '$School_CD'
