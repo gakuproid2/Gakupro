@@ -89,13 +89,14 @@ INSERT INTO `majorsubject_m` (`School_CD`, `MajorSubject_CD`, `MajorSubject_Name
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `menber_m`
+-- テーブルの構造 `Member_m`
 --
-drop table if exists `menber_m`;
+drop table if exists `Member_m`;
+drop table if exists `Menber_m`;
 
-CREATE TABLE `menber_m` (
-  `Menber_ID` int(11) NOT NULL COMMENT '学生メンバーID',
-  `Name` varchar(30) NOT NULL COMMENT '氏名',
+CREATE TABLE `Member_m` (
+  `Member_ID` int(11) NOT NULL COMMENT '学生メンバーID',
+  `Member_Name` varchar(30) NOT NULL COMMENT '氏名',
   `Furigana` varchar(30) DEFAULT NULL COMMENT '氏名(フリガナ)',
   `Birthday` date DEFAULT NULL COMMENT '誕生日',
   `School_CD` int(11) NOT NULL COMMENT '学校コード',
@@ -106,6 +107,9 @@ CREATE TABLE `menber_m` (
   `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
   `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='メンバーマスタ';
+
+INSERT INTO `member_m` (`Member_ID`, `Member_Name`, `Furigana`, `Birthday`, `School_CD`, `MajorSubject_CD`, `TEL`, `EmergencyContact`, `Remarks`, `Changer`, `UpdateDate`) VALUES
+(1, '島　一郎', 'ｼﾏ ｲﾁﾛｳ', '2003-12-31', 1, 1, '090-6868-9999', '098-111-2222', NULL, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -265,10 +269,10 @@ ALTER TABLE `majorsubject_m`
   ADD PRIMARY KEY (`School_CD`,`MajorSubject_CD`);
 
 --
--- テーブルのインデックス `menber_m`
+-- テーブルのインデックス `Member_m`
 --
-ALTER TABLE `menber_m`
-  ADD PRIMARY KEY (`Menber_ID`);
+ALTER TABLE `Member_m`
+  ADD PRIMARY KEY (`Member_ID`);
 
 --
 -- テーブルのインデックス `school_m`
