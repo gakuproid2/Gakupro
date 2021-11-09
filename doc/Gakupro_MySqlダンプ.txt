@@ -67,7 +67,7 @@ CREATE TABLE `majorsubject_m` (
   `MajorSubject_CD` int(11) NOT NULL COMMENT '専攻コード',
   `MajorSubject_Name` varchar(30) NOT NULL COMMENT '専攻名',
   `StudyPeriod` int(11) NOT NULL COMMENT '学習期間(月単位)',
-  `Remarks` varchar(100) NOT NULL COMMENT '備考',
+  `Remarks` varchar(100) DEFAULT NULL COMMENT '備考',
   `UsageFlag` int(11) NOT NULL COMMENT '利用有無フラグ',
   `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
   `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
@@ -94,15 +94,17 @@ INSERT INTO `majorsubject_m` (`School_CD`, `MajorSubject_CD`, `MajorSubject_Name
 drop table if exists `menber_m`;
 
 CREATE TABLE `menber_m` (
-  `Menber_ID` int(11) NOT NULL,
-  `Name` varchar(30) NOT NULL,
-  `Furigana` varchar(30) DEFAULT NULL,
-  `Birthday` date DEFAULT NULL,
-  `School_Name` varchar(30) DEFAULT NULL,
-  `MajorSubject_Name` varchar(30) DEFAULT NULL,
-  `TEL` varchar(15) DEFAULT NULL,
-  `Changer` int(11) DEFAULT NULL,
-  `UpdateDate` datetime DEFAULT NULL
+  `Menber_ID` int(11) NOT NULL COMMENT '学生メンバーID',
+  `Name` varchar(30) NOT NULL COMMENT '氏名',
+  `Furigana` varchar(30) DEFAULT NULL COMMENT '氏名(フリガナ)',
+  `Birthday` date DEFAULT NULL COMMENT '誕生日',
+  `School_CD` int(11) NOT NULL COMMENT '学校コード',
+  `MajorSubject_CD` int(11) NOT NULL COMMENT '専攻コード',
+  `TEL` varchar(15) DEFAULT NULL COMMENT 'TEL',
+  `EmergencyContact` varchar(15) DEFAULT NULL COMMENT '緊急連絡先',
+  `Remarks` varchar(100) DEFAULT NULL COMMENT '備考',
+  `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
+  `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='メンバーマスタ';
 
 -- --------------------------------------------------------
@@ -113,15 +115,15 @@ CREATE TABLE `menber_m` (
 drop table if exists `school_m`;
 
 CREATE TABLE `school_m` (
-  `School_CD` int(11) NOT NULL,
-  `School_Division` int(11) DEFAULT NULL,
-  `School_Name` varchar(30) NOT NULL,
-  `TEL` varchar(15) NOT NULL,
-  `URL` varchar(50) NOT NULL,
-  `UsageFlag` int(11) NOT NULL,
-  `Changer` int(11) DEFAULT NULL,
-  `UpdateDate` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `School_CD` int(11) NOT NULL COMMENT '学校コード',
+  `School_Division` int(11) NOT NULL COMMENT '学校区分',
+  `School_Name` varchar(30) NOT NULL COMMENT '学校名',
+  `TEL` varchar(15) DEFAULT NULL COMMENT 'TEL',
+  `URL` varchar(50) DEFAULT NULL COMMENT 'HP_URL',
+  `UsageFlag` int(11) DEFAULT NULL COMMENT '利用有無フラグ',
+  `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
+  `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='学校マスタ';
 
 --
 -- テーブルのデータのダンプ `school_m`
@@ -234,11 +236,11 @@ INSERT INTO `subcategory_m` (`MainCategory_CD`, `SubCategory_CD`, `SubCategory_N
 drop table if exists `temporarymember_m`;
 
 CREATE TABLE `temporarymember_m` (
-  `ID` int(11) NOT NULL,
-  `Password` int(4) NOT NULL,
-  `Mailaddress` varchar(30) NOT NULL,
-  `Name` varchar(30) DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `ID` int(11) NOT NULL COMMENT '仮登録ID',
+  `Password` int(4) NOT NULL COMMENT '仮登録画面遷移用パスワード',
+  `Mailaddress` varchar(50) NOT NULL COMMENT '仮登録案内メール送信先',
+  `Name` varchar(30) DEFAULT '' COMMENT '仮登録メンバー名'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='メンバー仮登録マスタ';
 
 --
 -- ダンプしたテーブルのインデックス
