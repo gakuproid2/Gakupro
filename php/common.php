@@ -4,7 +4,7 @@
 class common {
 
   //ヘッダ部分の設定、画面遷移の為のプルダウン作成
-  function HeaderCreation($Screen_ID)
+  function HeaderCreation($ScreenInfo)
   {       
     //ログイン情報から権限取得
     $Authority = 0;
@@ -24,8 +24,15 @@ class common {
     //Css情報取得
     $CssInfo = $this->Read_CssConnection();
 
-    //表示する画面名取得
-    $Screen_Name = $this->GetScreenName($Screen_ID);
+    //ScreenInfoが数値ならScreenIDと判断しマスタから取得。数値以外(文字列)なら画面名と判断しそのまま画面名にセット
+    if (is_numeric($ScreenInfo)) {
+       //表示する画面名取得
+    $Screen_Name = $this->GetScreenName($ScreenInfo);
+    } else {
+      $Screen_Name = $ScreenInfo;
+    }
+
+   
 
     
     $SlectForm = ''; 

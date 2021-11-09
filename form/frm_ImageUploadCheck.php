@@ -9,7 +9,7 @@
   //クラスの生成
   $common = new common();
   
-  $HeaderInfo = $common->HeaderCreation(6);  
+  $HeaderInfo = $common->HeaderCreation('画像アップロード確認画面');  
 
   $JS_Info = $common->Read_JSconnection();
 ?>
