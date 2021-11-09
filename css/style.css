@@ -2,6 +2,7 @@
  *{
   margin: 0%;
   padding: 0%;
+  font-family: "meiryo";
 } 
 
 .btn_Top{
@@ -15,8 +16,8 @@
   width: 100px;
   height: 40px;
   margin: 15px;
-  background-color: #badaf8;
-  border-bottom: 5px solid #baaaf8;
+  background-color: #ddedfc;
+  border-bottom: 5px solid #bdddf7;
   font-size: 20px;
 }
 
@@ -26,7 +27,7 @@
   height: 40px;
   margin: 15px;
   background-color: #c3f5bc;
-  border-bottom: 5px solid #c3f8bc;
+  border-bottom: 5px solid #5df04a;
   font-size: 20px;
 }
 
@@ -35,8 +36,8 @@
   width: 100px;
   height: 40px;
   margin: 15px;
-  background-color: #f1a6a0;
-  border-bottom: 5px solid #ec9670;
+  background-color: #f0867e;
+  border-bottom: 5px solid #e73956;
   font-size: 20px;
 }
 
@@ -46,7 +47,7 @@
   height: 40px;
   margin: 15px;
   background-color: #f0f5c0;
-  border-bottom: 5px solid #f0f1c0;
+  border-bottom: 5px solid #f8fa75;
   font-size: 20px;
 }
 

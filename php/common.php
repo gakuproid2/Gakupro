@@ -4,38 +4,58 @@
 class common {
 
   //ヘッダ部分の設定、画面遷移の為のプルダウン作成
-  function HeaderCreation()
+  function HeaderCreation($Screen_ID)
   {       
+    //ログイン情報から権限取得
     $Authority = 0;
     if (isset($_SESSION['Authority'])) {
       $Authority = $_SESSION['Authority'];
     }
   
+    //ログイン情報からニックネーム取得
     $NickName = 'ログインをやり直してください';
     if (isset($_SESSION['NickName'])) {
       $NickName = $_SESSION['NickName'];
     }
 
+    //画面マスタから画面情報を取得、条件：ログイン者の権限、利用有無
     $Data_Table = $this->ScreenSelection($Authority);
 
-    $SlectForm = ''; 
+    //Css情報取得
+    $CssInfo = $this->Read_CssConnection();
 
+    //表示する画面名取得
+    $Screen_Name = $this->GetScreenName($Screen_ID);
+
+    
+    $SlectForm = ''; 
     foreach ($Data_Table as $val) {
       $SlectForm .= " <option value=" . $val['Screen_Path'] . ">" . $val['Screen_Name'] . "</option>";       
     }
 
     $HeaderInfo = "      
-      <div class='Header_PullMenu'>
-        <form name='pullForm'>
-          <select name='pullMenu' id='' onChange='screenChange()'>
-          <option value=''></option>
-          "
-          . $SlectForm .
-          "      
-          </select>          
-        </form>
-      </div>      
-      <div class ='Header_StaffName'><p>" . $NickName . "</p></div>      
+      <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>      
+        <title>" . $Screen_Name . "</title>
+        "
+          . $CssInfo .
+        "
+        <div class ='Header'>
+          <div class='Header_PullMenu'>
+            <form name='pullForm'>
+            <select name='pullMenu' id='' onChange='screenChange()'>
+            <option value=''></option>
+            "
+            . $SlectForm .
+            "      
+            </select>          
+            </form>
+            </div>      
+          <div class ='Header_StaffName'><p>" . $NickName . "</p></div>        
+          <div class ='Header_ScreenName'><p>" . $Screen_Name . "</p></div>
+        </div>
+      </head>      
     "
     ;
 
@@ -90,14 +110,51 @@ class common {
     return $items;
   }
 
+  function GetScreenName($Screen_ID)
+  {
+    //クラスファイルの読み込み
+    require_once '../dao/DB_Connection.php';
+    //クラスの生成
+    $obj = new connect();
+
+    $SQL = "
+    SELECT
+    Screen_ID
+    ,Screen_Name 
+    FROM
+    Screen_M
+    WHERE
+    Screen_ID = $Screen_ID   
+    ";
+    //クラスの中の関数の呼び出し
+    $items = $obj->plural($SQL);
+
+    $Screen_Name = '';
+    foreach ($items as $val) {
+      $Screen_Name = $val['Screen_Name'];
+    }
+
+    return $Screen_Name;
+
+  }
+
   //JavaScript関連の管理  ＠追加する場合はInfo内に追記してください
-  function Read_JSconnection()
+  function Read_JSConnection()
   {
     $Info = '
     <script src="../js/jquery-3.6.0.min.js"></script>
     <script src="../js/common.js"></script>    
     ';
+    return $Info;
+  }
 
+  //Css関連の管理  ＠追加する場合はInfo内に追記してください
+  function Read_CssConnection()
+  {
+    $Info = '
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/Header.css">  
+    ';
     return $Info;
   }
   

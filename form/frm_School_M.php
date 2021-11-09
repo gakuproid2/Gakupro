@@ -9,23 +9,12 @@
   //クラスの生成
   $common = new common();
   
-  $HeaderInfo = $common->HeaderCreation();  
+  $HeaderInfo = $common->HeaderCreation(10);  
 
   $JS_Info = $common->Read_JSconnection();
 ?>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/Header.css">
-  <title>学校マスタ</title>
-
-  <div class ='Header'>
-    <?php echo $HeaderInfo; ?>
-    <div class ='Header_ScreenName'><p>学校マスタ画面</p></div>
-  </div>
-</head>
+<?php echo $HeaderInfo; ?>
 
 <body>
 

@@ -9,26 +9,14 @@
   //クラスの生成
   $common = new common();
   
-  $HeaderInfo = $common->HeaderCreation(); 
+  $HeaderInfo = $common->HeaderCreation(9); 
   
-  $JS_Info = $common->Read_JSconnection();
+  $JS_Info = $common->Read_JSConnection();
 ?>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/Header.css">
-  <title>画面設定画面</title>
-   
-  <div class ='Header'>
-    <?php echo $HeaderInfo; ?>
-    <div class ='Header_ScreenName'><p>画面設定画面</p></div>
-  </div>
-</head>
+<?php echo $HeaderInfo; ?>
 
-<?php
- 
+<?php 
   //クラスファイルの読み込み
   require_once '../dao/dao_Screen_M.php';
   //クラスの生成
@@ -133,8 +121,8 @@
     <?php echo $Table; ?>
   </table>
 
-  <?php echo $JS_Info?>
 
+  <?php echo $JS_Info?>
 </body>
 
 <script>
@@ -244,8 +232,7 @@
     } else {
       return true;
     }
-  }
-  
+  }  
 </script>
 
 </html>
