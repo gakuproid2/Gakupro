@@ -3,29 +3,26 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
 </head>
 
 <?php
 
-session_start(); //セッションスタート
+  session_start(); //セッションスタート
 
-if (isset($_SESSION['Staff_ID'])) {
-  $PostUrl = 'frm_ImageUpload.php';
-} else {
-  $PostUrl = 'frm_ImageGet.php';
-}
+  if (isset($_SESSION['Staff_ID'])) {
+    $PostUrl = 'frm_ImageUpload.php';
+  } else {
+    $PostUrl = 'frm_ImageGet.php';
+  }
 
-$Key_Code = '';
-if (!empty($_GET['Key_Code'])) {
-  $Key_Code = $_GET['Key_Code'];
-}
+  $Key_Code = '';
+  if (!empty($_GET['Key_Code'])) {
+    $Key_Code = $_GET['Key_Code'];
+  }
 
 ?>
-
 <body>
-
   <script src="../js/jquery-3.6.0.min.js"></script>
 </body>
 <script>
@@ -37,8 +34,6 @@ if (!empty($_GET['Key_Code'])) {
     });
 
   });
-
-
 
   function post(path, params, method = 'post') {
 

@@ -33,7 +33,7 @@
   $Now = new DateTimeImmutable(date("Y-m-d H:i:s"));
 
   //現日時が比較用時間以内であれば、有効。比較時間を超過している場合は無効
-  if ($ComparisonDateTime >= $Now) {
+  if ($ComparisonDateTime > $Now) {
 
     echo "時間範囲内";
 
@@ -54,10 +54,7 @@
     
     echo "時間切れ";
 
-  }
-
-
-  
+  }  
 ?>
 
 <body>
@@ -67,7 +64,40 @@
     <button class="btn_Check" id="btn_Check" name="Check" value="1">確認</button>
   </form>
 
+  <script src="../js/jquery-3.6.0.min.js"></script>
 </body>
 
+
+<script>
+  //画面遷移時
+  $(window).on('load', function(event) {
+    
+    post("<?php echo $PostUrl; ?>", {
+      Key_Code: "<?php echo $Key_Code; ?>"
+    });
+
+  });
+
+  function post(path, params, method = 'post') {
+
+    const form = document.createElement('form');
+    form.method = method;
+    form.action = path;
+
+    for (const key in params) {
+      if (params.hasOwnProperty(key)) {
+        const hiddenField = document.createElement('input');
+        hiddenField.type = 'hidden';
+        hiddenField.name = key;
+        hiddenField.value = params[key];
+
+        form.appendChild(hiddenField);
+      }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+  }
+</script>
 
 </html>
