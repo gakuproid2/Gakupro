@@ -9,6 +9,11 @@
   //クラスの生成
   $common = new common();
   
+  //クラスファイルの読み込み
+  require_once '../dao/dao_MainCategory_M.php';
+  //クラスの生成
+  $dao = new dao_MainCategory_M();
+  
   $HeaderInfo = $common->HeaderCreation(4);  
 
   $JS_Info = $common->Read_JSconnection();
@@ -18,10 +23,7 @@
 
 <?php
  
-  //クラスファイルの読み込み
-  require_once '../dao/dao_MainCategory_M.php';
-  //クラスの生成
-  $dao = new dao_MainCategory_M();
+  
 
   //ポストされた確認する。
   if (count($_POST) > 1) {

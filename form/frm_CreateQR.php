@@ -9,6 +9,11 @@ require_once '../php/common.php';
 //クラスの生成
 $common = new common();
 
+//クラスファイルの読み込み
+require_once '../dao/dao_CreateQR.php';
+//クラスの生成
+$dao = new dao_CreateQR();
+
 $HeaderInfo = $common->HeaderCreation(8);
 
 $JS_Info = $common->Read_JSconnection();
@@ -26,12 +31,7 @@ $QRTicket_Name_array = [];
 $Judge = false;
 $json_Judge = json_encode($Judge);
 
-if (!empty($_POST["Request"])) {
-
-  //クラスファイルの読み込み
-  require_once '../dao/dao_CreateQR.php';
-  //クラスの生成
-  $dao = new dao_CreateQR();
+if (!empty($_POST["Request"])) {  
 
   // QRcode作成用「QrCodeHelper.php」の読み込み
   require("../php/QRCode/Create_QRCode.php");

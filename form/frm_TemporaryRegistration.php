@@ -8,6 +8,11 @@
   require_once '../php/common.php';
   //クラスの生成
   $common = new common();
+
+  //クラスファイルの読み込み
+  require_once '../dao/dao_TemporaryRegistration.php';
+  //クラスの生成
+  $dao = new dao_TemporaryRegistration();
   
   $HeaderInfo = $common->HeaderCreation(13);  
 
@@ -19,10 +24,7 @@
 <body>
 
   <?php
-    //クラスファイルの読み込み
-    require_once '../dao/dao_TemporaryRegistration.php';
-    //クラスの生成
-    $dao = new dao_TemporaryRegistration();
+    
 
     //登録状態を保持する変数（0:登録前　1:登録後）
     //$Status;

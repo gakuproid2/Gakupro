@@ -9,6 +9,11 @@
   //クラスの生成
   $common = new common();
   
+  //クラスファイルの読み込み
+  require_once '../dao/dao_MajorSubject_M.php';
+  //クラスの生成
+  $dao = new dao_MajorSubject_M();
+  
   $HeaderInfo = $common->HeaderCreation(11);  
 
   $JS_Info = $common->Read_JSconnection();
@@ -25,10 +30,7 @@
     $CD = $_GET['School_CD'];
   }
   
-  //クラスファイルの読み込み
-  require_once '../dao/dao_MajorSubject_M.php';
-  //クラスの生成
-  $dao = new dao_MajorSubject_M();
+  
   
   //ポストされたか確認する。
   if (count($_POST) > 0) {

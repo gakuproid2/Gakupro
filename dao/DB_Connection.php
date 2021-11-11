@@ -47,9 +47,11 @@
         $Connection_Info->beginTransaction();
         $Connection_Info->exec($sql);
         $Connection_Info->commit();
+        return true;
       } catch (Exception $e) {
         $Connection_Info->rollBack();
-        echo "失敗しました。" . $e->getMessage();
+        echo "データ更新失敗" . $e->getMessage();
+        return false;
       }
       
     }

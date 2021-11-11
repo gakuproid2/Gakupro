@@ -9,6 +9,11 @@
   //クラスの生成
   $common = new common();
   
+  //クラスファイルの読み込み
+  require_once '../dao/dao_School_M.php';
+  //クラスの生成
+  $dao = new dao_School_M();
+
   $HeaderInfo = $common->HeaderCreation(10);  
 
   $JS_Info = $common->Read_JSconnection();
@@ -37,12 +42,7 @@
       } else {
         $check = "";
       }
-    }
-
-    //クラスファイルの読み込み
-    require_once '../dao/dao_School_M.php';
-    //クラスの生成
-    $dao = new dao_School_M();
+    }  
 
     //ポストされた確認する。
     if (count($_POST) > 0) {
@@ -79,7 +79,7 @@
     }
 
     //学校区分のプルダウン作成する為
-    $items = $dao->GET_Subcategory_m();
+    $items = $common->GET_Subcategory_m(3);
     //0行目
     $PullDown = "<option value = 0 >選択してください</option>";
     foreach ($items as $item_val) {
@@ -112,8 +112,7 @@
         $Table .=" <td>×</td>";
       } else {
         $Table .=" <td>〇</td>";
-      }
-      
+      } 
       
       $Table .= "</tr>";
     }

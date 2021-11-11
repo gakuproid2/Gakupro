@@ -8,6 +8,11 @@
   require_once '../php/common.php';
   //クラスの生成
   $common = new common();
+
+  //クラスファイルの読み込み
+  require_once '../dao/dao_Screen_M.php';
+  //クラスの生成
+  $dao = new dao_Screen_M();
   
   $HeaderInfo = $common->HeaderCreation(9); 
   
@@ -17,11 +22,6 @@
 <?php echo $HeaderInfo; ?>
 
 <?php 
-  //クラスファイルの読み込み
-  require_once '../dao/dao_Screen_M.php';
-  //クラスの生成
-  $dao = new dao_Screen_M();
-
   //ポストされた確認する。
   if (count($_POST) > 1) {
     
@@ -56,7 +56,7 @@
   }
 
   //メインカテゴリーのプルダウン作成する為
-  $items = $dao->GET_Authority();
+  $items = $common->GET_Subcategory_m(2);
   //0行目
   $PullDown = "<option value = 0 >選択してください</option>";
   foreach ($items as $item_val) {

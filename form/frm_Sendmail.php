@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">  
+  <title>メール送信テスト画面</title>
+</head>
+
+
+<body>
+
+<form action="frm_SendmailJudge.php" method="POST">
+    <p>メールアドレス：<input type="text" id="txt_MailAddress" name="MailAddress" autocomplete="off"></p>    
+    <p>氏名<input type="text" id="txt_Name" name="Name" autocomplete="off"></p> 
+    <button class="btn_Insert" id="btn_Insert" name="Insert" value="1">送信</button>
+    <button class="btn_Clear" id="btn_Clear" name="Clear" value="2">クリア</button>    
+</form>
+
+
+  
+</body>

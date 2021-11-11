@@ -102,14 +102,18 @@ CREATE TABLE `Member_m` (
   `School_CD` int(11) NOT NULL COMMENT '学校コード',
   `MajorSubject_CD` int(11) NOT NULL COMMENT '専攻コード',
   `TEL` varchar(15) DEFAULT NULL COMMENT 'TEL',
-  `EmergencyContact` varchar(15) DEFAULT NULL COMMENT '緊急連絡先',
+  `EmergencyContactRelations` varchar(15) DEFAULT NULL COMMENT '緊急連絡先相手との続柄',
+  `EmergencyContactNumber` varchar(15) DEFAULT NULL COMMENT '緊急連絡先番号',
+  `AdmissionYearMonth` varchar(7) DEFAULT NULL COMMENT '入学年月(yyyy/mm)',
+  `GraduationYearMonth` varchar(7) DEFAULT NULL COMMENT '予定卒業年月(yyyy/mm)',
   `Remarks` varchar(100) DEFAULT NULL COMMENT '備考',
   `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
   `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='メンバーマスタ';
 
-INSERT INTO `member_m` (`Member_ID`, `Member_Name`, `Furigana`, `Birthday`, `School_CD`, `MajorSubject_CD`, `TEL`, `EmergencyContact`, `Remarks`, `Changer`, `UpdateDate`) VALUES
-(1, '島　一郎', 'ｼﾏ ｲﾁﾛｳ', '2003-12-31', 1, 1, '090-6868-9999', '098-111-2222', NULL, 1, NULL);
+INSERT INTO `member_m` (`Member_ID`, `Member_Name`, `Furigana`, `Birthday`, `School_CD`, `MajorSubject_CD`, `TEL`, `EmergencyContactRelations`, `EmergencyContactNumber`, `AdmissionYearMonth`, `GraduationYearMonth`, `Remarks`, `Changer`, `UpdateDate`) VALUES
+(1, '島　一郎', 'ｼﾏ ｲﾁﾛｳ', '2006-01-01', 1, 1, '090-1111-2222', '父親', '090-9999-5555', '2020/04', '2023/03', NULL, 1, NULL);
+
 
 -- --------------------------------------------------------
 
@@ -182,16 +186,16 @@ INSERT INTO `screen_m` (`Screen_ID`, `Screen_Name`, `Screen_Path`, `Authority`, 
 drop table if exists `staff_m`;
 
 CREATE TABLE `staff_m` (
-  `Staff_ID` int(11) NOT NULL,
-  `Staff_Name` varchar(30) NOT NULL,
-  `Staff_NameYomi` varchar(30) NOT NULL,
-  `NickName` varchar(30) NOT NULL,
-  `Login_ID` varchar(30) NOT NULL,
-  `Password` varchar(8) NOT NULL,
-  `Authority` varchar(1) DEFAULT NULL,
-  `UsageFlag` int(11) NOT NULL,
-  `Changer` int(11) DEFAULT NULL,
-  `UpdateDate` datetime DEFAULT NULL
+  `Staff_ID` int(11) NOT NULL COMMENT 'スタッフID',
+  `Staff_Name` varchar(30) NOT NULL COMMENT 'スタッフ氏名',
+  `Staff_NameYomi` varchar(30) NOT NULL COMMENT '氏名(ﾌﾘｶﾞﾅ)',
+  `NickName` varchar(30) NOT NULL COMMENT 'スタッフニックネーム',
+  `Login_ID` varchar(30) NOT NULL COMMENT 'ログインID',
+  `Password` varchar(8) NOT NULL COMMENT 'ログインパスワード',
+  `Authority` varchar(1) DEFAULT NULL COMMENT '権限',
+  `UsageFlag` int(11) NOT NULL COMMENT '利用有無フラグ',
+  `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
+  `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='スタッフマスタ';
 
 --
@@ -235,16 +239,19 @@ INSERT INTO `subcategory_m` (`MainCategory_CD`, `SubCategory_CD`, `SubCategory_N
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `temporarymember_m`
+-- テーブルの構造 `temporarymember_t`
 --
 drop table if exists `temporarymember_m`;
+drop table if exists `temporarymember_t`;
 
-CREATE TABLE `temporarymember_m` (
-  `ID` int(11) NOT NULL COMMENT '仮登録ID',
-  `Password` int(4) NOT NULL COMMENT '仮登録画面遷移用パスワード',
-  `Mailaddress` varchar(50) NOT NULL COMMENT '仮登録案内メール送信先',
-  `Name` varchar(30) DEFAULT '' COMMENT '仮登録メンバー名'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='メンバー仮登録マスタ';
+CREATE TABLE `temporarymember_t` (
+  `ID` int(11) NOT NULL COMMENT 'ID(連番)',
+  `Key_Code` varchar(15) NOT NULL COMMENT 'パスワード認証用キーコード(yyyymmddXXX)',
+  `Password` int(4) NOT NULL COMMENT '仮登認証用パスワード',
+  `MailAddress` varchar(50) NOT NULL COMMENT '仮登録案内メール送信先',
+  `Name` varchar(30) DEFAULT '' COMMENT '仮登録メンバー名',
+  `CreateDateTime` datetime DEFAULT NULL COMMENT 'データ作成日時'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='メンバー仮登録テーブル';
 
 --
 -- ダンプしたテーブルのインデックス
@@ -299,20 +306,22 @@ ALTER TABLE `subcategory_m`
   ADD PRIMARY KEY (`MainCategory_CD`,`SubCategory_CD`);
 
 --
--- テーブルのインデックス `temporarymember_m`
+-- テーブルのインデックス `temporarymember_t`
 --
-ALTER TABLE `temporarymember_m`
+ALTER TABLE `temporarymember_t`
   ADD PRIMARY KEY (`ID`);
-
---
+  
+  --
 -- ダンプしたテーブルの AUTO_INCREMENT
 --
 
 --
--- テーブルの AUTO_INCREMENT `temporarymember_m`
+-- テーブルの AUTO_INCREMENT `temporarymember_t`
 --
-ALTER TABLE `temporarymember_m`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+ALTER TABLE `temporarymember_t`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  
 COMMIT;
+
 
 

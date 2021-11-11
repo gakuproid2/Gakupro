@@ -9,6 +9,11 @@
   //クラスの生成
   $common = new common();
   
+  //クラスファイルの読み込み
+  require_once '../dao/dao_DetailedTemporaryRegistration.php';
+  //クラスの生成
+  $dao = new dao_DetailedTemporaryRegistration();
+
   $HeaderInfo = $common->HeaderCreation();  
 
   $JS_Info = $common->Read_JSconnection();
@@ -30,11 +35,7 @@
 
 <body>
 
-  <?php
-    //クラスファイルの読み込み
-    require_once '../dao/dao_DetailedTemporaryRegistration.php';
-    //クラスの生成
-    $dao = new dao_DetailedTemporaryRegistration();
+  <?php 
 
     // メールアドレス登録時に採番されたIDを元にデータを取得
     $items = $dao->Get_TemporaryMember_M($_SESSION['ID']);
