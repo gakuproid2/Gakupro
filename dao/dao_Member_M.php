@@ -20,8 +20,16 @@
     ,Member_m.MajorSubject_CD 
     ,majorsubject_m.MajorSubject_Name AS MajorSubject_Name
     ,Member_m.TEL 
-    ,Member_m.EmergencyContact 
+    ,Member_m.EmergencyContactRelations 
+    ,Member_m.EmergencyContactTEL
+    ,Member_m.AdmissionYearMonth 
+    ,Member_m.GraduationYearMonth 
+    ,Member_m.Login_ID 
+    ,Member_m.Password 
     ,Member_m.Remarks 
+    ,Member_m.RegistrationStatus 
+    ,Member_m.RegisteredPerson 
+    ,Member_m.RegisteredDate 
     ,Member_m.Changer 
     ,staff_m.Staff_Name AS ChangerName
     ,Member_m.UpdateDate 
@@ -94,7 +102,7 @@
     function DataChange($info,$branch){
 
     $Member_ID = $info['Member_ID'];
-    $Name = $info['Member_Name'];
+    $Member_Name = $info['Member_Name'];
     $Furigana = $info['Furigana'];
     $Birthday = $info['Birthday'];
     $School_CD = $info['School_CD'];  

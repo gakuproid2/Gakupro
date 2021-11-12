@@ -8,22 +8,21 @@ class Class_SendMail {
   {       
    
     //クラスファイルの読み込み
-    require_once '../dao/dao_Temporarymember_T.php';
+    require_once '../dao/dao_MailAddressAuthenticate_T.php';
     //クラスの生成
-    $dao_Temporarymember_T = new dao_Temporarymember_T();
+    $dao_MailAddressAuthenticate_T = new dao_MailAddressAuthenticate_T();
   
     //データ登録失敗時はfalseが戻る。成功時は生成したキーコードが戻る
-    $Key_Code = $dao_Temporarymember_T->DataInsert($Info);
+    $Key_Code = $dao_MailAddressAuthenticate_T->DataInsert($Info);
 
     //false時は処理抜け
     if ($Key_Code == false) {
       return false;
     }
 
+    $GetMailAddressAuthenticateInfo = $dao_MailAddressAuthenticate_T->GetMailAddressAuthenticateInfo($Key_Code);
 
-    $GetTemporaryInfo = $dao_Temporarymember_T->GetTemporaryInfo($Key_Code);
-
-    foreach ($GetTemporaryInfo as $val) {   
+    foreach ($GetMailAddressAuthenticateInfo as $val) {   
       $MailInfo = array(
         'ID' => $val['ID'],
         'Key_Code' => $val['Key_Code'],
@@ -59,7 +58,7 @@ class Class_SendMail {
     $MailAddress = $MailInfo['MailAddress'];
     $Name = $MailInfo['Name'];  
     
-    $URL = "http://localhost/Gakupro/form/frm_TemporaryRegistrationVerification.php?Key_Code=" . $Key_Code;
+    $URL = "http://localhost/Gakupro/form/frm_MailAddressAuthenticate.php?Key_Code=" . $Key_Code;
     
     // 変数の設定
     $to = $MailAddress;

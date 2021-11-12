@@ -10,12 +10,22 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
-
---
--- テーブルの構造 `imageget_t`
---
-
 drop table if exists `imageget_t`;
+drop table if exists `temporarymember_m`;
+drop table if exists `temporarymember_t`;
+drop table if exists `mailaddressauthenticate_t`;
+drop table if exists `maincategory_m`;
+drop table if exists `majorsubject_m`;
+drop table if exists `Member_m`;
+drop table if exists `Menber_m`;
+drop table if exists `school_m`;
+drop table if exists `screen_m`;
+drop table if exists `staff_m`;
+drop table if exists `subcategory_m`;
+
+--
+-- テーブルの構造 `imageget_t`--
+
 
 CREATE TABLE `imageget_t` (
   `Key_Code` varchar(15) NOT NULL COMMENT '画像保存用フォルダのキーコード',
@@ -35,7 +45,6 @@ INSERT INTO `imageget_t` (`Key_Code`, `Password`) VALUES
 -- テーブルの構造 `maincategory_m`
 --
 
-drop table if exists `maincategory_m`;
 
 CREATE TABLE `maincategory_m` (
   `MainCategory_CD` int(11) NOT NULL COMMENT '大分類コード',
@@ -52,7 +61,9 @@ CREATE TABLE `maincategory_m` (
 INSERT INTO `maincategory_m` (`MainCategory_CD`, `MainCategory_Name`, `UsageFlag`, `Changer`, `UpdateDate`) VALUES
 (1, '性別', 1, 1, '2021-08-06 22:28:53'),
 (2, '権限', 1, 1, '2021-09-04 01:12:50'),
-(3, '学校区分', 1, 1, '2021-09-04 01:15:21');
+(3, '学校区分', 1, 1, '2021-09-04 01:15:21'),
+(4, '学生登録状況', 1, 1, '2021-09-04 01:15:21')
+;
 
 -- --------------------------------------------------------
 
@@ -60,7 +71,6 @@ INSERT INTO `maincategory_m` (`MainCategory_CD`, `MainCategory_Name`, `UsageFlag
 -- テーブルの構造 `majorsubject_m`
 --
 
-drop table if exists `majorsubject_m`;
 
 CREATE TABLE `majorsubject_m` (
   `School_CD` int(11) NOT NULL COMMENT '学校コード',
@@ -91,8 +101,7 @@ INSERT INTO `majorsubject_m` (`School_CD`, `MajorSubject_CD`, `MajorSubject_Name
 --
 -- テーブルの構造 `Member_m`
 --
-drop table if exists `Member_m`;
-drop table if exists `Menber_m`;
+
 
 CREATE TABLE `Member_m` (
   `Member_ID` int(11) NOT NULL COMMENT '学生メンバーID',
@@ -103,15 +112,20 @@ CREATE TABLE `Member_m` (
   `MajorSubject_CD` int(11) NOT NULL COMMENT '専攻コード',
   `TEL` varchar(15) DEFAULT NULL COMMENT 'TEL',
   `EmergencyContactRelations` varchar(15) DEFAULT NULL COMMENT '緊急連絡先相手との続柄',
-  `EmergencyContactNumber` varchar(15) DEFAULT NULL COMMENT '緊急連絡先番号',
+  `EmergencyContactTEL` varchar(15) DEFAULT NULL COMMENT '緊急連絡先番号',
   `AdmissionYearMonth` varchar(7) DEFAULT NULL COMMENT '入学年月(yyyy/mm)',
   `GraduationYearMonth` varchar(7) DEFAULT NULL COMMENT '予定卒業年月(yyyy/mm)',
+  `Login_ID` varchar(30) DEFAULT NULL COMMENT 'ログインID',
+  `Password` varchar(8) DEFAULT NULL COMMENT 'ログインパスワード',
   `Remarks` varchar(100) DEFAULT NULL COMMENT '備考',
+  `RegistrationStatus` int(11) DEFAULT NULL COMMENT '登録状況(1=仮登録、2=本登録、99=卒業)',
+  `RegisteredPerson` int(11) DEFAULT NULL COMMENT '登録者',
+  `RegisteredDate` datetime DEFAULT NULL COMMENT '登録日',
   `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
   `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='メンバーマスタ';
 
-INSERT INTO `member_m` (`Member_ID`, `Member_Name`, `Furigana`, `Birthday`, `School_CD`, `MajorSubject_CD`, `TEL`, `EmergencyContactRelations`, `EmergencyContactNumber`, `AdmissionYearMonth`, `GraduationYearMonth`, `Remarks`, `Changer`, `UpdateDate`) VALUES
+INSERT INTO `member_m` (`Member_ID`, `Member_Name`, `Furigana`, `Birthday`, `School_CD`, `MajorSubject_CD`, `TEL`, `EmergencyContactRelations`, `EmergencyContactTEL`, `AdmissionYearMonth`, `GraduationYearMonth`, `Remarks`, `Changer`, `UpdateDate`) VALUES
 (1, '島　一郎', 'ｼﾏ ｲﾁﾛｳ', '2006-01-01', 1, 1, '090-1111-2222', '父親', '090-9999-5555', '2020/04', '2023/03', NULL, 1, NULL);
 
 
@@ -120,7 +134,7 @@ INSERT INTO `member_m` (`Member_ID`, `Member_Name`, `Furigana`, `Birthday`, `Sch
 --
 -- テーブルの構造 `school_m`
 --
-drop table if exists `school_m`;
+
 
 CREATE TABLE `school_m` (
   `School_CD` int(11) NOT NULL COMMENT '学校コード',
@@ -147,12 +161,12 @@ INSERT INTO `school_m` (`School_CD`, `School_Division`, `School_Name`, `TEL`, `U
 --
 -- テーブルの構造 `screen_m`
 --
-drop table if exists `screen_m`;
+
 
 CREATE TABLE `screen_m` (
   `Screen_ID` int(11) NOT NULL COMMENT '画面ID',
-  `Screen_Name` varchar(30) DEFAULT NULL COMMENT '画面名',
-  `Screen_Path` varchar(30) DEFAULT NULL COMMENT 'スクリーンパス',
+  `Screen_Name` varchar(50) DEFAULT NULL COMMENT '画面名',
+  `Screen_Path` varchar(100) DEFAULT NULL COMMENT 'スクリーンパス',
   `Authority` varchar(1) DEFAULT NULL COMMENT '利用権限',
   `UsageFlag` int(11) NOT NULL COMMENT '利用有無フラグ',
   `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
@@ -176,14 +190,16 @@ INSERT INTO `screen_m` (`Screen_ID`, `Screen_Name`, `Screen_Path`, `Authority`, 
 (10, '学校マスタ', 'frm_School_M.php', '1', 1, 1, '2021-09-04 10:54:31'),
 (11, '専攻マスタ', 'frm_MajorSubject_M.php', '2', 1, 2, '2021-09-04 01:23:59'),
 (12, 'スタッフマスタ', 'frm_Staff_M.php', '2', 1, 2, '2021-09-04 01:30:27'),
-(13, '仮登録画面', 'frm_TemporaryRegistration.php', '3', 1, 1, '2021-09-11 10:27:00');
+(13, '仮登録画面', 'frm_TemporaryRegistration.php', '3', 1, 1, '2021-09-11 10:27:00'),
+(14, 'テスト＿メールアドレス認証画面', 'frm_MailAddressAuthenticate.php?Key_Code=23001231001', '3', 1, 1, '2021-09-11 10:27:00'),
+(15, 'テスト＿メール送信画面', 'frm_Sendmail.php', '3', 1, 1, '2021-09-11 10:27:00')
+;
 
 -- --------------------------------------------------------
 
 --
 -- テーブルの構造 `staff_m`
 --
-drop table if exists `staff_m`;
 
 CREATE TABLE `staff_m` (
   `Staff_ID` int(11) NOT NULL COMMENT 'スタッフID',
@@ -203,15 +219,14 @@ CREATE TABLE `staff_m` (
 --
 
 INSERT INTO `staff_m` (`Staff_ID`, `Staff_Name`, `Staff_NameYomi`, `NickName`, `Login_ID`, `Password`, `Authority`, `UsageFlag`, `Changer`, `UpdateDate`) VALUES
-(1, '崎原　悠磨', 'ｻｷﾊﾗ ﾕｳﾏ', 'ゆうま', '0527', '5555', '1', 1, 1, '2021-08-07 09:30:39'),
-(2, '島袋　信彦', 'ｼﾏﾌﾞｸﾛ ﾉﾌﾞﾋｺ', 'のーぶ', '2', '2', '1', 1, 1, '2021-08-07 09:31:39');
+(1, '崎原　悠磨', 'サキハラ　ユウマ', 'ゆうま', '0527', '5555', '1', 1, 1, '2021-08-07 09:30:39'),
+(2, '島袋　信彦', 'シマブクロ　ノブヒコ', 'のーぶ', '2', '2', '1', 1, 1, '2021-08-07 09:31:39');
 
 -- --------------------------------------------------------
 
 --
 -- テーブルの構造 `subcategory_m`
 --
-drop table if exists `subcategory_m`;
 
 CREATE TABLE `subcategory_m` (
   `MainCategory_CD` int(11) NOT NULL COMMENT '大分類コード',
@@ -234,25 +249,29 @@ INSERT INTO `subcategory_m` (`MainCategory_CD`, `SubCategory_CD`, `SubCategory_N
 (2, 3, 'メンバー', 1, 1, '2021-09-04 01:15:56'),
 (3, 1, '高校', 1, 1, '2021-09-04 01:16:11'),
 (3, 2, '大学', 1, 1, '2021-09-04 01:16:18'),
-(3, 3, '専門', 1, 1, '2021-09-04 01:16:27');
+(3, 3, '専門', 1, 1, '2021-09-04 01:16:27'),
+(4, 1, '本登録', 1, 1, '2021-09-04 01:16:11'),
+(4, 2, '仮登録', 1, 1, '2021-09-04 01:16:18'),
+(4, 3, '卒業', 1, 1, '2021-09-04 01:16:27');
 
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `temporarymember_t`
+-- テーブルの構造 `mailaddressauthenticate_t`
 --
-drop table if exists `temporarymember_m`;
-drop table if exists `temporarymember_t`;
 
-CREATE TABLE `temporarymember_t` (
+
+CREATE TABLE `mailaddressauthenticate_t` (
   `ID` int(11) NOT NULL COMMENT 'ID(連番)',
   `Key_Code` varchar(15) NOT NULL COMMENT 'パスワード認証用キーコード(yyyymmddXXX)',
-  `Password` int(4) NOT NULL COMMENT '仮登認証用パスワード',
-  `MailAddress` varchar(50) NOT NULL COMMENT '仮登録案内メール送信先',
-  `Name` varchar(30) DEFAULT '' COMMENT '仮登録メンバー名',
-  `CreateDateTime` datetime DEFAULT NULL COMMENT 'データ作成日時'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='メンバー仮登録テーブル';
+  `Password` int(4) NOT NULL COMMENT 'メールアドレス認証用パスワード',
+  `MailAddress` varchar(50) NOT NULL COMMENT '認証用メール送信先',
+  `Name` varchar(30) DEFAULT '' COMMENT '認証用メンバー名',
+  `CreateDateTime` datetime DEFAULT NULL COMMENT 'データ作成日時',
+  `AuthenticationsCount` int(4) NOT NULL COMMENT '認証回数(初期値=0)'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='メールアドレス認証用テーブル';
 
+insert into mailaddressauthenticate_t(`Key_Code`,`Password`,`MailAddress`,`Name`,`CreateDateTime`,`AuthenticationsCount`) values ('23001231001',9999,'test@mailcom','島　一郎','2300/12/31 1:01:01',0);
 --
 -- ダンプしたテーブルのインデックス
 --
@@ -306,9 +325,9 @@ ALTER TABLE `subcategory_m`
   ADD PRIMARY KEY (`MainCategory_CD`,`SubCategory_CD`);
 
 --
--- テーブルのインデックス `temporarymember_t`
+-- テーブルのインデックス `mailaddressauthenticate_t`
 --
-ALTER TABLE `temporarymember_t`
+ALTER TABLE `mailaddressauthenticate_t`
   ADD PRIMARY KEY (`ID`);
   
   --
@@ -316,9 +335,9 @@ ALTER TABLE `temporarymember_t`
 --
 
 --
--- テーブルの AUTO_INCREMENT `temporarymember_t`
+-- テーブルの AUTO_INCREMENT `mailaddressauthenticate_t`
 --
-ALTER TABLE `temporarymember_t`
+ALTER TABLE `mailaddressauthenticate_t`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
   
 COMMIT;

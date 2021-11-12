@@ -1,6 +1,6 @@
 <?php
 
-class dao_Temporarymember_T{
+class dao_MailAddressAuthenticate_T{
 
     function DataInsert($Info){            
 
@@ -13,7 +13,10 @@ class dao_Temporarymember_T{
 
         $Password = $Info['Password'];
         $MailAddress = $Info['MailAddress'];
-        $Name = $Info['Name'];  
+        $FullName = $Info['LastName'].'　'.$Info['Name'];  
+        
+        
+        
         $CreateDateTime = date("Y-m-d H:i:s");
         //クラスファイルの読み込み
         require_once '../dao/DB_Connection.php';
@@ -22,7 +25,7 @@ class dao_Temporarymember_T{
                     
         $SQL = "
             INSERT INTO
-            gakupro.TemporaryMember_t (
+            gakupro.mailaddressauthenticate_t (
             Key_Code,
             Password,
             MailAddress,
@@ -32,7 +35,7 @@ class dao_Temporarymember_T{
             '$Key_Code',
             '$Password',
             '$MailAddress',
-            '$Name',
+            '$FullName',
             '$CreateDateTime'
             ); 
         ";
@@ -61,7 +64,7 @@ class dao_Temporarymember_T{
         SELECT
         IFNULL(MAX(RIGHT(Key_Code,3)),0) + 1 AS MaxCD
         FROM
-        temporarymember_t
+        mailaddressauthenticate_t
         WHERE
         CreateDateTime 
         BETWEEN 
@@ -80,7 +83,7 @@ class dao_Temporarymember_T{
         return $MaxCD;
     }        
             
-    function GetTemporaryInfo($Key_Code){
+    function GetMailAddressAuthenticateInfo($Key_Code){
         
         //クラスファイルの読み込み
         require_once '../dao/DB_Connection.php';
@@ -96,7 +99,7 @@ class dao_Temporarymember_T{
         ,Name
         ,CreateDateTime            
         FROM
-        temporarymember_t
+        mailaddressauthenticate_t
         WHERE
         Key_Code = $Key_Code           
         ;

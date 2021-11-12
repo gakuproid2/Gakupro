@@ -2,75 +2,59 @@
 <html lang="ja">
 
 <?php
-  session_start(); //セッションスタート
-
+  
   //クラスファイルの読み込み
   require_once '../php/common.php';
   //クラスの生成
   $common = new common();
-
-  //クラスファイルの読み込み
-  require_once '../dao/dao_TemporaryRegistration.php';
-  //クラスの生成
-  $dao = new dao_TemporaryRegistration();
   
-  $HeaderInfo = $common->HeaderCreation(13);  
+  //クラスファイルの読み込み
+  require_once '../dao/dao_MailAddressAuthenticate_T.php';
+  //クラスの生成
+  $dao_MailAddressAuthenticate_T = new dao_MailAddressAuthenticate_T();    
 
   $JS_Info = $common->Read_JSconnection();
 ?>
 
-<?php echo $HeaderInfo; ?>
-
 <body>
 
-  <?php
-    
-
-    //登録状態を保持する変数（0:登録前　1:登録後）
-    //$Status;
+  <?php  
 
     if (count($_POST) > 0) {
 
-      //メールアドレスの登録処理を追加
-      $info = array(
-        'Password' => $dao->CreatePassword(),
-        'Mailaddress' => $_POST['Mailaddress']
-      );
+      $Key_Code = $_POST["Key_Code"];
 
-      $Result = "";
+      //$Key_Codeでメールアドレスを
+      $GetMailAddressAuthenticateInfo = $dao_MailAddressAuthenticate_T ->GetMailAddressAuthenticateInfo($Key_Code);
 
-      //登録
-      if (isset($_POST['Insert'])) {
-        $Result = $dao->DataChange($info, 1);
-      }
-
-      
-      //登録ができたか確認＋メール自動送信
-      $result = $dao->ChackPassword($info);
-      if ($result == 1) {
-        echo '<p>メールを送信しました。メールのURLから登録の続きを行ってください。</p>';
-        echo '<p><a href="http://localhost/Gakupro/form/frm_TemporaryRegistration.php">戻る</a></p>';
-      } else if ($result == 0) {
-        echo '<p>メールの送信に失敗しました。時間を空けて再度ご登録お願いいたします。</p>';
-      }
-      return;
-      $Status = 1;
-
-      Header('Location: ' . $_SERVER['PHP_SELF']);
-      exit(); //optional
+      foreach ($GetMailAddressAuthenticateInfo as $val) {                
+        $MailAddress = $val['MailAddress'];
+        $FullName = $val['Name'];        
+        $LastName =  mb_strstr($FullName, '　', true);
+        $FirstName =  str_replace($LastName.'　', "", $FullName);    
+      }  
+    
     }
-
-
 
 
   ?>
 
   <form action="frm_TemporaryRegistration.php" method="POST">
-    <p>メールアドレス：<input type="text" id="txt_MailAddress" name="Mailaddress" autocomplete="off"></p>
-    <input type="hidden" id="RegistStatus" name="Status" value='<?php echo $Status; ?>'>
+    <p>
+      氏名　
+      姓：<input type="text" id="txt_LastName" name="LastName" autocomplete="off" value='<?php echo $LastName; ?>'>
+      名：<input type="text" id="txt_FirstName" name="FirstName" autocomplete="off" value='<?php echo $FirstName; ?>'>
+    </p>
+    <p>
+      氏名(フリガナ)
+      姓：<input type="text" id="txt_LastName_Yomi" name="LastNameYomi" autocomplete="off">　
+      名：<input type="text" id="txt_Name_Yomi" name="NameYomi" autocomplete="off">
+    </p>     
+    <p>メールアドレス：<input type="text" id="txt_MailAddress" name="Mailaddress" autocomplete="off" value='<?php echo $MailAddress; ?>'></p>    
+    <p>生年月日：<input type="date" id="txt_Birthday" name="Birthday" value="2020-04"></p> 
+    <p>入学年月：<input type="month" id="txt_AdmissionYearMonth" name="AdmissionYearMonth" value="2020-04"></p> 
     <button class="btn_Insert" id="btn_Insert" name="Insert" value="1">登録</button>
-    <button class="btn_Clear" id="btn_Clear" name="Clear" value="2">クリア</button>
-    <!--<button class="btn_Return" id="btn_Return" name="Return" value="3">最初の画面に戻る</button>-->
+    <button class="btn_Clear" id="btn_Clear" name="Clear" value="2">クリア</button>    
   </form>
 
 
@@ -78,28 +62,11 @@
 </body>
 
 
-<script>
-  //画面起動時の処理
-  $(window).on('load', function(event) {
-    
-    
-  });
-
-  if ($("#RegistStatus").val() == 0) {
-      $("#btn_Insert").show();
-      $("#btn_Clear").show();
-      $("#btn_Return").hide();
-    } else if ($("#RegistStatus").val() == 1) {
-      //登録終了後の処理
-      $("#btn_Insert").hide();
-      $("#btn_Clear").hide();
-      $("#btn_Return").show();
-    }
-
-  
+<script>  
 
   //登録ボタンクリック時
   $('#btn_Insert').on('click', function() {
+
     if (ValueCheck() == false) {
       return false;
     }
@@ -131,6 +98,20 @@
       return true;
     }
   }
+
+  //年齢計算処理
+  $('#txt_Birthday').change(function(e){
+    
+    
+    var Birthday = $("#txt_Birthday").val();
+
+    const date = new Date().getFullYearmonth();
+
+    window.alert(date); 
+
+
+
+  });
 
 </script>
 

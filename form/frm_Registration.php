@@ -34,17 +34,14 @@
       氏名(ﾌﾘｶﾞﾅ)
       姓：<input type="text" id="txt_LastName_Yomi" name="LastNameYomi" autocomplete="off">　
       名：<input type="text" id="txt_Name_Yomi" name="NameYomi" autocomplete="off">
-    </p>
-    <p>大分類コード：<input type="text" id="txt_CD" name="CD" value='<?php echo $Max_CD; ?>' readonly> </p>
-    <p>大分類名：<input type="text" id="txt_Name" name="Name" autocomplete="off"></p>
-    <p>利用フラグ：<input type="checkbox" id="chk_UsageFlag" name="UsageFlag" value="1" checked="checked"></p>
+    </p>     
 
-    <button class="btn_Insert" id="btn_Insert" name="Insert" value="1">登録</button>
-    <button class="btn_Update" id="btn_Update" name="Update" value="2">更新</button>
-    <button class="btn_Delete" id="btn_Delete" name="Delete" value="3">削除</button>
-    <button class="btn_Clear" id="btn_Clear" name="Clear" value="4">クリア</button>
+    <button class="btn_Insert" id="btn_Insert" name="Insert" value="1">登録</button>   
+    <button class="btn_Clear" id="btn_Clear" name="Clear" value="2">クリア</button>
   </form>
 
+
+  
 
   <script src="../js/jquery-3.6.0.min.js"></script>
 </body>

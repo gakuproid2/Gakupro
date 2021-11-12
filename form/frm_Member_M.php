@@ -34,10 +34,16 @@
       'School_CD' => $_POST["School_CD"],
       'MajorSubject_CD' => $_POST["MajorSubject_CD"],
       'TEL' => $_POST["TEL"],
-      'EmergencyContact' => $_POST["EmergencyContact"],
-      'Remarks' => $_POST["Remarks"],     
-      'Changer' => $_SESSION["_ID"],
-      'UpdateDate' => date("Y-m-d H:i:s")
+      'EmergencyContactRelations' => $_POST["EmergencyContactRelations"],
+      'EmergencyContactTEL' => $_POST["EmergencyContactTEL"],
+      'AdmissionYearMonth' => $_POST["AdmissionYearMonth"],
+      'GraduationYearMonth' => $_POST["GraduationYearMonth"],
+      'Login_ID' => $_POST["Login_ID"],
+      'Password' => $_POST["Password"],
+      'Remarks' => $_POST["Remarks"],
+      'RegistrationStatus' => $_POST["RegistrationStatus"],
+      'RegisteredPerson' => $_POST["RegisteredPerson"],
+      'RegisteredDate' => $_POST["RegisteredDate"],          
     );
 
     $Result = "";
@@ -71,7 +77,8 @@
       <td style=display:none>" . $val['MajorSubject_CD'] . "</td>      
       <td>" . $val['MajorSubject_Name'] . " </td>  
       <td>" . $val['TEL'] . " </td>
-      <td>" . $val['EmergencyContact'] . " </td>      
+      <td>" . $val['EmergencyContactRelations'] . " </td>      
+      <td>" . $val['EmergencyContactTEL'] . " </td>     
       <td style=display:none>" . $val['Remarks'] . "</td> 
       <td>" . $val['ChangerName'] . " </td>
       <td>" . $val['UpdateDate'] . " </td>
@@ -92,7 +99,7 @@
       名：<input type="text" id="txt_Name" name="Name" autocomplete="off">
     </p>
     <p>
-      氏名(ﾌﾘｶﾞﾅ)
+      氏名(フリガナ)
       姓：<input type="text" id="txt_LastName_Yomi" name="LastNameYomi" autocomplete="off">　
       名：<input type="text" id="txt_Name_Yomi" name="NameYomi" autocomplete="off">
     </p>
@@ -114,6 +121,7 @@
     <th>専攻</th>
     <th>TEL</th>
     <th>緊急連絡先</th> 
+    <th>緊急連絡番号</th> 
     <th>最終更新者</th>
     <th>最終更新日</th>    
     </tr>
@@ -147,7 +155,7 @@
 
     //ﾌﾘｶﾞﾅ
     var Name_Yomi = $(this).children('td')[2].innerText;
-    var Name_YomiSplit = Name_Yomi.split(' ');
+    var Name_YomiSplit = Name_Yomi.split('　');
     $("#txt_LastName_Yomi").val(Name_YomiSplit[0]);
     $("#txt_Name_Yomi").val(Name_YomiSplit[1]);
 
