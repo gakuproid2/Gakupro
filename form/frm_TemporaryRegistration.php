@@ -1,30 +1,91 @@
 <!DOCTYPE html>
 <html lang="ja">
 
+<style>
+
+.Label {
+  margin: 0%;
+  padding: 0%;
+}
+
+.Age {
+  width: 30px;
+  margin-left: 40px;
+  margin-right: 10px; 
+}
+
+.YearMonth {
+  width: 120px;  
+}
+
+</style>
+
 <?php
   
   //クラスファイルの読み込み
   require_once '../php/common.php';
   //クラスの生成
   $common = new common();
-  
-  //クラスファイルの読み込み
-  require_once '../dao/dao_MailAddressAuthenticate_T.php';
-  //クラスの生成
-  $dao_MailAddressAuthenticate_T = new dao_MailAddressAuthenticate_T();    
 
   $JS_Info = $common->Read_JSconnection();
+
+  //クラスファイルの読み込み
+  require_once '../dao/dao_MailAddressAuthenticate_T.php';
+  //クラスの生成(メールアドレス認証テーブル)
+  $dao_MailAddressAuthenticate_T = new dao_MailAddressAuthenticate_T();    
+
+  //クラスファイルの読み込み
+  require_once '../dao/dao_School_M.php';
+  //クラスの生成(学校マスタ)
+  $dao_School_M = new dao_School_M();
+
+  //クラスファイルの読み込み
+  require_once '../dao/dao_MajorSubject_M.php';
+  //クラスの生成(専攻マスタ)
+  $dao_MajorSubject_M = new dao_MajorSubject_M();
+
+  //クラスファイルの読み込み
+  require_once '../dao/dao_Member_M.php';
+  //クラスの生成
+  $dao_Member_M = new dao_Member_M();
+  
 ?>
 
-<body>
-
-  <?php  
+<?php  
 
     if (count($_POST) > 0) {
 
+     
+
+      //登録処理
+      if (isset($_POST['Insert'])) {
+
+        $info = array(
+          'Member_Name' => $_POST["LastName"].'　'.$_POST["FirstName"],
+          'Member_NameYomi' => $_POST["LastNameYomi"].'　'.$_POST["FirstNameYomi"],
+          'Birthday' => $_POST["Birthday"],
+          'School_CD' => $_POST["School_CD"],
+          'MajorSubject_CD' => $_POST["MajorSubject_CD"],
+          'TEL' => $_POST["TEL"],
+          'MailAddress' => $_POST["MailAddress"],
+          'AdmissionYearMonth' => $_POST["AdmissionYearMonth"],
+          'GraduationYearMonth' => $_POST["GraduationYearMonth"]
+        );
+
+        //登録処理成功時は[Member_ID]が返却される、失敗時はfalse
+        $Result = $dao_Member_M->TemporaryRegistration($info);  
+                
+        if($Result == false) {
+      
+        } else{
+          Header('Location: ' . 'frm_TemporaryRegistrationResult.php?Member_ID='.$Result);
+          exit(); 
+        }       
+      }
+
       $Key_Code = $_POST["Key_Code"];
 
-      //$Key_Codeでメールアドレスを
+      //$Key_Codeで名前とメールアドレスをメールアドレス認証テーブルより取得
       $GetMailAddressAuthenticateInfo = $dao_MailAddressAuthenticate_T ->GetMailAddressAuthenticateInfo($Key_Code);
 
       foreach ($GetMailAddressAuthenticateInfo as $val) {                
@@ -32,27 +93,64 @@
         $FullName = $val['Name'];        
         $LastName =  mb_strstr($FullName, '　', true);
         $FirstName =  str_replace($LastName.'　', "", $FullName);    
-      }  
-    
+      }     
+
+      //学校のプルダウン作成する為
+      $School_Info = $dao_School_M->Get_School_M('','');
+      //0行目
+      $School_PullDown = "<option value = 0 >学校を選択して下さい</option>";
+      foreach ($School_Info as $val) {
+        $School_PullDown .= "<option value = " . $val['School_CD']." >".$val['School_Name'] . "</option>";          
+      }
+
+       //専攻コースのプルダウン作成する為
+       $MajorSubject_Info = $dao_MajorSubject_M->GET_Majorsubject_m(0);
+       //0行目
+       $MajorSubject_PullDown = "<option value = 0 >専攻を選択して下さい</option>";
+       foreach ($MajorSubject_Info as $val) {
+         $MajorSubject_PullDown .= "<option value = " . $val['majorsubject_cd']." >".$val['majorsubject_name'] . "</option>";          
+       }
     }
 
 
-  ?>
+?>
+
+<body>
 
   <form action="frm_TemporaryRegistration.php" method="POST">
+    <p class="Label">氏名</p>
     <p>
-      氏名　
-      姓：<input type="text" id="txt_LastName" name="LastName" autocomplete="off" value='<?php echo $LastName; ?>'>
-      名：<input type="text" id="txt_FirstName" name="FirstName" autocomplete="off" value='<?php echo $FirstName; ?>'>
+      姓:<input type="text" id="txt_LastName" name="LastName" autocomplete="off" value='<?php echo $LastName; ?>'>
+      名:<input type="text" id="txt_FirstName" name="FirstName" autocomplete="off" value='<?php echo $FirstName; ?>'>
     </p>
+
+    <p class="Label">氏名(フリガナ)</p>
+    <p>      
+      姓:<input type="text" id="txt_LastName_Yomi" name="LastNameYomi" autocomplete="off">
+      名:<input type="text" id="txt_FirstName_Yomi" name="FirstNameYomi" autocomplete="off">
+    </p>         
+    
+    <p class="Label">生年月日</p>
+    <p><input type="date" id="txt_Birthday" name="Birthday" value="2005-04-01"><input type="text" id="Age" class="Age" readonly>歳</p>
+
+    <p class="Label">学校/専攻</p>
     <p>
-      氏名(フリガナ)
-      姓：<input type="text" id="txt_LastName_Yomi" name="LastNameYomi" autocomplete="off">　
-      名：<input type="text" id="txt_Name_Yomi" name="NameYomi" autocomplete="off">
-    </p>     
-    <p>メールアドレス：<input type="text" id="txt_MailAddress" name="Mailaddress" autocomplete="off" value='<?php echo $MailAddress; ?>'></p>    
-    <p>生年月日：<input type="date" id="txt_Birthday" name="Birthday" value="2020-04"></p> 
-    <p>入学年月：<input type="month" id="txt_AdmissionYearMonth" name="AdmissionYearMonth" value="2020-04"></p> 
+      <select id='txt_School_CD' name='School_CD'><?php echo $School_PullDown; ?></select>    
+      <select id='txt_MajorSubject_CD' name='MajorSubject_CD'><?php echo $MajorSubject_PullDown; ?></select>
+    </p>
+
+    <p class="Label">在学期間</p>
+    <p>
+    <input type="month" class="YearMonth" id="txt_AdmissionYearMonth" name="AdmissionYearMonth" value="2020-04">～
+    <input type="month" class="YearMonth" id="txt_GraduationYearMonth" name="GraduationYearMonth" value="2023-03">
+    </p>
+
+    <p class="Label">TEL</p>
+    <p><input type="tel" id="txt_TEL" name="TEL" autocomplete="off"></p>  
+
+    <p class="Label">メールアドレス</p>
+    <p><input type="email" id="txt_MailAddress" name="MailAddress" autocomplete="off" value='<?php echo $MailAddress; ?>'></p>  
+
     <button class="btn_Insert" id="btn_Insert" name="Insert" value="1">登録</button>
     <button class="btn_Clear" id="btn_Clear" name="Clear" value="2">クリア</button>    
   </form>
@@ -80,7 +178,7 @@
   
   //クリアボタンクリック時
   $('#btn_Clear').on('click', function() {
-    window.location.href = 'frm_TemporaryRegistration.php'
+    
   });
 
   function ValueCheck() {
@@ -100,19 +198,19 @@
   }
 
   //年齢計算処理
-  $('#txt_Birthday').change(function(e){
+  $('#txt_Birthday').change(function(e){    
     
+    var Birthday =  document.getElementById("txt_Birthday").value;  
     
-    var Birthday = $("#txt_Birthday").val();
+    Birthday = Birthday.replace(/[/-]/g, "");
 
-    const date = new Date().getFullYearmonth();
-
-    window.alert(date); 
-
-
+    var today = new Date();
+	  targetdate = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+	  
+    document.getElementById("Age").value = (Math.floor((targetdate - Birthday) / 10000));    
 
   });
-
+ 
 </script>
 
 

@@ -12,8 +12,14 @@
   require_once '../dao/dao_MailAddressAuthenticate_T.php';
   //クラスの生成
   $dao_MailAddressAuthenticate_T = new dao_MailAddressAuthenticate_T();  
-  
+    
+  //後ほど削除予定↓
+  $Key_Code = 23001231001;
+  if (!empty($_GET['Key_Code'])) {
+  //後ほど削除予定↑
   $Key_Code = $_GET['Key_Code'];
+  }
+
 
   $Judge = false;
 

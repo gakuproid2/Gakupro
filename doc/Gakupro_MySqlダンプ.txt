@@ -10,6 +10,8 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
+
+-- テーブルがあれば削除--
 drop table if exists `imageget_t`;
 drop table if exists `temporarymember_m`;
 drop table if exists `temporarymember_t`;
@@ -62,7 +64,7 @@ INSERT INTO `maincategory_m` (`MainCategory_CD`, `MainCategory_Name`, `UsageFlag
 (1, '性別', 1, 1, '2021-08-06 22:28:53'),
 (2, '権限', 1, 1, '2021-09-04 01:12:50'),
 (3, '学校区分', 1, 1, '2021-09-04 01:15:21'),
-(4, '学生登録状況', 1, 1, '2021-09-04 01:15:21')
+(4, 'メンバー登録状況', 1, 1, '2021-09-04 01:15:21')
 ;
 
 -- --------------------------------------------------------
@@ -106,28 +108,29 @@ INSERT INTO `majorsubject_m` (`School_CD`, `MajorSubject_CD`, `MajorSubject_Name
 CREATE TABLE `Member_m` (
   `Member_ID` int(11) NOT NULL COMMENT '学生メンバーID',
   `Member_Name` varchar(30) NOT NULL COMMENT '氏名',
-  `Furigana` varchar(30) DEFAULT NULL COMMENT '氏名(フリガナ)',
+  `Member_NameYomi` varchar(30) DEFAULT NULL COMMENT '氏名(フリガナ)',
   `Birthday` date DEFAULT NULL COMMENT '誕生日',
-  `School_CD` int(11) NOT NULL COMMENT '学校コード',
-  `MajorSubject_CD` int(11) NOT NULL COMMENT '専攻コード',
   `TEL` varchar(15) DEFAULT NULL COMMENT 'TEL',
-  `EmergencyContactRelations` varchar(15) DEFAULT NULL COMMENT '緊急連絡先相手との続柄',
-  `EmergencyContactTEL` varchar(15) DEFAULT NULL COMMENT '緊急連絡先番号',
+  `MailAddress` varchar(50) DEFAULT NULL COMMENT 'メールアドレス',
+   `School_CD` int(11) NOT NULL COMMENT '学校コード',
+  `MajorSubject_CD` int(11) NOT NULL COMMENT '専攻コード',
   `AdmissionYearMonth` varchar(7) DEFAULT NULL COMMENT '入学年月(yyyy/mm)',
   `GraduationYearMonth` varchar(7) DEFAULT NULL COMMENT '予定卒業年月(yyyy/mm)',
   `Login_ID` varchar(30) DEFAULT NULL COMMENT 'ログインID',
   `Password` varchar(8) DEFAULT NULL COMMENT 'ログインパスワード',
+  `EmergencyContactRelations` varchar(15) DEFAULT NULL COMMENT '緊急連絡先相手との続柄',
+  `EmergencyContactTEL` varchar(15) DEFAULT NULL COMMENT '緊急連絡先番号',   
   `Remarks` varchar(100) DEFAULT NULL COMMENT '備考',
-  `RegistrationStatus` int(11) DEFAULT NULL COMMENT '登録状況(1=仮登録、2=本登録、99=卒業)',
+  `RegistrationStatus` int(11) DEFAULT NULL COMMENT '登録状況(1=仮登録、2=本登録、3=卒業)',
   `RegisteredPerson` int(11) DEFAULT NULL COMMENT '登録者',
   `RegisteredDate` datetime DEFAULT NULL COMMENT '登録日',
   `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
   `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='メンバーマスタ';
 
-INSERT INTO `member_m` (`Member_ID`, `Member_Name`, `Furigana`, `Birthday`, `School_CD`, `MajorSubject_CD`, `TEL`, `EmergencyContactRelations`, `EmergencyContactTEL`, `AdmissionYearMonth`, `GraduationYearMonth`, `Remarks`, `Changer`, `UpdateDate`) VALUES
-(1, '島　一郎', 'ｼﾏ ｲﾁﾛｳ', '2006-01-01', 1, 1, '090-1111-2222', '父親', '090-9999-5555', '2020/04', '2023/03', NULL, 1, NULL);
 
+INSERT INTO `member_m` (`Member_ID`, `Member_Name`, `Member_NameYomi`, `Birthday`, `School_CD`, `MajorSubject_CD`, `TEL`, `MailAddress`, `AdmissionYearMonth`, `GraduationYearMonth`, `Login_ID`, `Password`, `EmergencyContactRelations`, `EmergencyContactTEL`, `Remarks`, `RegistrationStatus`, `RegisteredPerson`, `RegisteredDate`, `Changer`, `UpdateDate`) VALUES
+(1, '島　イチロウ', 'シマ　イチロウ', '2005-03-30', 1, 3, '090-6868-2937', 'test@mailcom', '2020-04', '2023-03', NULL, NULL, NULL, NULL, NULL, 1, 99, '2021-11-15 11:04:38', 99, '2021-11-15 11:04:38');
 
 -- --------------------------------------------------------
 
@@ -190,10 +193,11 @@ INSERT INTO `screen_m` (`Screen_ID`, `Screen_Name`, `Screen_Path`, `Authority`, 
 (10, '学校マスタ', 'frm_School_M.php', '1', 1, 1, '2021-09-04 10:54:31'),
 (11, '専攻マスタ', 'frm_MajorSubject_M.php', '2', 1, 2, '2021-09-04 01:23:59'),
 (12, 'スタッフマスタ', 'frm_Staff_M.php', '2', 1, 2, '2021-09-04 01:30:27'),
-(13, '仮登録画面', 'frm_TemporaryRegistration.php', '3', 1, 1, '2021-09-11 10:27:00'),
-(14, 'テスト＿メールアドレス認証画面', 'frm_MailAddressAuthenticate.php?Key_Code=23001231001', '3', 1, 1, '2021-09-11 10:27:00'),
-(15, 'テスト＿メール送信画面', 'frm_Sendmail.php', '3', 1, 1, '2021-09-11 10:27:00')
-;
+(13, 'メンバーマスタ', 'frm_Member_M.php', '1', 1, 1, '2021-09-11 10:27:00'),
+(14, 'メンバー仮登録画面', 'frm_TemporaryRegistration.php', '3', 1, 1, '2021-09-11 10:27:00'),
+(15, 'メンバー本登録画面', 'frm_Registration.php', '1', 1, 1, '2021-09-11 10:27:00'),
+(16, 'テスト＿メールアドレス認証画面', 'frm_MailAddressAuthenticate.php?Key_Code=23001231001', '3', 1, 1, '2021-09-11 10:27:00'),
+(17, 'テスト＿メール送信画面', 'frm_Sendmail.php', '3', 1, 1, '2021-09-11 10:27:00');
 
 -- --------------------------------------------------------
 
@@ -204,23 +208,25 @@ INSERT INTO `screen_m` (`Screen_ID`, `Screen_Name`, `Screen_Path`, `Authority`, 
 CREATE TABLE `staff_m` (
   `Staff_ID` int(11) NOT NULL COMMENT 'スタッフID',
   `Staff_Name` varchar(30) NOT NULL COMMENT 'スタッフ氏名',
-  `Staff_NameYomi` varchar(30) NOT NULL COMMENT '氏名(ﾌﾘｶﾞﾅ)',
-  `NickName` varchar(30) NOT NULL COMMENT 'スタッフニックネーム',
-  `Login_ID` varchar(30) NOT NULL COMMENT 'ログインID',
-  `Password` varchar(8) NOT NULL COMMENT 'ログインパスワード',
+  `Staff_NameYomi` varchar(30) DEFAULT NULL COMMENT '氏名(ﾌﾘｶﾞﾅ)',
+  `NickName` varchar(30) DEFAULT NULL COMMENT 'スタッフニックネーム',
+  `Login_ID` varchar(30) DEFAULT NULL COMMENT 'ログインID',
+  `Password` varchar(8) DEFAULT NULL COMMENT 'ログインパスワード',
+  `TEL` varchar(15) DEFAULT NULL COMMENT 'TEL',
+  `MailAddress` varchar(50) DEFAULT NULL COMMENT 'メールアドレス',
   `Authority` varchar(1) DEFAULT NULL COMMENT '権限',
   `UsageFlag` int(11) NOT NULL COMMENT '利用有無フラグ',
   `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
   `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='スタッフマスタ';
 
+
 --
 -- テーブルのデータのダンプ `staff_m`
 --
-
-INSERT INTO `staff_m` (`Staff_ID`, `Staff_Name`, `Staff_NameYomi`, `NickName`, `Login_ID`, `Password`, `Authority`, `UsageFlag`, `Changer`, `UpdateDate`) VALUES
-(1, '崎原　悠磨', 'サキハラ　ユウマ', 'ゆうま', '0527', '5555', '1', 1, 1, '2021-08-07 09:30:39'),
-(2, '島袋　信彦', 'シマブクロ　ノブヒコ', 'のーぶ', '2', '2', '1', 1, 1, '2021-08-07 09:31:39');
+INSERT INTO `staff_m` (`Staff_ID`, `Staff_Name`, `Staff_NameYomi`, `NickName`, `Login_ID`, `Password`, `TEL`, `MailAddress`, `Authority`, `UsageFlag`, `Changer`, `UpdateDate`) VALUES
+(1, '島袋　信彦', 'シマブクロ　ノブヒコ', 'のーぶー', '1', '1', '090-6868-2937', 'gakuproid1@gmail.com', '1', 1, 1, '2021-11-15 11:04:38'),
+(2, '崎原　悠磨', 'サキハラ　ユウマ', 'とーくー', '2', '2', '090-1111-6666', 'gakuproid2@gmail.com', '1', 1, 1, '2021-11-15 11:04:38');
 
 -- --------------------------------------------------------
 
@@ -250,8 +256,8 @@ INSERT INTO `subcategory_m` (`MainCategory_CD`, `SubCategory_CD`, `SubCategory_N
 (3, 1, '高校', 1, 1, '2021-09-04 01:16:11'),
 (3, 2, '大学', 1, 1, '2021-09-04 01:16:18'),
 (3, 3, '専門', 1, 1, '2021-09-04 01:16:27'),
-(4, 1, '本登録', 1, 1, '2021-09-04 01:16:11'),
-(4, 2, '仮登録', 1, 1, '2021-09-04 01:16:18'),
+(4, 1, '仮登録', 1, 1, '2021-09-04 01:16:11'),
+(4, 2, '本登録', 1, 1, '2021-09-04 01:16:18'),
 (4, 3, '卒業', 1, 1, '2021-09-04 01:16:27');
 
 -- --------------------------------------------------------
@@ -265,7 +271,7 @@ CREATE TABLE `mailaddressauthenticate_t` (
   `ID` int(11) NOT NULL COMMENT 'ID(連番)',
   `Key_Code` varchar(15) NOT NULL COMMENT 'パスワード認証用キーコード(yyyymmddXXX)',
   `Password` int(4) NOT NULL COMMENT 'メールアドレス認証用パスワード',
-  `MailAddress` varchar(50) NOT NULL COMMENT '認証用メール送信先',
+  `MailAddress` varchar(50) NOT NULL COMMENT 'メールアドレス',
   `Name` varchar(30) DEFAULT '' COMMENT '認証用メンバー名',
   `CreateDateTime` datetime DEFAULT NULL COMMENT 'データ作成日時',
   `AuthenticationsCount` int(4) NOT NULL COMMENT '認証回数(初期値=0)'

@@ -54,12 +54,7 @@
 ?>
 
 <body>
-
   <h1>ログイン画面</h1>
-
-  <!-- 後ほど削除予定↓ -->
-  <a href="frm_MainMenu.php" class="btn_Top">メインメニュー</a>
-
   <?php echo $alert; ?>
 
   <form action="frm_Login.php" method="post">
