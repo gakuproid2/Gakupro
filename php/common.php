@@ -18,7 +18,7 @@ class common {
       $NickName = $_SESSION['NickName'];
     }
 
-    //画面マスタから画面情報を取得、条件：ログイン者の権限、利用有無
+    //画面マスタから画面情報を取得、条件：ログイン者の権限 & 利用有無
     $Data_Table = $this->ScreenSelection($Authority);
 
     //Css情報取得
@@ -26,8 +26,8 @@ class common {
 
     //ScreenInfoが数値ならScreenIDと判断しマスタから取得。数値以外(文字列)なら画面名と判断しそのまま画面名にセット
     if (is_numeric($ScreenInfo)) {
-       //表示する画面名取得
-    $Screen_Name = $this->GetScreenName($ScreenInfo);
+      //表示する画面名取得
+      $Screen_Name = $this->GetScreenName($ScreenInfo);
     } else {
       $Screen_Name = $ScreenInfo;
     }
@@ -41,7 +41,7 @@ class common {
     }
 
     $HeaderInfo = "      
-      <head>
+      <head> 
         <meta charset='UTF-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1.0'>      
         <title>" . $Screen_Name . "</title>
@@ -151,6 +151,7 @@ class common {
     $Info = '
     <script src="../js/jquery-3.6.0.min.js"></script>
     <script src="../js/common.js"></script>    
+    <script src="../js/bootstrap.js"></script>  
     ';
     return $Info;
   }
@@ -160,7 +161,8 @@ class common {
   {
     $Info = '
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/Header.css">  
+    <link rel="stylesheet" href="../css/Header.css">
+    <link rel="stylesheet" href="../css/bootstrap.css">
     ';
     return $Info;
   }

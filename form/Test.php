@@ -5,157 +5,80 @@
   <title>テスト画面</title>
 </head>
 
+<?php
+  session_start(); //セッションスタート
+
+  //クラスファイルの読み込み
+  require_once '../php/common.php';
+  //クラスの生成
+  $common = new common();
+
+  //クラスファイルの読み込み
+  require_once '../dao/dao_Staff_M.php';
+  //クラスの生成
+  $dao_Staff_M = new dao_Staff_M();
+
+  //クラスファイルの読み込み
+  require_once '../dao/dao_SubCategory_M.php';
+  //クラスの生成
+  $dao_SubCategory_M = new dao_SubCategory_M();
+  
+  $HeaderInfo = $common->HeaderCreation('テスト画面');  
+
+  $JS_Info = $common->Read_JSconnection();
+?>
+
+<?php echo $HeaderInfo; ?>
+
 <style>
 
-* {
-  box-sizing: border-box;
-}
-body {
-  font-family:'Avenir','Helvetica, Neue','Helvetica','Arial';
-}
-
-
-/* モーダルCSS */
-.modalArea {
-  display: none;
-  position: fixed;
-  z-index: 10; /*サイトによってここの数値は調整 */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.modalBg {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(30,30,30,0.9);
-}
-
-.modalWrapper {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform:translate(-50%,-50%);
-  width: 70%;
-  max-width: 500px;
-  padding: 10px 30px;
-  background-color: #fff;
-}
-
-.closeModal {
-  position: absolute;
-  top: 0.5rem;
-  right: 1rem;
-  cursor: pointer;
-}
-
-
-/* 以下ボタンスタイル */
-button {
-  padding: 10px;
-  background-color: #fff;
-  border: 1px solid #282828;
-  border-radius: 2px;
-  cursor: pointer;
-}
-
-#openModal {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform:translate(-50%,-50%);
-}
 </style>
 
 <body>
 
 
-<button id="openModal">Open modal</button>
-
-<!-- モーダルエリアここから -->
-<section id="modalArea" class="modalArea">
-  <div id="modalBg" class="modalBg"></div>
-  <div class="modalWrapper">    
-    <div class="form-group row">
-            <label for="place_id" class="">現場ID:</label>
-            <input type="text" name="place_id" id="place_id" value="" class="">
-    </div>
-    <div class="form-group row">
-            <label for="place_id" class="">現場ID:</label>
-            <input type="text" name="place_id" id="place_id" value="" class="">
-    </div>
-    
-    <div class="form-group row">
-            <label for="place_id" class="">現場ID:</label>
-            <input type="text" name="place_id" id="place_id" value="" class="">
-    </div>
-
-    <div class="form-group row">
-            <label for="place_id" class="">現場ID:</label>
-            <input type="text" name="place_id" id="place_id" value="" class="">
-    </div>
-
-
-    <div id="closeModal" class="closeModal">×</div>
-  </div>
-</section>
-<!-- モーダルエリアここまで -->
-
-
-
-
-
-
-
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#sampleModal" data-recipient="受信者名">
-	モーダル・ダイアログ 呼び出し
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Launch demo modal
 </button>
 
-<!-- モーダル・ダイアログ -->
-<div class="modal" id="sampleModal" tabindex="-1">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"><span>×</span></button>
-				<h4 class="modal-title">タイトル</h4>
-			</div>
-			<div class="modal-body">
-				メッセーシ：<input type="text">
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-				<button type="button" class="btn btn-primary">ボタン</button>
-			</div>
-		</div>
-	</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          
+        <div class="form-group row">
+              <label for="place_id" class="col-md-3 col-form-label">A:</label>
+              <input type="text" name="place_id" id="place_id" value="" class="form-control col-md-3" readonly>
+        </div>
+        
+        <div class="form-group row">
+              <label for="place_id" class="col-md-3 col-form-label">B:</label>
+              <input type="text" name="place_id" id="place_id" value="" class="form-control col-md-3" readonly>
+        </div>
+        
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 
-<script src="../js/jquery-3.6.0.min.js"></script>
+
+
+  <?php echo $JS_Info?>
 </body>
 
 <script>
 
-  $(function () {
-
-    $('#openModal').click(function(){
-        $('#modalArea').fadeIn();
-    });
-
-    $('#closeModal , #modalBg').click(function(){
-      $('#modalArea').fadeOut();
-    });
-    
-  });
-
-
-  $('#sampleModal').on('show.bs.modal', function (event) {
-		var button = $(event.relatedTarget);
-		var recipient = button.data('recipient');
-		var modal = $(this);
-		modal.find('.modal-title').text(recipient + 'へのメッセージ');
-	});
 
 
 </script>
