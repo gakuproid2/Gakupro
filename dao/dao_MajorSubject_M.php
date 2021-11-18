@@ -159,9 +159,9 @@ class dao_MajorSubject_M {
     }
         
     //クラスの中の関数の呼び出し
-    $items=$obj->plural($SQL);
-    
-    return $items;
+    $Result=$obj->pluralTransaction($SQL);
+  
+    return $Result;
   }
 }
 ?>

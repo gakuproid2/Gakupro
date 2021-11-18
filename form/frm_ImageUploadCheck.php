@@ -12,7 +12,7 @@
   //クラスファイルの読み込み
   require_once '../dao/dao_ImageUploadCheck.php';
   //クラスの生成
-  $dao = new dao_ImageUploadCheck();
+  $dao_ImageUploadCheck = new dao_ImageUploadCheck();
   
   $HeaderInfo = $common->HeaderCreation('画像アップロード確認画面');  
 
@@ -25,9 +25,7 @@
 //画像格納用
 $ImageALL = "";
 //[アップロード]ボタンの押下確認
-if (isset($_POST['Upload'])) {
-
-  
+if (isset($_POST['Upload'])) {  
 
   if (!empty($_POST["Key_Code"])) {
     $Key_Code = $_POST["Key_Code"];
@@ -38,10 +36,8 @@ if (isset($_POST['Upload'])) {
     
   //キーナンバーの日付部分のみ格納(例：2020123101 → 20201231)
   $Date = substr($Key_Code, 0, 8);
-
-  ////キーナンバーの日付部分以外格納(例：2020123101 → 01)
+  
   $KeyNum = str_replace($Date, '', $Key_Code);
- 
 
   //FILEディレクトリに日付ディレクトリの存在確認
   if (file_exists($BaseDir . $Date)) {

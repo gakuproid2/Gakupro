@@ -12,7 +12,7 @@
   //クラスファイルの読み込み
   require_once '../dao/dao_MainCategory_M.php';
   //クラスの生成
-  $dao = new dao_MainCategory_M();
+  $dao_MainCategory_M = new dao_MainCategory_M();
   
   $HeaderInfo = $common->HeaderCreation(4);  
 
@@ -45,11 +45,11 @@
 
     //登録、削除、更新の分岐
     if (isset($_POST['Insert'])) {
-      $Result = $dao->DataChange($info, 1);
+      $Result = $dao_MainCategory_M->DataChange($info, 1);
     } else if (isset($_POST['Update'])) {
-      $Result = $dao->DataChange($info, 2);
+      $Result = $dao_MainCategory_M->DataChange($info, 2);
     } else if (isset($_POST['Delete'])) {
-      $Result = $dao->DataChange($info, 3);
+      $Result = $dao_MainCategory_M->DataChange($info, 3);
     }
 
     Header('Location: ' . $_SERVER['PHP_SELF']);
@@ -57,9 +57,9 @@
   }
 
   //MainCategory_MのMaxCD取得処理
-  $Max_CD = $dao->Get_MaxCD();
+  $Max_CD = $dao_MainCategory_M->Get_MaxCD();
 
-  $Data_Table = $dao->Get_MainCategory_M();
+  $Data_Table = $dao_MainCategory_M->Get_MainCategory_M();
 
   $Table = "";
   foreach ($Data_Table as $val) {

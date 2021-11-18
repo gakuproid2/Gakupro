@@ -13,7 +13,12 @@
   //クラスファイルの読み込み
   require_once '../dao/dao_SubCategory_M.php';
   //クラスの生成
-  $dao = new dao_SubCategory_M();
+  $dao_SubCategory_M = new dao_SubCategory_M();
+
+  //クラスファイルの読み込み
+  require_once '../dao/dao_MainCategory_M.php';
+  //クラスの生成
+  $dao_MainCategory_M = new dao_MainCategory_M();
 
   $HeaderInfo = $common->HeaderCreation(5);
 
@@ -25,23 +30,16 @@
 
 <?php
 
-  $CD = 0;
-  //メインカテゴリーコードがあれば格納する
-  if (!empty($_GET['Maincategory_CD'])) {
-    $CD = $_GET['Maincategory_CD'];
-  }
-
-  //ポストされたか確認する。
-  if (count($_POST) > 1) {
+  if (isset ($_POST["MainCategory_CD"])){$MainCategory_CD=$_POST["MainCategory_CD"];}else{$MainCategory_CD=0;};
+  
+  if (isset ($_POST["DataChange"])){ 
 
     //利用フラグを宣言し、チェック時は1を格納するIf文    
     $UsageFlag = 0;
     if (isset($_POST["UsageFlag"])) {
       $UsageFlag = 1;
     };
-
-    //POSTされた値を、変数と配列に格納
-    $CD = $_POST["MainCategory_CD"];
+        
     $info = array(
       'MainCategory_CD' => $_POST["MainCategory_CD"], 
       'SubCategory_CD' => $_POST["SubCategory_CD"], 
@@ -51,30 +49,33 @@
       'UpdateDate' => date("Y-m-d H:i:s")
     );
 
-    $Result = "";
+     //データ変更種類に種別  1=登録、2=更新、3=論理削除
+      $Processing = $_POST["DataChange"];
+      $Result = false;
 
-    //登録、削除、更新の分岐
-    if (isset($_POST['Insert'])) {
-      $Result = $dao->DataChange($info, 1);
-    } else if (isset($_POST['Update'])) {
-      $Result = $dao->DataChange($info, 2);
-    } else if (isset($_POST['Delete'])) {
-      $Result = $dao->DataChange($info, 3);
-    }
+      if ($Processing == 1) {
+        $Result = $dao_SubCategory_M->DataChange($info, $Processing);
+      } else if ($Processing == 2) {
+        $Result = $dao_SubCategory_M->DataChange($info, $Processing);
+      } else if ($Processing == 3) {
+        $Result = $dao_SubCategory_M->DataChange($info, $Processing);
+      }
 
-    Header('Location: ' . $_SERVER['PHP_SELF']);
-    exit(); //optional
+      if ($Result ==true) {
+        Header('Location: ' . $_SERVER['PHP_SELF']);
+        exit(); //optional
+      } 
   }
 
   //メインカテゴリーのプルダウン作成する為
-  $items = $dao->GET_Maincategory_m();
+  $items = $dao_MainCategory_M->GET_MainCategory_m();
   //0行目
   $PullDown = "<option value = 0 >選択してください</option>";
   foreach ($items as $item_val) {
 
     $PullDown .= "<option value = " . $item_val['MainCategory_CD'];
 
-    if ($CD == $item_val['MainCategory_CD']) {
+    if ($MainCategory_CD == $item_val['MainCategory_CD']) {
       $PullDown .= " selected>";
     } else {
       $PullDown .= " >";
@@ -83,15 +84,15 @@
   }
 
   //表示用Table作成用（メインカテゴリーコードで参照）
-  $Data_Table = $dao->Get_subCategory_M($CD);
+  $Data_Table = $dao_SubCategory_M->Get_SubCategory_M($MainCategory_CD);
   $Table = "";
   //取得したデータ数文ループ
   foreach ($Data_Table as $val) {
     $Table .="<tr class='List'>          
-    <td style=display:none>" . $val['maincategory_cd'] . "</td>
-    <td>" . $val['MainCategory_name'] . "</td>
-    <td>" . $val['subcategory_cd'] . "</td>
-    <td>" . $val['subcategory_name'] . "</td>
+    <td style=display:none>" . $val['MainCategory_CD'] . "</td>
+    <td>" . $val['MainCategory_Name'] . "</td>
+    <td>" . $val['SubCategory_CD'] . "</td>
+    <td>" . $val['SubCategory_Name'] . "</td>
     ";
 
     if ($val['UsageFlag'] == 0) {
@@ -102,10 +103,10 @@
     $Table .= "</tr>";
   }
 
-  //CDが1以上時のみ
-  if ($CD > 0) {
+  //MainCategory_CDが1以上時のみ
+  if ($MainCategory_CD > 0) {
   //メインカテゴリーコードを渡しサブカテゴリーコードのMax値取得
-    $Max_CD = $dao->Get_MaxCD($CD);    
+    $Max_CD = $dao_SubCategory_M->Get_MaxCD($MainCategory_CD);    
   } else {
     $Max_CD = "";
   }
@@ -119,11 +120,11 @@
     <p>中分類名：<input type="text" id="txt_SubCategory_Name" name="SubCategory_Name" autocomplete="off"></p>
     <p>利用フラグ：<input type="checkbox" id="chk_UsageFlag" name="UsageFlag" value="1" checked="checked"></p>
 
-    <button class="btn_Insert" id="btn_Insert" name="Insert" value="1">登録</button>
-    <button class="btn_Update" id="btn_Update" name="Update" value="2">更新</button>
-    <button class="btn_Delete" id="btn_Delete" name="Delete" value="3">削除</button>
-    <button class="btn_Clear" id="btn_Clear" name="Clear" value="4">クリア</button>
+    <button class="btn_Insert" id="btn_Insert" name="DataChange" value="1">登録</button>
+    <button class="btn_Update" id="btn_Update" name="DataChange" value="2">更新</button>
+    <button class="btn_Delete" id="btn_Delete" name="DataChange" value="3">削除</button>    
   </form>
+  <button class="btn_Clear" id="btn_Clear" name="DataChange" value="4">クリア</button>
 
   <table border='1'>
     <tr>
@@ -174,9 +175,16 @@
 
   //プルダウン変更時
   document.getElementById("MainCategory_CD").onchange = function() {
-    var MainCategory_CD = this.value;
-    window.location.href = 'frm_SubCategory_M.php?Maincategory_CD=' + MainCategory_CD; // 通常の遷移
-  };
+  
+  //ポストするキーと値を格納
+  var DataArray = 
+  {MainCategory_CD:$("#MainCategory_CD").val() 
+  };  
+
+  //common.jsに実装
+  post("frm_SubCategory_M.php", DataArray);
+
+};
 
   //登録ボタンクリック時
   $('#btn_Insert').on('click', function() {

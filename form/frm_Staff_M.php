@@ -8,6 +8,16 @@
   require_once '../php/common.php';
   //クラスの生成
   $common = new common();
+
+  //クラスファイルの読み込み
+  require_once '../dao/dao_Staff_M.php';
+  //クラスの生成
+  $dao_Staff_M = new dao_Staff_M();
+
+  //クラスファイルの読み込み
+  require_once '../dao/dao_SubCategory_M.php';
+  //クラスの生成
+  $dao_SubCategory_M = new dao_SubCategory_M();
   
   $HeaderInfo = $common->HeaderCreation(12);  
 
@@ -19,19 +29,7 @@
 <body>
 
   <?php
-
-  $CD = 0;
   
-  //サブカテゴリーコードがあれば格納する
-  if (!empty($_GET['SubCategory_CD'])) {
-    $CD = $_GET['SubCategory_CD'];
-  }
-
-  //クラスファイルの読み込み
-  require_once '../dao/dao_Staff_M.php';
-  //クラスの生成
-  $dao = new dao_Staff_M();
-
   //ポストされた確認する。
   if (count($_POST) > 0) {
 
@@ -61,11 +59,11 @@
     
     //登録、削除、更新の分岐
     if (isset($_POST['Insert'])) {
-      $Result = $dao->DataChange($info, 1);
+      $Result = $dao_Staff_M->DataChange($info, 1);
     } else if (isset($_POST['Update'])) {
-      $Result = $dao->DataChange($info, 2);
+      $Result = $dao_Staff_M->DataChange($info, 2);
     } else if (isset($_POST['Delete'])) {
-      $Result = $dao->DataChange($info, 3);
+      $Result = $dao_Staff_M->DataChange($info, 3);
     }
 
     Header('Location: ' . $_SERVER['PHP_SELF']);
@@ -74,27 +72,17 @@
 
   
   //権限のプルダウン作成する為
-  $items = $dao->GET_Subcategory_m();
+  $items = $dao_SubCategory_M->GET_SubCategory_m(2);
   //0行目
   $PullDown = "<option value = 0 >選択してください</option>";
   foreach ($items as $item_val) {
-
-    $PullDown .= "<option value = " . $item_val['SubCategory_CD'];
-
-    if ($CD == $item_val['SubCategory_CD']) {
-      $PullDown .= " selected>";
-    } else {
-      $PullDown .= " >";
-    }
-    $PullDown  .= $item_val['SubCategory_Name'] . "</option>";
+    $PullDown .= "<option value = " . $item_val['SubCategory_CD'].">". $item_val['SubCategory_Name'] . "</option>";
   }
-  
-
-  
+   
   //Staff_MのMaxCD取得処理
-  $Max_CD = $dao->Get_MaxCD();
+  $Max_CD = $dao_Staff_M->Get_MaxCD();
   
-  $Data_Table = $dao->Get_Staff_M();
+  $Data_Table = $dao_Staff_M->Get_Staff_M();
   $Table = "";
   
   
@@ -182,7 +170,7 @@
 
       //ﾌﾘｶﾞﾅ
       var StaffName_Yomi = $(this).children('td')[2].innerText;
-      var StaffName_YomiSplit = StaffName_Yomi.split(' ');
+      var StaffName_YomiSplit = StaffName_Yomi.split('　');
       $("#txt_LastName_Yomi").val(StaffName_YomiSplit[0]);
       $("#txt_Name_Yomi").val(StaffName_YomiSplit[1]);
 

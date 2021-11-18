@@ -23,8 +23,7 @@
 
   <div class ='flex-container'>
     <?php echo $MainMenuButtonInfo; ?>  
-  </div>
-  
+  </div>  
 
   <?php echo $JS_Info; ?>  
 </body>

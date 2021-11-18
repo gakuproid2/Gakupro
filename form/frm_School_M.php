@@ -12,8 +12,13 @@
   //クラスファイルの読み込み
   require_once '../dao/dao_School_M.php';
   //クラスの生成
-  $dao = new dao_School_M();
+  $dao_School_M = new dao_School_M();
 
+  //クラスファイルの読み込み
+  require_once '../dao/dao_SubCategory_M.php';
+  //クラスの生成
+  $dao_SubCategory_M = new dao_SubCategory_M();
+  
   $HeaderInfo = $common->HeaderCreation(10);  
 
   $JS_Info = $common->Read_JSconnection();
@@ -67,11 +72,11 @@
       
       //登録、削除、更新の分岐
       if (isset($_POST['Insert'])) {
-        $Result = $dao->DataChange($info, 1);
+        $Result = $dao_School_M->DataChange($info, 1);
       } else if (isset($_POST['Update'])) {
-        $Result = $dao->DataChange($info, 2);
+        $Result = $dao_School_M->DataChange($info, 2);
       } else if (isset($_POST['Delete'])) {
-        $Result = $dao->DataChange($info, 3);
+        $Result = $dao_School_M->DataChange($info, 3);
       }
 
       Header('Location: ' . $_SERVER['PHP_SELF']);
@@ -79,7 +84,7 @@
     }
 
     //学校区分のプルダウン作成する為
-    $items = $common->GET_Subcategory_m(3);
+    $items = $dao_SubCategory_M->GET_SubCategory_m(3);
     //0行目
     $PullDown = "<option value = 0 >選択してください</option>";
     foreach ($items as $item_val) {
@@ -95,9 +100,9 @@
     }
     
     //School_MのMaxCD取得処理
-    $Max_CD = $dao->Get_MaxCD();
+    $Max_CD = $dao_School_M->Get_MaxCD();
     
-    $Data_Table = $dao->Get_School_M($CD, $check);
+    $Data_Table = $dao_School_M->Get_School_M($CD, $check);
     $Table = "";
     
     foreach ($Data_Table as $val) {

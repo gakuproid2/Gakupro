@@ -15,7 +15,7 @@
     ,MainCategory_Name 
     ,UsageFlag 
     FROM
-    Maincategory_m; ";
+    MainCategory_m; ";
 
     //クラスの中の関数の呼び出し
     $DataTable=$obj->select($SQL);
@@ -34,7 +34,7 @@
     SELECT 
     IFNULL(MAX(MainCategory_CD),0)+1 AS Max_CD
     FROM
-    Maincategory_m ";
+    MainCategory_m ";
 
     //クラスの中の関数の呼び出し
     $items=$obj->select($SQL);
@@ -63,7 +63,7 @@
 
       $SQL = "
       INSERT INTO 
-      gakupro.maincategory_m (
+      gakupro.MainCategory_m (
       MainCategory_CD 
       ,MainCategory_Name 
       ,UsageFlag 
@@ -82,7 +82,7 @@
 
       $SQL = "
       UPDATE 
-      gakupro.maincategory_m 
+      gakupro.MainCategory_m 
       SET 
       MainCategory_Name = '$MainCategory_Name'
       ,UsageFlag = '$UsageFlag'
@@ -96,7 +96,7 @@
 
       $SQL = "
       DELETE FROM
-      gakupro.maincategory_m 
+      gakupro.MainCategory_m 
       WHERE
       MainCategory_CD = $MainCategory_CD;
       ";

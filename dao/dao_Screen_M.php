@@ -15,7 +15,7 @@
     ,Screen_m.Screen_Name
     ,Screen_m.Screen_Path
     ,Screen_m.Authority
-    ,CONCAT(subcategory_m.subcategory_Name,'以上') AS AuthorityInfo
+    ,CONCAT(SubCategory_m.SubCategory_Name,'以上') AS AuthorityInfo
     ,Screen_m.UsageFlag
     ,staff_m.Staff_Name AS ChangerName
     ,Screen_m.UpdateDate
@@ -23,16 +23,16 @@
     Screen_m
     LEFT JOIN
     	(SELECT 
-         maincategory_CD
-         ,subcategory_CD
-         ,subcategory_Name
+         MainCategory_CD
+         ,SubCategory_CD
+         ,SubCategory_Name
          FROM
-         subcategory_m
+         SubCategory_m
          WHERE
-         maincategory_CD = 2
-        )AS subcategory_m
+         MainCategory_CD = 2
+        )AS SubCategory_m
      ON
-     Screen_m.Authority = subcategory_m.SubCategory_CD
+     Screen_m.Authority = SubCategory_m.SubCategory_CD
      LEFT JOIN
     	(SELECT 
           Staff_ID
@@ -88,7 +88,7 @@
        ,SubCategory_Name 
        ,UsageFlag
        FROM
-       Subcategory_m
+       SubCategory_m
        WHERE UsageFlag = 1
        AND
        MainCategory_CD = 2

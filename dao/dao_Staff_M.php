@@ -1,31 +1,6 @@
 <?php
 
 class dao_Staff_M {
-    
-    function GET_Subcategory_m() {
-        //クラスファイルの読み込み
-        require_once '../dao/DB_Connection.php';
-        //クラスの生成
-        $obj = new connect();
-
-        //SQL文の発行  ※メインカテゴリー３は権限区分
-        $SQL ="
-        SELECT 
-        SubCategory_CD 
-        ,SubCategory_Name 
-        ,UsageFlag
-        FROM
-        Subcategory_m
-        WHERE 
-        MainCategory_CD = 3
-        and 
-        UsageFlag = 1;
-        ";
-
-        //クラスの中の関数の呼び出し
-        $items = $obj->select($SQL);
-        return $items;
-    }
 
     function Get_Staff_M() {
         //クラスファイルの読み込み

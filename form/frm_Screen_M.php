@@ -12,7 +12,12 @@
   //クラスファイルの読み込み
   require_once '../dao/dao_Screen_M.php';
   //クラスの生成
-  $dao = new dao_Screen_M();
+  $dao_Screen_M = new dao_Screen_M();
+
+  //クラスファイルの読み込み
+  require_once '../dao/dao_SubCategory_M.php';
+  //クラスの生成
+  $dao_SubCategory_M = new dao_SubCategory_M();
   
   $HeaderInfo = $common->HeaderCreation(9); 
   
@@ -44,19 +49,19 @@
 
     //登録、削除、更新の分岐
     if (isset($_POST['Insert'])) {
-      $Result = $dao->DataChange($info, 1);
+      $Result = $dao_Screen_M->DataChange($info, 1);
     } else if (isset($_POST['Update'])) {
-      $Result = $dao->DataChange($info, 2);
+      $Result = $dao_Screen_M->DataChange($info, 2);
     } else if (isset($_POST['Delete'])) {
-      $Result = $dao->DataChange($info, 3);
+      $Result = $dao_Screen_M->DataChange($info, 3);
     }
 
     Header('Location: ' . $_SERVER['PHP_SELF']);
     exit(); //optional
   }
 
-  //メインカテゴリーのプルダウン作成する為
-  $items = $common->GET_Subcategory_m(2);
+  //権限のプルダウン作成する為
+  $items = $dao_SubCategory_M->GET_SubCategory_m(2);
   //0行目
   $PullDown = "<option value = 0 >選択してください</option>";
   foreach ($items as $item_val) {
@@ -65,9 +70,9 @@
   }
 
   //Screen_MのMaxCD取得処理
-  $Max_CD = $dao->Get_MaxCD();
+  $Max_CD = $dao_Screen_M->Get_MaxCD();
 
-  $Data_Table = $dao->Get_Screen_M();
+  $Data_Table = $dao_Screen_M->Get_Screen_M();
 
   $Table = "";
   foreach ($Data_Table as $val) {

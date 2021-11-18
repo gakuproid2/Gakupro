@@ -112,6 +112,12 @@ textarea{
 
   $Table = "";
   foreach ($Data_Table as $val) {
+  
+    $EmergencyContactRelations='';
+    if (isset($val['EmergencyContactRelations'])) {
+      $EmergencyContactRelations ='('.$val['EmergencyContactRelations'].')';
+    };
+
 
     $Table .=
     "<tr class='Table'>
@@ -129,7 +135,7 @@ textarea{
       <td>" . $val['GraduationYearMonth'] . "</td>    
       <td style=display:none>" . $val['Login_ID'] . "</td>     
       <td style=display:none>" . $val['Password'] . "</td>   
-      <td>(".$val['EmergencyContactRelations'].")". $val['EmergencyContactTEL']."</td>           
+      <td>".$EmergencyContactRelations. $val['EmergencyContactTEL']."</td>           
       <td style=display:none>" . $val['EmergencyContactRelations'] . "</td>     
       <td style=display:none>" . $val['EmergencyContactTEL'] . "</td>         
       <td style=display:none>" . $val['Remarks'] . "</td> 
@@ -148,11 +154,11 @@ textarea{
   }
 
    //登録状況のプルダウン作成する為
-   $Register_Info = $dao_SubCategory_M->GET_Subcategory_m(4);
+   $Register_Info = $dao_SubCategory_M->GET_SubCategory_m(4);
    //0行目
    $Register_PullDown = "<option value = 0 >登録状況を選択して下さい</option>";
    foreach ($Register_Info as $val) {     
-     $Register_PullDown .= "<option value = " . $val['subcategory_cd']." >".$val['subcategory_name'] . "</option>";                
+     $Register_PullDown .= "<option value = " . $val['SubCategory_CD']." >".$val['SubCategory_Name'] . "</option>";                
    }
 
   //学校のプルダウン作成する為

@@ -29,7 +29,7 @@
     ,Member_m.Password 
     ,Member_m.Remarks 
     ,Member_m.RegistrationStatus 
-    ,subcategory_m.SubCategory_Name AS RegistrationStatusName
+    ,SubCategory_m.SubCategory_Name AS RegistrationStatusName
     ,Member_m.RegisteredPerson 
     ,Member_m.RegisteredDate 
     ,Member_m.Changer 
@@ -77,12 +77,12 @@
         ,SubCategory_CD
         ,SubCategory_Name
         FROM
-        subcategory_m
+        SubCategory_m
         WHERE
         MainCategory_CD = 4
-      )AS subcategory_m
+      )AS SubCategory_m
     ON
-    Member_m.RegistrationStatus = subcategory_m.SubCategory_CD
+    Member_m.RegistrationStatus = SubCategory_m.SubCategory_CD
 
     ;
     ";

@@ -16,14 +16,14 @@ drop table if exists `imageget_t`;
 drop table if exists `temporarymember_m`;
 drop table if exists `temporarymember_t`;
 drop table if exists `mailaddressauthenticate_t`;
-drop table if exists `maincategory_m`;
+drop table if exists `MainCategory_m`;
 drop table if exists `majorsubject_m`;
 drop table if exists `Member_m`;
 drop table if exists `Menber_m`;
 drop table if exists `school_m`;
 drop table if exists `screen_m`;
 drop table if exists `staff_m`;
-drop table if exists `subcategory_m`;
+drop table if exists `SubCategory_m`;
 
 --
 -- テーブルの構造 `imageget_t`--
@@ -44,11 +44,11 @@ INSERT INTO `imageget_t` (`Key_Code`, `Password`) VALUES
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `maincategory_m`
+-- テーブルの構造 `MainCategory_m`
 --
 
 
-CREATE TABLE `maincategory_m` (
+CREATE TABLE `MainCategory_m` (
   `MainCategory_CD` int(11) NOT NULL COMMENT '大分類コード',
   `MainCategory_Name` varchar(30) NOT NULL COMMENT '大分類名',
   `UsageFlag` int(11) NOT NULL COMMENT '利用有無フラグ',
@@ -57,10 +57,10 @@ CREATE TABLE `maincategory_m` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='大分類マスタ';
 
 --
--- テーブルのデータのダンプ `maincategory_m`
+-- テーブルのデータのダンプ `MainCategory_m`
 --
 
-INSERT INTO `maincategory_m` (`MainCategory_CD`, `MainCategory_Name`, `UsageFlag`, `Changer`, `UpdateDate`) VALUES
+INSERT INTO `MainCategory_m` (`MainCategory_CD`, `MainCategory_Name`, `UsageFlag`, `Changer`, `UpdateDate`) VALUES
 (1, '性別', 1, 1, '2021-08-06 22:28:53'),
 (2, '権限', 1, 1, '2021-09-04 01:12:50'),
 (3, '学校区分', 1, 1, '2021-09-04 01:15:21'),
@@ -169,7 +169,7 @@ INSERT INTO `school_m` (`School_CD`, `School_Division`, `School_Name`, `TEL`, `U
 CREATE TABLE `screen_m` (
   `Screen_ID` int(11) NOT NULL COMMENT '画面ID',
   `Screen_Name` varchar(50) DEFAULT NULL COMMENT '画面名',
-  `Screen_Path` varchar(100) DEFAULT NULL COMMENT 'スクリーンパス',
+  `Screen_Path` varchar(200) DEFAULT NULL COMMENT 'スクリーンパス',
   `Authority` varchar(1) DEFAULT NULL COMMENT '利用権限',
   `UsageFlag` int(11) NOT NULL COMMENT '利用有無フラグ',
   `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
@@ -231,10 +231,10 @@ INSERT INTO `staff_m` (`Staff_ID`, `Staff_Name`, `Staff_NameYomi`, `NickName`, `
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `subcategory_m`
+-- テーブルの構造 `SubCategory_m`
 --
 
-CREATE TABLE `subcategory_m` (
+CREATE TABLE `SubCategory_m` (
   `MainCategory_CD` int(11) NOT NULL COMMENT '大分類コード',
   `SubCategory_CD` int(11) NOT NULL COMMENT '中分類コード',
   `SubCategory_Name` varchar(30) NOT NULL COMMENT '中分類名',
@@ -244,10 +244,10 @@ CREATE TABLE `subcategory_m` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='中分類マスタ';
 
 --
--- テーブルのデータのダンプ `subcategory_m`
+-- テーブルのデータのダンプ `SubCategory_m`
 --
 
-INSERT INTO `subcategory_m` (`MainCategory_CD`, `SubCategory_CD`, `SubCategory_Name`, `UsageFlag`, `Changer`, `UpdateDate`) VALUES
+INSERT INTO `SubCategory_m` (`MainCategory_CD`, `SubCategory_CD`, `SubCategory_Name`, `UsageFlag`, `Changer`, `UpdateDate`) VALUES
 (1, 1, '男性', 1, 1, '2021-08-06 22:30:15'),
 (1, 2, '女性', 1, 1, '2021-08-06 22:30:22'),
 (2, 1, '管理者', 1, 1, '2021-09-04 01:15:38'),
@@ -289,9 +289,9 @@ ALTER TABLE `imageget_t`
   ADD PRIMARY KEY (`Key_Code`);
 
 --
--- テーブルのインデックス `maincategory_m`
+-- テーブルのインデックス `MainCategory_m`
 --
-ALTER TABLE `maincategory_m`
+ALTER TABLE `MainCategory_m`
   ADD PRIMARY KEY (`MainCategory_CD`);
 
 --
@@ -325,9 +325,9 @@ ALTER TABLE `staff_m`
   ADD PRIMARY KEY (`Staff_ID`);
 
 --
--- テーブルのインデックス `subcategory_m`
+-- テーブルのインデックス `SubCategory_m`
 --
-ALTER TABLE `subcategory_m`
+ALTER TABLE `SubCategory_m`
   ADD PRIMARY KEY (`MainCategory_CD`,`SubCategory_CD`);
 
 --

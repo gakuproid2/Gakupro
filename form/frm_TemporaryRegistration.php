@@ -92,7 +92,7 @@
         $MailAddress = $val['MailAddress'];
         $FullName = $val['Name'];        
         $LastName =  mb_strstr($FullName, '　', true);
-        $FirstName =  str_replace($LastName.'　', "", $FullName);    
+        $FirstName =  str_replace($LastName.'　', "", $FullName);            
       }     
 
       //学校のプルダウン作成する為
