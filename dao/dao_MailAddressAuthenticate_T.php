@@ -1,8 +1,10 @@
 <?php
 
-class dao_MailAddressAuthenticate_T{
+class dao_MailAddressAuthenticate_T
+{
 
-    function DataInsert($Info){            
+    function DataInsert($Info)
+    {
 
         //KetCodeは操作日のMaxのkeyCodeをセットする
         //例：操作日2222/12/31の場合
@@ -13,16 +15,15 @@ class dao_MailAddressAuthenticate_T{
 
         $Password = $Info['Password'];
         $MailAddress = $Info['MailAddress'];
-        $FullName = $Info['LastName'].'　'.$Info['Name'];  
-        
-        
-        
+        $FullName = $Info['LastName'] . '　' . $Info['Name'];
+
+
         $CreateDateTime = date("Y-m-d H:i:s");
         //クラスファイルの読み込み
         require_once '../dao/DB_Connection.php';
         //クラスの生成
-        $obj=new connect();
-                    
+        $obj = new connect();
+
         $SQL = "
             INSERT INTO
             gakupro.mailaddressauthenticate_t (
@@ -41,24 +42,25 @@ class dao_MailAddressAuthenticate_T{
             0
             ); 
         ";
-            
+
         //クラスの中の関数の呼び出し
-        $Judge=$obj->pluralTransaction($SQL);   
-        
+        $Judge = $obj->pluralTransaction($SQL);
+
         if ($Judge) {
             return $Key_Code;
         } else {
             return false;
-        }           
+        }
     }
-            
-    function GetMaxKeyCode_OnTheDay(){
-        
+
+    function GetMaxKeyCode_OnTheDay()
+    {
+
         //クラスファイルの読み込み
         require_once '../dao/DB_Connection.php';
         //クラスの生成
-        $obj=new connect();
-                    
+        $obj = new connect();
+
         $StartDateTime = date("Y-m-d 00:00:01");
         $EndeDateTime = date("Y-m-d 23:59:59");
 
@@ -74,24 +76,25 @@ class dao_MailAddressAuthenticate_T{
         AND 
         '$EndeDateTime'
         ;
-        ";                
+        ";
         //クラスの中の関数の呼び出し
-        $items=$obj->plural($SQL);   
-        
+        $items = $obj->plural($SQL);
+
         $MaxCD = 0;
-        foreach($items as $item_val){  
+        foreach ($items as $item_val) {
             $MaxCD = $item_val['MaxCD'];
-        }               
+        }
         return $MaxCD;
-    }        
-            
-    function GetMailAddressAuthenticateInfo($Key_Code){
-        
+    }
+
+    function GetMailAddressAuthenticateInfo($Key_Code)
+    {
+
         //クラスファイルの読み込み
         require_once '../dao/DB_Connection.php';
         //クラスの生成
-        $obj=new connect();                        
-        
+        $obj = new connect();
+
         $SQL = "
         SELECT
         ID
@@ -105,11 +108,10 @@ class dao_MailAddressAuthenticate_T{
         WHERE
         Key_Code = $Key_Code           
         ;
-        ";                
+        ";
         //クラスの中の関数の呼び出し
-        $items=$obj->plural($SQL); 
-                
+        $items = $obj->plural($SQL);
+
         return $items;
-    }   
-    
+    }
 }
