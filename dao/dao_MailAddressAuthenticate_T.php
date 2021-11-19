@@ -31,12 +31,14 @@ class dao_MailAddressAuthenticate_T{
             MailAddress,
             Name,
             CreateDateTime
+            AuthenticationsCount
             )VALUES(
             '$Key_Code',
             '$Password',
             '$MailAddress',
             '$FullName',
-            '$CreateDateTime'
+            '$CreateDateTime',
+            0
             ); 
         ";
             
@@ -111,5 +113,3 @@ class dao_MailAddressAuthenticate_T{
     }   
     
 }
-
-?>
