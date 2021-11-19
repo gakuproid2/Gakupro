@@ -30,7 +30,7 @@ class dao_MailAddressAuthenticate_T{
             Password,
             MailAddress,
             Name,
-            CreateDateTime
+            CreateDateTime,
             AuthenticationsCount
             )VALUES(
             '$Key_Code',
