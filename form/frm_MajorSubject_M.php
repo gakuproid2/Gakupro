@@ -70,7 +70,7 @@ if (isset ($_POST["DataChange"])){
     Header('Location: ' . $_SERVER['PHP_SELF']);
     exit(); //optional
   } else{
-    
+
   }
 }
 
@@ -92,11 +92,14 @@ foreach ($items as $item_val) {
   $PullDown .= $item_val['School_Name'] . "</option>";
 }
 
-$Table = "";
-
 //表示用Table作成用（メインカテゴリーコードで参照）
 $Data_Table = $dao_MajorSubject_M->GET_Majorsubject_m($School_CD);
-
+$Table = "
+<table border='1'>
+  <tr>
+    <th>学校名</th><th>専攻コード</th><th>専攻名</th><th>在学期間</th><th>備考</th><th>利用フラグ</th>
+  </tr>
+";
 //取得したデータ数文ループ
 foreach ($Data_Table as $val) {
   $Table .="<tr class='Table'>
@@ -114,13 +117,13 @@ foreach ($Data_Table as $val) {
   }
   $Table .= "</tr>";
 }
-
-//CDが1以上時のみ
+$Table .= "</table>";
+//School_CDが1以上時のみ
 if ($School_CD > 0) {
   //学校コードを渡し専攻コードのMax値取得
-  $Max_CD = $dao_MajorSubject_M->Get_MaxCD($School_CD);
+  $Max_MajorSubject_CD = $dao_MajorSubject_M->Get_MaxCD($School_CD);
 } else {
-  $Max_CD = "";
+  $Max_MajorSubject_CD = "";
 }
 
 ?>
@@ -129,10 +132,10 @@ if ($School_CD > 0) {
 
 <form action="frm_MajorSubject_M.php" method="post">
   <p>学校CD：<select id='School_CD' name='School_CD'><?php echo $PullDown; ?></select></p>
-  <p>専攻CD：<input type='text' id='MajorSubject_CD' name='MajorSubject_CD' value='<?php echo $Max_CD; ?>' readonly> </p>
+  <p>専攻CD：<input type='text' id='MajorSubject_CD' name='MajorSubject_CD' value='<?php echo $Max_MajorSubject_CD; ?>' readonly> </p>
   <p>専攻名：<input type="text" id='MajorSubject_Name' name="MajorSubject_Name" value='<?php echo $MajorSubject_Name; ?>' autocomplete="off"></p>
   <p>在学期間：<input type="text" id='StudyPeriod' class='StudyPeriod' name="StudyPeriod" value='<?php echo $StudyPeriod; ?>' placeholder="ヶ月" autocomplete="off"></p>
-  <p>備考：<input type="text" id='Remarks' name="Remarks" value='<?php echo $Remarks; ?>' autocomplete="off"></p>
+  <p>備考：<input type="text" id='Remarks' name="Remarks" value='<?php echo $Remarks; ?>' autocomplete="off"></p>  
   <p>利用フラグ：<input type="checkbox" id="chk_UsageFlag" name="UsageFlag" value="1" checked="checked"></p>
 
   <button class="btn_Insert" id="btn_Insert" name="DataChange" value="1">登録</button>
@@ -141,19 +144,10 @@ if ($School_CD > 0) {
 </form>
 <button class="btn_Clear" id="btn_Clear" name="Clear" value="4">クリア</button>
 
-<table border='1'>
-  <tr>
-    <th>学校名</th>
-    <th>専攻コード</th>
-    <th>専攻名</th>
-    <th>在学期間</th>
-    <th>備考</th>
-    <th>利用フラグ</th>
-  </tr>
-  <?php echo $Table; ?>
-</table>
+<?php echo $Table; ?>
 
 <?php echo $JS_Info?>
+
 </body>
 
 <script>
@@ -199,7 +193,7 @@ document.getElementById("School_CD").onchange = function() {
   {School_CD:$("#School_CD").val()
   ,MajorSubject_Name:$("#MajorSubject_Name").val()
   ,StudyPeriod:$("#StudyPeriod").val()
-  ,Remarks:$("#Remarks").val()          
+  ,Remarks:$("#Remarks").val()                 
   };  
 
   //common.jsに実装

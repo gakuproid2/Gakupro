@@ -159,9 +159,10 @@ class common {
   //Css関連の管理  ＠追加する場合はInfo内に追記してください
   function Read_CssConnection()
   {
-    $Info = '
+    //<link rel="stylesheet" href="../css/bootstrap.css">
+    $Info = '    
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/Header.css">
+    <link rel="stylesheet" href="../css/Header.css">    
     <link rel="stylesheet" href="../css/bootstrap.css">
     ';
     return $Info;
