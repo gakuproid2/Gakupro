@@ -318,12 +318,12 @@ if (!empty($_POST["Request"])) {
 
   <?php echo $alert; ?>
   <form action="frm_CreateQR.php" method="post">
-    <p>出動日<input type="date" id="txt_TargetDate" name="TargetDate" autocomplete="off" maxlength="8"></p>
+    <p>出動日<input type="date" id="TargetDate" name="TargetDate" autocomplete="off" maxlength="8"></p>
 
-    <p>作成数<input type="text" id="txt_Request" name="Request" autocomplete="off"></p>
+    <p>作成数<input type="text" id="Request" name="Request" autocomplete="off"></p>
     <br>
     <p>※※他端末で検証する場合のみホスト名、またはIPアドレスを入力してください。※※</p>
-    <p>ホスト名<input type="text" id="txt_HostName" name="HostName" autocomplete="off"></p>
+    <p>ホスト名<input type="text" id="HostName" name="HostName" autocomplete="off"></p>
     <button class="btn_Create" id="btn_Create" name="Create">作成</button>
     
   </form>
@@ -336,11 +336,11 @@ if (!empty($_POST["Request"])) {
   $('#btn_Create').on('click', function() {
 
     var ErrorMsg = '';
-    if ($("#txt_TargetDate").val() == "") {
+    if ($("#TargetDate").val() == "") {
       ErrorMsg += '出動日が選択してください。\n';
     }
 
-    if ($("#txt_Request").val() == "") {
+    if ($("#Request").val() == "") {
       ErrorMsg += '作成数を入力してください。\n';
     }
 

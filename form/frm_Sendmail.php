@@ -12,8 +12,8 @@
     <p>メールアドレス：<input type="email" id="MailAddress" name="MailAddress" autocomplete="off"></p>    
     <p>
       氏名
-      姓：<input type="text" id="txt_LastName" name="LastName" autocomplete="off">　
-      名：<input type="text" id="txt_Name" name="Name" autocomplete="off">
+      姓：<input type="text" id="LastName" name="LastName" autocomplete="off">　
+      名：<input type="text" id="Name" name="Name" autocomplete="off">
     </p>        
     <button class="btn_Insert" id="btn_Insert" name="Insert" value="1">送信</button>
     <button class="btn_Clear" id="btn_Clear" name="Clear" value="2">クリア</button>    

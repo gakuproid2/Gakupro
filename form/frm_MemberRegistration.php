@@ -90,50 +90,50 @@ textarea{
 
   <form action="frm_Member_M.php" method="post">
   
-  <input type="hidden" id="txt_Member_ID" name="Member_ID" >
+  <input type="hidden" id="Member_ID" name="Member_ID" >
   
     <p class="Label">氏名</p>
     <p>
-      姓:<input type="text" id="txt_LastName" name="LastName" autocomplete="off">
-      名:<input type="text" id="txt_FirstName" name="FirstName" autocomplete="off">
+      姓:<input type="text" id="LastName" name="LastName" autocomplete="off">
+      名:<input type="text" id="FirstName" name="FirstName" autocomplete="off">
     </p>
 
     <p class="Label">氏名(フリガナ)</p>
     <p>      
-      姓:<input type="text" id="txt_LastName_Yomi" name="LastNameYomi" autocomplete="off">
-      名:<input type="text" id="txt_FirstName_Yomi" name="FirstNameYomi" autocomplete="off">
+      姓:<input type="text" id="LastName_Yomi" name="LastNameYomi" autocomplete="off">
+      名:<input type="text" id="FirstName_Yomi" name="FirstNameYomi" autocomplete="off">
     </p>         
     
     <p class="Label">生年月日</p>
-    <p><input type="date" id="txt_Birthday" name="Birthday" value="2005-04-01"><input type="text" id="Age" class="Age" readonly>歳</p> 
+    <p><input type="date" id="Birthday" name="Birthday" value="2005-04-01"><input type="text" id="Age" class="Age" readonly>歳</p> 
 
     <p class="Label">TEL</p>
-    <p><input type="tel" id="txt_TEL" name="TEL" autocomplete="off"></p>  
+    <p><input type="tel" id="TEL" name="TEL" autocomplete="off"></p>  
 
     <p class="Label">メールアドレス</p>
-    <p><input type="email" id="txt_MailAddress" name="MailAddress" autocomplete="off"></p>  
+    <p><input type="email" id="MailAddress" name="MailAddress" autocomplete="off"></p>  
     
     <p class="Label">学校/専攻</p>
     <p>
-      <select id='txt_School_CD' name='School_CD'><?php echo $School_PullDown;?></select>    
-      <select id='txt_MajorSubject_CD' name='MajorSubject_CD'><?php echo $MajorSubject_PullDown; ?></select>
+      <select id='School_CD' name='School_CD'><?php echo $School_PullDown;?></select>    
+      <select id='MajorSubject_CD' name='MajorSubject_CD'><?php echo $MajorSubject_PullDown; ?></select>
     </p>
 
     <p class="Label">在学期間</p>
     <p>
-    <input type="month" class="YearMonth" id="txt_AdmissionYearMonth" name="AdmissionYearMonth" value="2020-04">～
-    <input type="month" class="YearMonth" id="txt_GraduationYearMonth" name="GraduationYearMonth" value="2023-03">
+    <input type="month" class="YearMonth" id="AdmissionYearMonth" name="AdmissionYearMonth" value="2020-04">～
+    <input type="month" class="YearMonth" id="GraduationYearMonth" name="GraduationYearMonth" value="2023-03">
     </p>
 
     <p class="Label">緊急連絡先情報</p>
     <p>
-    <input type="text" id="txt_EmergencyContactRelations" name="EmergencyContactRelations">
-    <input type="text" id="txt_EmergencyContactTEL" name="EmergencyContactTEL" style="margin-left: 20px;">
+    <input type="text" id="EmergencyContactRelations" name="EmergencyContactRelations">
+    <input type="text" id="EmergencyContactTEL" name="EmergencyContactTEL" style="margin-left: 20px;">
     </p>
 
     <p class="Label">備考</p>
     <p>
-    <textarea id="txt_Remarks" name="Remarks" autocomplete="off"></textarea>
+    <textarea id="Remarks" name="Remarks" autocomplete="off"></textarea>
     </p>
    
     <button class="btn_Insert" id="btn_Insert" name="Insert" value="1">登録</button>
@@ -151,7 +151,7 @@ textarea{
     $("#btn_Insert").show();
     $("#btn_Update").hide();
     
-    if (document.getElementById('txt_Birthday').value != "" )  {
+    if (document.getElementById('Birthday').value != "" )  {
       AgeCalculation();
     }
   }); 
@@ -192,11 +192,11 @@ textarea{
   function ValueCheck() {
 
     var ErrorMsg = '';
-    if ($("#txt_Screen_Name").val() == "") {
+    if ($("#Screen_Name").val() == "") {
       ErrorMsg += '画面名を入力してください。\n';
     }
 
-    if ($("#txt_Screen_Path").val() == "") {
+    if ($("#Screen_Path").val() == "") {
       ErrorMsg += '画面パスを入力してください。\n';
     }
 
@@ -214,7 +214,7 @@ textarea{
   }  
 
   
-  $('#txt_Birthday').change(function(e){    
+  $('#Birthday').change(function(e){    
     
     AgeCalculation();    
 
@@ -222,7 +222,7 @@ textarea{
 
   //年齢計算処理
   function AgeCalculation() {
-    var Birthday =  document.getElementById("txt_Birthday").value;  
+    var Birthday =  document.getElementById("Birthday").value;  
     
     Birthday = Birthday.replace(/[/-]/g, "");
 

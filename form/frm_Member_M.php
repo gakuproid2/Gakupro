@@ -182,55 +182,55 @@ textarea{
 
   <form action="frm_Member_M.php" method="post">
   
-  <input type="hidden" id="txt_Member_ID" name="Member_ID" >
+  <input type="hidden" id="Member_ID" name="Member_ID" >
   
     <p class="Label">氏名</p>
     <p>
-      姓:<input type="text" id="txt_LastName" name="LastName" autocomplete="off">
-      名:<input type="text" id="txt_FirstName" name="FirstName" autocomplete="off">
+      姓:<input type="text" id="LastName" name="LastName" autocomplete="off">
+      名:<input type="text" id="FirstName" name="FirstName" autocomplete="off">
     </p>
 
     <p class="Label">氏名(フリガナ)</p>
     <p>      
-      姓:<input type="text" id="txt_LastName_Yomi" name="LastNameYomi" autocomplete="off">
-      名:<input type="text" id="txt_FirstName_Yomi" name="FirstNameYomi" autocomplete="off">
+      姓:<input type="text" id="LastName_Yomi" name="LastNameYomi" autocomplete="off">
+      名:<input type="text" id="FirstName_Yomi" name="FirstNameYomi" autocomplete="off">
     </p>         
     
     <p class="Label">生年月日</p>
-    <p><input type="date" id="txt_Birthday" name="Birthday" value="2005-04-01"><input type="text" id="Age" class="Age" readonly>歳</p> 
+    <p><input type="date" id="Birthday" name="Birthday" value="2005-04-01"><input type="text" id="Age" class="Age" readonly>歳</p> 
 
     <p class="Label">TEL</p>
-    <p><input type="tel" id="txt_TEL" name="TEL" autocomplete="off"></p>  
+    <p><input type="tel" id="TEL" name="TEL" autocomplete="off"></p>  
 
     <p class="Label">メールアドレス</p>
-    <p><input type="email" id="txt_MailAddress" name="MailAddress" autocomplete="off"></p>  
+    <p><input type="email" id="MailAddress" name="MailAddress" autocomplete="off"></p>  
     
     <p class="Label">学校/専攻</p>
     <p>
-      <select id='txt_School_CD' name='School_CD'><?php echo $School_PullDown;?></select>    
-      <select id='txt_MajorSubject_CD' name='MajorSubject_CD'><?php echo $MajorSubject_PullDown; ?></select>
+      <select id='School_CD' name='School_CD'><?php echo $School_PullDown;?></select>    
+      <select id='MajorSubject_CD' name='MajorSubject_CD'><?php echo $MajorSubject_PullDown; ?></select>
     </p>
 
     <p class="Label">在学期間</p>
     <p>
-    <input type="month" class="YearMonth" id="txt_AdmissionYearMonth" name="AdmissionYearMonth" value="2020-04">～
-    <input type="month" class="YearMonth" id="txt_GraduationYearMonth" name="GraduationYearMonth" value="2023-03">
+    <input type="month" class="YearMonth" id="AdmissionYearMonth" name="AdmissionYearMonth" value="2020-04">～
+    <input type="month" class="YearMonth" id="GraduationYearMonth" name="GraduationYearMonth" value="2023-03">
     </p>
 
     <p class="Label">緊急連絡先情報</p>
     <p>
-    <input type="text" id="txt_EmergencyContactRelations" name="EmergencyContactRelations">
-    <input type="text" id="txt_EmergencyContactTEL" name="EmergencyContactTEL" style="margin-left: 20px;">
+    <input type="text" id="EmergencyContactRelations" name="EmergencyContactRelations">
+    <input type="text" id="EmergencyContactTEL" name="EmergencyContactTEL" style="margin-left: 20px;">
     </p>
 
     <p class="Label">備考</p>
     <p>
-    <textarea id="txt_Remarks" name="Remarks" autocomplete="off"></textarea>
+    <textarea id="Remarks" name="Remarks" autocomplete="off"></textarea>
     </p>
 
     <p class="Label">登録状況</p>
     <p>
-      <select id='txt_RegistrationStatus' name='RegistrationStatus'><?php echo $Register_PullDown; ?></select>          
+      <select id='RegistrationStatus' name='RegistrationStatus'><?php echo $Register_PullDown; ?></select>          
     </p>
 
  
@@ -272,7 +272,7 @@ textarea{
     $("#btn_Insert").show();
     $("#btn_Update").hide();
     
-    if (document.getElementById('txt_Birthday').value != "" )  {
+    if (document.getElementById('Birthday').value != "" )  {
       AgeCalculation();
     }
   });
@@ -282,70 +282,70 @@ textarea{
 
     //MemberID
     var Member_ID = $(this).children('td')[0].innerText;
-    $("#txt_Member_ID").val(Member_ID);
+    $("#Member_ID").val(Member_ID);
 
     //名前    取得した名前を姓と名で分けてテキストに格納する
     var Name = $(this).children('td')[1].innerText;
     var NameSplit = Name.split('　');
-    $("#txt_LastName").val(NameSplit[0]);
-    $("#txt_FirstName").val(NameSplit[1]);
+    $("#LastName").val(NameSplit[0]);
+    $("#FirstName").val(NameSplit[1]);
 
     //ﾌﾘｶﾞﾅ
     var Name_Yomi = $(this).children('td')[2].innerText;
     var Name_YomiSplit = Name_Yomi.split('　');
-    $("#txt_LastName_Yomi").val(Name_YomiSplit[0]);
-    $("#txt_FirstName_Yomi").val(Name_YomiSplit[1]);
+    $("#LastName_Yomi").val(Name_YomiSplit[0]);
+    $("#FirstName_Yomi").val(Name_YomiSplit[1]);
 
     //誕生日
     var Birthday = $(this).children('td')[3].innerText;
-    $("#txt_Birthday").val(Birthday);
+    $("#Birthday").val(Birthday);
 
     //TEL
     var TEL = $(this).children('td')[4].innerText;
-    $("#txt_TEL").val(TEL);
+    $("#TEL").val(TEL);
 
     //MailAddress
     var MailAddress = $(this).children('td')[5].innerText;
-    $("#txt_MailAddress").val(MailAddress);
+    $("#MailAddress").val(MailAddress);
 
     //学校
     var School_CD = $(this).children('td')[6].innerText;
-    $("#txt_School_CD").val(School_CD);
+    $("#School_CD").val(School_CD);
 
     //専攻
     var MajorSubject_CD = $(this).children('td')[8].innerText;
-    $("#txt_MajorSubject_CD").val(MajorSubject_CD);
+    $("#MajorSubject_CD").val(MajorSubject_CD);
 
     //入学年月
     var AdmissionYearMonth = $(this).children('td')[10].innerText;
-    $("#txt_AdmissionYearMonth").val(AdmissionYearMonth);
+    $("#AdmissionYearMonth").val(AdmissionYearMonth);
 
     //卒業年月
     var GraduationYearMonth = $(this).children('td')[11].innerText;
-    $("#txt_GraduationYearMonth").val(GraduationYearMonth);
+    $("#GraduationYearMonth").val(GraduationYearMonth);
 
     //緊急連絡先相手続柄
     var EmergencyContactRelations = $(this).children('td')[15].innerText;
-    $("#txt_EmergencyContactRelations").val(EmergencyContactRelations);
+    $("#EmergencyContactRelations").val(EmergencyContactRelations);
 
     //緊急連絡先番号
     var EmergencyContactTEL = $(this).children('td')[16].innerText;
-    $("#txt_EmergencyContactTEL").val(EmergencyContactTEL);
+    $("#EmergencyContactTEL").val(EmergencyContactTEL);
 
     //備考
     var Remarks = $(this).children('td')[17].innerText;
-    $("#txt_Remarks").val(Remarks);
+    $("#Remarks").val(Remarks);
 
     //登録状況
     var RegistrationStatus = $(this).children('td')[18].innerText;
-    $("#txt_RegistrationStatus").val(RegistrationStatus);
+    $("#RegistrationStatus").val(RegistrationStatus);
     
 
     $("#btn_Insert").hide();
     document.getElementById("btn_Insert").disabled = true;
     $("#btn_Update").show();
 
-    if (document.getElementById('txt_Birthday').value != "" )  {
+    if (document.getElementById('Birthday').value != "" )  {
       AgeCalculation();
     }
     
@@ -388,11 +388,11 @@ textarea{
   function ValueCheck() {
 
     var ErrorMsg = '';
-    if ($("#txt_Screen_Name").val() == "") {
+    if ($("#Screen_Name").val() == "") {
       ErrorMsg += '画面名を入力してください。\n';
     }
 
-    if ($("#txt_Screen_Path").val() == "") {
+    if ($("#Screen_Path").val() == "") {
       ErrorMsg += '画面パスを入力してください。\n';
     }
 
@@ -411,7 +411,7 @@ textarea{
   }  
 
   
-  $('#txt_Birthday').change(function(e){    
+  $('#Birthday').change(function(e){    
     
     AgeCalculation();    
 
@@ -419,7 +419,7 @@ textarea{
 
   //年齢計算処理
   function AgeCalculation() {
-    var Birthday =  document.getElementById("txt_Birthday").value;  
+    var Birthday =  document.getElementById("Birthday").value;  
     
     Birthday = Birthday.replace(/[/-]/g, "");
 

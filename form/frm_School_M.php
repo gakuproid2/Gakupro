@@ -125,14 +125,14 @@
   ?>
 
   <form action="frm_School_M.php" method="post">
-    <p>学校CD：<input type="text" id="txt_CD" name="CD" value='<?php echo $Max_CD; ?>' readonly> </p>
+    <p>学校CD：<input type="text" id="CD" name="CD" value='<?php echo $Max_CD; ?>' readonly> </p>
     <p>
       学校区分：<select id='School_Division' name='Division'><?php echo $PullDown; ?></select>　
       データ絞り込み機能：<input type="checkbox" id="chk_Search" name="Search" value="1" <?php echo $check; ?>>
     </p>
-    <p>学校名：<input type="text" id="txt_Name" name="Name" autocomplete="off"></p>
-    <p>代表電話番号：<input type="text" id="txt_TEL" name="TEL" autocomplete="off"></p>
-    <p>ホームページURL：<input type="text" id="txt_URL" name="URL" autocomplete="off"></p>
+    <p>学校名：<input type="text" id="Name" name="Name" autocomplete="off"></p>
+    <p>代表電話番号：<input type="text" id="TEL" name="TEL" autocomplete="off"></p>
+    <p>ホームページURL：<input type="text" id="URL" name="URL" autocomplete="off"></p>
     <p>利用フラグ：<input type="checkbox" id="chk_UsageFlag" name="UsageFlag" value="1" checked="checked"></p>
 
     <button class="btn_Insert" id="btn_Insert" name="Insert" value="1">登録</button>
@@ -166,7 +166,7 @@
   $('.Table').on('click', function() {
       //学校CD
       var School_CD = $(this).children('td')[0].innerText;
-      $("#txt_CD").val(School_CD);
+      $("#CD").val(School_CD);
 
       //学校区分
       var School_Division = $(this).children('td')[1].innerText;
@@ -174,15 +174,15 @@
 
       //学校名
       var School_Name = $(this).children('td')[2].innerText;
-      $("#txt_Name").val(School_Name);
+      $("#Name").val(School_Name);
 
       //代表電話番号
       var TEL = $(this).children('td')[3].innerText;
-      $("#txt_TEL").val(TEL);
+      $("#TEL").val(TEL);
 
       //ホームページURL
       var URL = $(this).children('td')[4].innerText;
-      $("#txt_URL").val(URL);
+      $("#URL").val(URL);
 
       //利用フラグ
       var UsageFlag = $(this).children('td')[5].innerText;
@@ -279,15 +279,15 @@
       ErrorMsg += '学校区分を選択してください。\n';
     }
 
-    if ($("#txt_Name").val() == "") {
+    if ($("#Name").val() == "") {
       ErrorMsg += '学校名を入力してください。\n';
     }
 
-    if ($("#txt_TEL").val() == "") {
+    if ($("#TEL").val() == "") {
       ErrorMsg += '代表電話番号を入力してください。\n';
     }
 
-    if ($("#txt_URL").val() == "") {
+    if ($("#URL").val() == "") {
       ErrorMsg += 'ホームページURLを入力してください。\n';
     }
 

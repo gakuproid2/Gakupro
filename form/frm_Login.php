@@ -58,8 +58,8 @@
   <?php echo $alert; ?>
 
   <form action="frm_Login.php" method="post">
-    <p>ログインID：<input type="text" id="txt_Login_ID" name="Login_ID" autocomplete="off"></p>
-    <p>パスワード：<input type="text" id="txt_Password" name="Password" autocomplete="off"></p>
+    <p>ログインID：<input type="text" id="Login_ID" name="Login_ID" autocomplete="off"></p>
+    <p>パスワード：<input type="text" id="Password" name="Password" autocomplete="off"></p>
 
     <button class="btn_Login" id="btn_Login" name="Login" value="1">ログイン</button>
   </form>
@@ -81,14 +81,14 @@
   function ValueCheck() {
 
     var ErrorMsg = '';
-    if ($("#txt_Login_ID").val() == "") {
+    if ($("#Login_ID").val() == "") {
 
       ErrorMsg = 'ログインIDを入力してください。';
       window.alert(ErrorMsg); // 
       return false;
     }
 
-    if ($("#txt_Password").val() == "") {
+    if ($("#Password").val() == "") {
 
       ErrorMsg = 'パスワードを入力してください。';
       window.alert(ErrorMsg); // 

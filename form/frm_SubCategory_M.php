@@ -116,8 +116,8 @@
 
   <form action="frm_SubCategory_M.php" method="post">
     <p>大分類：<select ID='MainCategory_CD' name='MainCategory_CD'><?php echo $PullDown; ?></select></p>
-    <p>中分類コード：<input type='text' id="txt_SubCategory_CD" name='SubCategory_CD' value='<?php echo $Max_CD; ?>' readonly></p>
-    <p>中分類名：<input type="text" id="txt_SubCategory_Name" name="SubCategory_Name" autocomplete="off"></p>
+    <p>中分類コード：<input type='text' id="SubCategory_CD" name='SubCategory_CD' value='<?php echo $Max_CD; ?>' readonly></p>
+    <p>中分類名：<input type="text" id="SubCategory_Name" name="SubCategory_Name" autocomplete="off"></p>
     <p>利用フラグ：<input type="checkbox" id="chk_UsageFlag" name="UsageFlag" value="1" checked="checked"></p>
 
     <button class="btn_Insert" id="btn_Insert" name="DataChange" value="1">登録</button>
@@ -154,10 +154,10 @@
     $("#MainCategory_CD").val(MainCategory_CD);
 
     var SubCategory_CD = $(this).children('td')[2].innerText;
-    $("#txt_SubCategory_CD").val(SubCategory_CD);
+    $("#SubCategory_CD").val(SubCategory_CD);
 
     var SubCategory_Name = $(this).children('td')[3].innerText;
-    $("#txt_SubCategory_Name").val(SubCategory_Name);
+    $("#SubCategory_Name").val(SubCategory_Name);
 
     var UsageFlag = $(this).children('td')[4].innerText;
 
@@ -237,7 +237,7 @@
       ErrorMsg += '大分類を選択してください。\n';
     }
 
-    if ($("#txt_SubCategory_Name").val() == "") {
+    if ($("#SubCategory_Name").val() == "") {
       ErrorMsg += '中分類名を入力してください。\n';
     }
 

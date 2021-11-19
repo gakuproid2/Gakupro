@@ -101,9 +101,9 @@
 <body>
 
   <form action="frm_Screen_M.php" method="post">
-    <p>画面ID：<input type="text" id="txt_Screen_ID" name="Screen_ID" value='<?php echo $Max_CD; ?>' readonly> </p>
-    <p>画面名：<input type="text" id="txt_Screen_Name" name="Screen_Name" autocomplete="off"></p>
-    <p>画面パス：<input type="text" id="txt_Screen_Path" name="Screen_Path" autocomplete="off"></p>
+    <p>画面ID：<input type="text" id="Screen_ID" name="Screen_ID" value='<?php echo $Max_CD; ?>' readonly> </p>
+    <p>画面名：<input type="text" id="Screen_Name" name="Screen_Name" autocomplete="off"></p>
+    <p>画面パス：<input type="text" id="Screen_Path" name="Screen_Path" autocomplete="off"></p>
     <p>権限選択：<select id='Authority' name='Authority'><?php echo $PullDown; ?></select></p>
     <p>利用フラグ：<input type="checkbox" id="chk_UsageFlag" name="UsageFlag" value="1" checked="checked"></p>
 
@@ -141,13 +141,13 @@
   //テーブルクリック時
   $('.Table').on('click', function() {
     var Screen_ID = $(this).children('td')[0].innerText;
-    $("#txt_Screen_ID").val(Screen_ID);
+    $("#Screen_ID").val(Screen_ID);
 
     var Screen_Name = $(this).children('td')[1].innerText;
-    $("#txt_Screen_Name").val(Screen_Name);
+    $("#Screen_Name").val(Screen_Name);
 
     var Screen_Path = $(this).children('td')[2].innerText;
-    $("#txt_Screen_Path").val(Screen_Path);
+    $("#Screen_Path").val(Screen_Path);
 
     var Authority = $(this).children('td')[3].innerText;
     $("#Authority").val(Authority);
@@ -218,11 +218,11 @@
   function ValueCheck() {
 
     var ErrorMsg = '';
-    if ($("#txt_Screen_Name").val() == "") {
+    if ($("#Screen_Name").val() == "") {
       ErrorMsg += '画面名を入力してください。\n';
     }
 
-    if ($("#txt_Screen_Path").val() == "") {
+    if ($("#Screen_Path").val() == "") {
       ErrorMsg += '画面パスを入力してください。\n';
     }
 

@@ -81,8 +81,8 @@
 <body>
 
   <form action="frm_MainCategory_M.php" method="post">
-    <p>大分類コード：<input type="text" id="txt_MainCategory_CD" name="MainCategory_CD" value='<?php echo $Max_CD; ?>' readonly> </p>
-    <p>大分類名：<input type="text" id="txt_MainCategory_Name" name="MainCategory_Name" autocomplete="off"></p>
+    <p>大分類コード：<input type="text" id="MainCategory_CD" name="MainCategory_CD" value='<?php echo $Max_CD; ?>' readonly> </p>
+    <p>大分類名：<input type="text" id="MainCategory_Name" name="MainCategory_Name" autocomplete="off"></p>
     <p>利用フラグ：<input type="checkbox" id="chk_UsageFlag" name="UsageFlag" value="1" checked="checked"></p>
 
     <button class="btn_Insert" id="btn_Insert" name="Insert" value="1">登録</button>
@@ -114,10 +114,10 @@
   //テーブルクリック時
   $('.Table').on('click', function() {
     var MainCategory_CD = $(this).children('td')[0].innerText;
-    $("#txt_MainCategory_CD").val(MainCategory_CD);
+    $("#MainCategory_CD").val(MainCategory_CD);
 
     var MainCategory_Name = $(this).children('td')[1].innerText;
-    $("#txt_MainCategory_Name").val(MainCategory_Name);
+    $("#MainCategory_Name").val(MainCategory_Name);
 
     var UsageFlag = $(this).children('td')[2].innerText;
 
@@ -184,7 +184,7 @@
   function ValueCheck() {
 
     var ErrorMsg = '';
-    if ($("#txt_MainCategory_Name").val() == "") {
+    if ($("#MainCategory_Name").val() == "") {
       ErrorMsg += '大分類名を入力してください。\n';
     }
 

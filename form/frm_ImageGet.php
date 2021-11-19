@@ -35,7 +35,7 @@ if (!empty($_POST["ErrorResult"])) {
 
   <form action="frm_ImageGetResult.php" method="post">
     <input type="hidden" name="Key_Code" value='<?php echo $Key_Code; ?>'>
-    <p>パスワード：<input type="text" id="txt_Password" name="Password" autocomplete="off"></p>
+    <p>パスワード：<input type="text" id="Password" name="Password" autocomplete="off"></p>
     <button class="btn_PictureGet" id="btn_PictureGet" name="PictureGet">写真を確認</button>
   </form>
 
@@ -47,7 +47,7 @@ if (!empty($_POST["ErrorResult"])) {
   //確認ボタンクリック時
   $('#btn_PictureGet').on('click', function() {
 
-    if ($("#txt_Password").val() == "") {
+    if ($("#Password").val() == "") {
       window.alert("パスワードを入力してください。"); // 
       return false;
     } else {

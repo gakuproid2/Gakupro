@@ -43,7 +43,7 @@
     $NameYomi = $_POST["LastNameYomi"] . " " . $_POST["NameYomi"];
     
     $info = array(
-      'ID' => $_POST["ID"],
+      'ID' => $_POST["Staff_ID"],
       'Name' => $Name,
       'NameYomi' => $NameYomi,
       'NickName' => $_POST["NickName"],
@@ -110,20 +110,20 @@
   ?>
 
   <form action="frm_Staff_M.php" method="post">
-    <p>スタッフID：<input type="text" id="txt_ID" name="ID" value='<?php echo $Max_CD; ?>' readonly></p>
+    <p>スタッフID：<input type="text" id="Staff_ID" name="Staff_ID" value='<?php echo $Max_CD; ?>' readonly></p>
     <p>
       氏名　
-      姓：<input type="text" id="txt_LastName" name="LastName" autocomplete="off">　
-      名：<input type="text" id="txt_Name" name="Name" autocomplete="off">
+      姓：<input type="text" id="LastName" name="LastName" autocomplete="off">　
+      名：<input type="text" id="Name" name="Name" autocomplete="off">
     </p>
     <p>
       氏名(ﾌﾘｶﾞﾅ)
-      姓：<input type="text" id="txt_LastName_Yomi" name="LastNameYomi" autocomplete="off">　
-      名：<input type="text" id="txt_Name_Yomi" name="NameYomi" autocomplete="off">
+      姓：<input type="text" id="LastName_Yomi" name="LastNameYomi" autocomplete="off">　
+      名：<input type="text" id="Name_Yomi" name="NameYomi" autocomplete="off">
     </p>
-    <p>ニックネーム：<input type="text" id="txt_NickName" name="NickName" autocomplete="off"></p>
-    <p>ログインID：<input type="text" id="txt_LoginID" name="LoginID" autocomplete="off"></p>
-    <p>パスワード：<input type="text" id="txt_Password" name="Password" autocomplete="off"></p>
+    <p>ニックネーム：<input type="text" id="NickName" name="NickName" autocomplete="off"></p>
+    <p>ログインID：<input type="text" id="LoginID" name="LoginID" autocomplete="off"></p>
+    <p>パスワード：<input type="text" id="Password" name="Password" autocomplete="off"></p>
     <p>権限：<select id="Authority" name="Authority"><?php echo $PullDown; ?></select></p>
     <p>利用フラグ：<input type="checkbox" id="chk_UsageFlag" name="UsageFlag" value="1" checked="checked"></p>
 
@@ -160,31 +160,31 @@
   $('.Table').on('click', function() {
       //スタッフID
       var Staff_ID = $(this).children('td')[0].innerText;
-      $("#txt_ID").val(Staff_ID);
+      $("#Staff_ID").val(Staff_ID);
 
       //名前    取得した名前を姓と名で分けてテキストに格納する
       var StaffName = $(this).children('td')[1].innerText;
       var StaffNameSplit = StaffName.split('　');
-      $("#txt_LastName").val(StaffNameSplit[0]);
-      $("#txt_Name").val(StaffNameSplit[1]);
+      $("#LastName").val(StaffNameSplit[0]);
+      $("#Name").val(StaffNameSplit[1]);
 
       //ﾌﾘｶﾞﾅ
       var StaffName_Yomi = $(this).children('td')[2].innerText;
       var StaffName_YomiSplit = StaffName_Yomi.split('　');
-      $("#txt_LastName_Yomi").val(StaffName_YomiSplit[0]);
-      $("#txt_Name_Yomi").val(StaffName_YomiSplit[1]);
+      $("#LastName_Yomi").val(StaffName_YomiSplit[0]);
+      $("#Name_Yomi").val(StaffName_YomiSplit[1]);
 
       //ニックネーム
       var TEL = $(this).children('td')[3].innerText;
-      $("#txt_NickName").val(TEL);
+      $("#NickName").val(TEL);
 
       //ログインID
       var URL = $(this).children('td')[4].innerText;
-      $("#txt_LoginID").val(URL);
+      $("#LoginID").val(URL);
 
       //パスワード
       var URL = $(this).children('td')[5].innerText;
-      $("#txt_Password").val(URL);
+      $("#Password").val(URL);
 
       //権限
       var URL = $(this).children('td')[6].innerText;
@@ -247,31 +247,31 @@
   function ValueCheck() {
 
     var ErrorMsg = '';
-    if ($("#txt_LastName").val() == "") {
+    if ($("#LastName").val() == "") {
       ErrorMsg += '姓を入力してください。\n';
     }
 
-    if ($("#txt_Name").val() == "") {
+    if ($("#Name").val() == "") {
       ErrorMsg += '名前を入力してください。\n';
     }
 
-    if ($("#txt_LastName_Yomi").val() == "") {
+    if ($("#LastName_Yomi").val() == "") {
       ErrorMsg += '姓(ﾌﾘｶﾞﾅ)を入力してください。\n';
     }
 
-    if ($("#txt_Name_Yomi").val() == "") {
+    if ($("#Name_Yomi").val() == "") {
       ErrorMsg += '名前(ﾌﾘｶﾞﾅ)を入力してください。\n';
     }
 
-    if ($("#txt_NickName").val() == "") {
+    if ($("#NickName").val() == "") {
       ErrorMsg += 'ニックネームを入力してください。\n';
     }
 
-    if ($("#txt_LoginID").val() == "") {
+    if ($("#LoginID").val() == "") {
       ErrorMsg += 'ログインIDを入力してください。\n';
     }
 
-    if ($("#txt_Password").val() == "") {
+    if ($("#Password").val() == "") {
       ErrorMsg += 'パスワードを入力してください。\n';
     }
 

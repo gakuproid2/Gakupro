@@ -36,25 +36,19 @@ text-align: right;
 
 if (isset ($_POST["School_CD"])){$School_CD=$_POST["School_CD"];}else{$School_CD=0;};
 if (isset ($_POST["MajorSubject_Name"])){$MajorSubject_Name=$_POST["MajorSubject_Name"];}else{$MajorSubject_Name='';};
+if (isset ($_POST["MajorSubject_CD"])){$MajorSubject_CD=$_POST["MajorSubject_CD"];}else{$MajorSubject_CD=0;};
 if (isset ($_POST["StudyPeriod"])){$StudyPeriod=$_POST["StudyPeriod"];}else{$StudyPeriod='';};
 if (isset ($_POST["Remarks"])){$Remarks=$_POST["Remarks"];}else{$Remarks='';};
+if (isset ($_POST["UsageFlag"])){$UsageFlag=$_POST["UsageFlag"];}else{$UsageFlag=0;};
 
-if (isset ($_POST["DataChange"])){  
+if (isset ($_POST["DataChange"])){    
 
-  //利用フラグを宣言し、チェック時は1を格納するIf文
-  $UsageFlag = 0;
-  if (isset ($_POST["UsageFlag"])){
-    $UsageFlag = 1;
-  };
-
-  //POSTされた値を、変数と配列に格納
-  $School_CD = $_POST["School_CD"];
   $info = array(
-  'School_CD' => $_POST["School_CD"]
-  ,'MajorSubject_CD' => $_POST["MajorSubject_CD"]
-  ,'MajorSubject_Name' => $_POST["MajorSubject_Name"]
-  ,'StudyPeriod' => $_POST["StudyPeriod"]
-  ,'Remarks' => $_POST["Remarks"]
+  'School_CD' => $School_CD
+  ,'MajorSubject_CD' => $MajorSubject_CD
+  ,'MajorSubject_Name' => $MajorSubject_Name
+  ,'StudyPeriod' => $StudyPeriod
+  ,'Remarks' => $Remarks
   ,'UsageFlag' => $UsageFlag
   ,'Changer' => $_SESSION["Staff_ID"]
   ,'UpdateDate' => date("Y-m-d H:i:s")
@@ -75,7 +69,9 @@ if (isset ($_POST["DataChange"])){
   if ($Result ==true) {
     Header('Location: ' . $_SERVER['PHP_SELF']);
     exit(); //optional
-  } 
+  } else{
+    
+  }
 }
 
 
@@ -133,10 +129,10 @@ if ($School_CD > 0) {
 
 <form action="frm_MajorSubject_M.php" method="post">
   <p>学校CD：<select id='School_CD' name='School_CD'><?php echo $PullDown; ?></select></p>
-  <p>専攻CD：<input type='text' id='txt_MajorSubject_CD' name='MajorSubject_CD' value='<?php echo $Max_CD; ?>' readonly> </p>
-  <p>専攻名：<input type="text" id='txt_MajorSubject_Name' name="MajorSubject_Name" value='<?php echo $MajorSubject_Name; ?>' autocomplete="off"></p>
-  <p>在学期間：<input type="text" id='txt_StudyPeriod' class='StudyPeriod' name="StudyPeriod" value='<?php echo $StudyPeriod; ?>' placeholder="ヶ月" autocomplete="off"></p>
-  <p>備考：<input type="text" id='txt_Remarks' name="Remarks" value='<?php echo $Remarks; ?>' autocomplete="off"></p>
+  <p>専攻CD：<input type='text' id='MajorSubject_CD' name='MajorSubject_CD' value='<?php echo $Max_CD; ?>' readonly> </p>
+  <p>専攻名：<input type="text" id='MajorSubject_Name' name="MajorSubject_Name" value='<?php echo $MajorSubject_Name; ?>' autocomplete="off"></p>
+  <p>在学期間：<input type="text" id='StudyPeriod' class='StudyPeriod' name="StudyPeriod" value='<?php echo $StudyPeriod; ?>' placeholder="ヶ月" autocomplete="off"></p>
+  <p>備考：<input type="text" id='Remarks' name="Remarks" value='<?php echo $Remarks; ?>' autocomplete="off"></p>
   <p>利用フラグ：<input type="checkbox" id="chk_UsageFlag" name="UsageFlag" value="1" checked="checked"></p>
 
   <button class="btn_Insert" id="btn_Insert" name="DataChange" value="1">登録</button>
@@ -172,16 +168,16 @@ $('.Table').on('click', function() {
   $("#School_CD").val(School_CD);
 
   var Major_CD = $(this).children('td')[2].innerText;
-  $("#txt_MajorSubject_CD").val(Major_CD);
+  $("#MajorSubject_CD").val(Major_CD);
 
   var Major_Name = $(this).children('td')[3].innerText;
-  $("#txt_MajorSubject_Name").val(Major_Name);
+  $("#MajorSubject_Name").val(Major_Name);
 
   var StudyPeriod = $(this).children('td')[4].innerText;
-  $("#txt_StudyPeriod").val(StudyPeriod);
+  $("#StudyPeriod").val(StudyPeriod);
 
   var Remarks = $(this).children('td')[5].innerText;
-  $("#txt_Remarks").val(Remarks);
+  $("#Remarks").val(Remarks);
 
   var UsageFlag = $(this).children('td')[6].innerText;
 
@@ -201,9 +197,9 @@ document.getElementById("School_CD").onchange = function() {
   //ポストするキーと値を格納
   var DataArray = 
   {School_CD:$("#School_CD").val()
-  ,MajorSubject_Name:$("#txt_MajorSubject_Name").val()
-  ,StudyPeriod:$("#txt_StudyPeriod").val()
-  ,Remarks:$("#txt_Remarks").val()          
+  ,MajorSubject_Name:$("#MajorSubject_Name").val()
+  ,StudyPeriod:$("#StudyPeriod").val()
+  ,Remarks:$("#Remarks").val()          
   };  
 
   //common.jsに実装
@@ -260,11 +256,11 @@ function ValueCheck() {
     ErrorMsg += '学校CDを選択してください。\n';
   }
 
-  if ($("#txt_MajorSubject_Name").val() == "") {
+  if ($("#MajorSubject_Name").val() == "") {
     ErrorMsg += '専攻名を入力してください。\n';
   }
 
-  if ($("#txt_StudyPeriod").val() == "") {
+  if ($("#StudyPeriod").val() == "") {
     ErrorMsg += '在学期間を入力してください。\n';
   }
 

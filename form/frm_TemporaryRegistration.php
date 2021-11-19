@@ -120,36 +120,36 @@
   <form action="frm_TemporaryRegistration.php" method="POST">
     <p class="Label">氏名</p>
     <p>
-      姓:<input type="text" id="txt_LastName" name="LastName" autocomplete="off" value='<?php echo $LastName; ?>'>
-      名:<input type="text" id="txt_FirstName" name="FirstName" autocomplete="off" value='<?php echo $FirstName; ?>'>
+      姓:<input type="text" id="LastName" name="LastName" autocomplete="off" value='<?php echo $LastName; ?>'>
+      名:<input type="text" id="FirstName" name="FirstName" autocomplete="off" value='<?php echo $FirstName; ?>'>
     </p>
 
     <p class="Label">氏名(フリガナ)</p>
     <p>      
-      姓:<input type="text" id="txt_LastName_Yomi" name="LastNameYomi" autocomplete="off">
-      名:<input type="text" id="txt_FirstName_Yomi" name="FirstNameYomi" autocomplete="off">
+      姓:<input type="text" id="LastName_Yomi" name="LastNameYomi" autocomplete="off">
+      名:<input type="text" id="FirstName_Yomi" name="FirstNameYomi" autocomplete="off">
     </p>         
     
     <p class="Label">生年月日</p>
-    <p><input type="date" id="txt_Birthday" name="Birthday" value="2005-04-01"><input type="text" id="Age" class="Age" readonly>歳</p>
+    <p><input type="date" id="Birthday" name="Birthday" value="2005-04-01"><input type="text" id="Age" class="Age" readonly>歳</p>
 
     <p class="Label">学校/専攻</p>
     <p>
-      <select id='txt_School_CD' name='School_CD'><?php echo $School_PullDown; ?></select>    
-      <select id='txt_MajorSubject_CD' name='MajorSubject_CD'><?php echo $MajorSubject_PullDown; ?></select>
+      <select id='School_CD' name='School_CD'><?php echo $School_PullDown; ?></select>    
+      <select id='MajorSubject_CD' name='MajorSubject_CD'><?php echo $MajorSubject_PullDown; ?></select>
     </p>
 
     <p class="Label">在学期間</p>
     <p>
-    <input type="month" class="YearMonth" id="txt_AdmissionYearMonth" name="AdmissionYearMonth" value="2020-04">～
-    <input type="month" class="YearMonth" id="txt_GraduationYearMonth" name="GraduationYearMonth" value="2023-03">
+    <input type="month" class="YearMonth" id="AdmissionYearMonth" name="AdmissionYearMonth" value="2020-04">～
+    <input type="month" class="YearMonth" id="GraduationYearMonth" name="GraduationYearMonth" value="2023-03">
     </p>
 
     <p class="Label">TEL</p>
-    <p><input type="tel" id="txt_TEL" name="TEL" autocomplete="off"></p>  
+    <p><input type="tel" id="TEL" name="TEL" autocomplete="off"></p>  
 
     <p class="Label">メールアドレス</p>
-    <p><input type="email" id="txt_MailAddress" name="MailAddress" autocomplete="off" value='<?php echo $MailAddress; ?>'></p>  
+    <p><input type="email" id="MailAddress" name="MailAddress" autocomplete="off" value='<?php echo $MailAddress; ?>'></p>  
 
     <button class="btn_Insert" id="btn_Insert" name="Insert" value="1">登録</button>
     <button class="btn_Clear" id="btn_Clear" name="Clear" value="2">クリア</button>    
@@ -184,7 +184,7 @@
   function ValueCheck() {
 
     var ErrorMsg = '';
-    if ($("#txt_MailAddress").val() == "") {
+    if ($("#MailAddress").val() == "") {
       ErrorMsg += 'メールアドレスを入力してください。\n';
     }
 
@@ -198,9 +198,9 @@
   }
 
   //年齢計算処理
-  $('#txt_Birthday').change(function(e){    
+  $('#Birthday').change(function(e){    
     
-    var Birthday =  document.getElementById("txt_Birthday").value;  
+    var Birthday =  document.getElementById("Birthday").value;  
     
     Birthday = Birthday.replace(/[/-]/g, "");
 
