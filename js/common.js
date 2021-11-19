@@ -4,7 +4,7 @@ function screenChange(){
     location.href = document.pullForm.pullMenu.options[pullSellect].value ;
 }
 
-function post(path, params, method = 'post') {
+function originalpost(path, params, method = 'post') {
 
     const form = document.createElement('form');
     form.method = method;
