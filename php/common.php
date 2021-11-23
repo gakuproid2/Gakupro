@@ -1,17 +1,18 @@
 <?php
 
 //画面遷移ボタンの表示判定
-class common {
+class common
+{
 
   //ヘッダ部分の設定、画面遷移の為のプルダウン作成
   function HeaderCreation($ScreenInfo)
-  {       
+  {
     //ログイン情報から権限取得
     $Authority = 0;
     if (isset($_SESSION['Authority'])) {
       $Authority = $_SESSION['Authority'];
     }
-  
+
     //ログイン情報からニックネーム取得
     $NickName = 'ログインをやり直してください';
     if (isset($_SESSION['NickName'])) {
@@ -32,12 +33,12 @@ class common {
       $Screen_Name = $ScreenInfo;
     }
 
-   
 
-    
-    $SlectForm = ''; 
+
+
+    $SlectForm = '';
     foreach ($Data_Table as $val) {
-      $SlectForm .= " <option value=" . $val['Screen_Path'] . ">" . $val['Screen_Name'] . "</option>";       
+      $SlectForm .= " <option value=" . $val['Screen_Path'] . ">" . $val['Screen_Name'] . "</option>";
     }
 
     $HeaderInfo = "      
@@ -46,16 +47,16 @@ class common {
         <meta name='viewport' content='width=device-width, initial-scale=1.0'>      
         <title>" . $Screen_Name . "</title>
         "
-          . $CssInfo .
-        "
+      . $CssInfo .
+      "
         <div class ='Header'>
           <div class='Header_PullMenu'>
             <form name='pullForm'>
             <select name='pullMenu' id='' onChange='screenChange()'>
             <option value=''></option>
             "
-            . $SlectForm .
-            "      
+      . $SlectForm .
+      "      
             </select>          
             </form>
             </div>      
@@ -63,32 +64,31 @@ class common {
           <div class ='Header_ScreenName'><p>" . $Screen_Name . "</p></div>
         </div>
       </head>      
-    "
-    ;
+    ";
 
     return $HeaderInfo;
-  } 
-     
+  }
+
   //メインメニュー画面のボタン作成処理
   function MainMenu_ButtonCreation()
-  {   
-    
+  {
+
     $Authority = 0;
     if (isset($_SESSION['Authority'])) {
       $Authority = $_SESSION['Authority'];
     }
-  
+
     $Data_Table = $this->ScreenSelection($Authority);
 
-    $ButtonInfo = ''; 
+    $ButtonInfo = '';
 
     foreach ($Data_Table as $val) {
       $ButtonInfo .= "
-       <a class = 'btn_MainMenu' href='" . $val['Screen_Path'] . "'>". $val['Screen_Name'] . "</a>";       
+       <a class = 'btn_MainMenu' href='" . $val['Screen_Path'] . "'>" . $val['Screen_Name'] . "</a>";
     }
-       
+
     return $ButtonInfo;
-  } 
+  }
 
 
   function ScreenSelection($Authority)
@@ -142,7 +142,6 @@ class common {
     }
 
     return $Screen_Name;
-
   }
 
   //JavaScript関連の管理  ＠追加する場合はInfo内に追記してください
@@ -160,27 +159,24 @@ class common {
   function Read_CssConnection()
   {
     //<link rel="stylesheet" href="../css/bootstrap.css">
-    $Info = '    
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/Header.css">    
+    $Info = '            
     <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/Header.css">    
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/awesome.css">
     ';
     return $Info;
   }
 
-  function NullCheck($TargetData,$SetValue)
+  function NullCheck($TargetData, $SetValue)
   {
-    $ReturnData='';
-    if (isset ($TargetData)){
+    $ReturnData = '';
+    if (isset($TargetData)) {
       $ReturnData = $TargetData;
-    }else{
+    } else {
       $ReturnData = $SetValue;
     }
-   
+
     return $ReturnData;
   }
-  
-
 }
-
-?>

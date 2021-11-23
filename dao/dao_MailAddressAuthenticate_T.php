@@ -6,16 +6,12 @@ class dao_MailAddressAuthenticate_T
     function DataInsert($Info)
     {
 
-        //KetCodeは操作日のMaxのkeyCodeをセットする
-        //例：操作日2222/12/31の場合
-        //2222/12/31のデータのKeyCodeを取得し、MaxのkeyCode + 1したを0埋め3桁にする
-        //22221231001、22221231002、22221231003など            
-        $MaxKeyCode = $this->GetMaxKeyCode_OnTheDay();
-        $Key_Code = date("Ymd") . str_pad($MaxKeyCode, 3, 0, STR_PAD_LEFT);
+        $Key_Code = $Info['Key_Code'];
+
 
         $Password = $Info['Password'];
         $MailAddress = $Info['MailAddress'];
-        $FullName = $Info['LastName'] . '　' . $Info['Name'];
+        $FullName = $Info['FullName'];
 
 
         $CreateDateTime = date("Y-m-d H:i:s");
@@ -46,11 +42,7 @@ class dao_MailAddressAuthenticate_T
         //クラスの中の関数の呼び出し
         $Judge = $obj->pluralTransaction($SQL);
 
-        if ($Judge) {
-            return $Key_Code;
-        } else {
-            return false;
-        }
+        return $Judge;
     }
 
     function GetMaxKeyCode_OnTheDay()
@@ -84,7 +76,13 @@ class dao_MailAddressAuthenticate_T
         foreach ($items as $item_val) {
             $MaxCD = $item_val['MaxCD'];
         }
-        return $MaxCD;
+
+        //KetCodeは操作日のMaxのkeyCodeをセットする
+        //例：操作日2222/12/31の場合
+        //2222/12/31のデータのKeyCodeを取得し、MaxのkeyCode + 1したを0埋め3桁にする
+        //22221231001、22221231002、22221231003など  
+        $KeyCode = date("Ymd") . str_pad($MaxCD, 3, 0, STR_PAD_LEFT);
+        return $KeyCode;
     }
 
     function GetMailAddressAuthenticateInfo($Key_Code)

@@ -40,7 +40,7 @@ $JS_Info = $common->Read_JSconnection();
 
   <!-- Button trigger modal -->
   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-id="7777">
-    モーダルテスト
+    テスト
   </button>
 
   <!-- Modal -->
@@ -75,6 +75,9 @@ $JS_Info = $common->Read_JSconnection();
 
 
 
+
+
+
     <?php echo $JS_Info ?>
 </body>
 
@@ -86,6 +89,7 @@ $JS_Info = $common->Read_JSconnection();
 
     // イベント発生元
     let evCon = $(e.relatedTarget);
+    var id = evCon.data('id');
     $('#place_id').val(evCon.data('id'));
 
   });

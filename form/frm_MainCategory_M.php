@@ -1,6 +1,7 @@
 !DOCTYPE html>
 <html lang="ja">
 
+
 <?php
 session_start(); //セッションスタート
 
@@ -19,9 +20,16 @@ $HeaderInfo = $common->HeaderCreation(4);
 $JS_Info = $common->Read_JSconnection();
 ?>
 
+<style>
+  .a {
+    fill: #42AFE3;
+  }
+</style>
+
 <?php echo $HeaderInfo; ?>
 
 <?php
+
 
 
 
@@ -61,6 +69,8 @@ $Max_CD = $dao_MainCategory_M->Get_MaxCD();
 
 $Data_Table = $dao_MainCategory_M->Get_MainCategory_M();
 
+
+
 $Table = "
 <table border='1'>
 <tr>
@@ -74,10 +84,10 @@ foreach ($Data_Table as $val) {
   <td>" . $val['MainCategory_CD'] . "</td>
   <td>" . $val['MainCategory_Name'] . " </td>
   <td>
-    <button type='button' class='' data-bs-toggle='modal' data-bs-target='#exampleModal' 
-    data-MainCategory_CD='" . $val['MainCategory_CD'] . "'
-    data-MainCategory_Name='" . $val['MainCategory_Name'] . "'
-    data-UsageFlag='" . $val['UsageFlag'] . "'>モーダルテスト</button>
+    <button class='' data-bs-toggle='modal' data-bs-target='#exampleModal' 
+    data-maincd='" . $val['MainCategory_CD'] . "'
+    data-mainname='" . $val['MainCategory_Name'] . "'
+    data-UsageFlag='" . $val['UsageFlag'] . "'><i class='fas fa-angry'></i></button>
   </td>";
 }
 $Table .= "</table>";
@@ -86,19 +96,14 @@ $Table .= "</table>";
 
 <body>
 
-  <form action="frm_MainCategory_M.php" method="post">
-    <p>大分類コード：<input type="text" id="MainCategory_CD" name="MainCategory_CD" value='<?php echo $Max_CD; ?>' readonly> </p>
-    <p>大分類名：<input type="text" id="MainCategory_Name" name="MainCategory_Name" autocomplete="off"></p>
-    <p>利用フラグ：<input type="checkbox" id="chk_UsageFlag" name="UsageFlag" value="1" checked="checked"></p>
 
-    <button class="btn_Insert" id="btn_Insert" name="Insert" value="1">登録</button>
-    <button class="btn_Update" id="btn_Update" name="Update" value="2">更新</button>
-    <button class="btn_Delete" id="btn_Delete" name="Delete" value="3">削除</button>
-    <button class="btn_Clear" id="btn_Clear" name="Clear" value="4">クリア</button>
-  </form>
+  <i class="fas fa-plus"></i>
+
+
 
   <?php echo $Table; ?>
 
+  <i class="fas fa-address-book"></i>
 
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -120,10 +125,9 @@ $Table .= "</table>";
             <input type="text" name="MainCategory_Name" id="MainCategory_Name" value="" class="form-control col-md-3">
           </div>
 
-
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+            <button type="button" class="btn btn-primary">更新</button>
           </div>
         </div>
       </div>
@@ -146,35 +150,11 @@ $Table .= "</table>";
 
     // イベント発生元
     let evCon = $(e.relatedTarget);
-    var MainCategory_CD = evCon.data('MainCategory_CD');
-    var MainCategory_Name = evCon.data('MainCategory_Name');
-    $('#MainCategory_CD').val(MainCategory_CD);
-    $('#MainCategory_Name').val(MainCategory_Name);
+
+    $('#MainCategory_CD').val(evCon.data('maincd'));
+    $('#MainCategory_Name').val(evCon.data('mainname'));
 
   });
-
-  //テーブルクリック時
-  // $('.Table').on('click', function() {
-  //   var MainCategory_CD = $(this).children('td')[0].innerText;
-  //   $("#MainCategory_CD").val(MainCategory_CD);
-
-  //   var MainCategory_Name = $(this).children('td')[1].innerText;
-  //   $("#MainCategory_Name").val(MainCategory_Name);
-
-  //   var UsageFlag = $(this).children('td')[2].innerText;
-
-  //   if (UsageFlag == '〇') {
-  //     $("#chk_UsageFlag").prop('checked', true);
-  //   } else {
-  //     $("#chk_UsageFlag").prop('checked', false);
-  //   }
-
-  //   $("#btn_Insert").hide();
-  //   document.getElementById("btn_Insert").disabled = true;
-  //   $("#btn_Update").show();
-  //   $("#btn_Delete").show();
-
-  // });
 
 
   //登録ボタンクリック時
