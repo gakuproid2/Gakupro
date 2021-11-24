@@ -163,6 +163,7 @@ class common
     <link rel="stylesheet" href="../css/Header.css">    
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/all.css">
+    <link rel="stylesheet" href="../css/test.css">
     
     ';
     return $Info;

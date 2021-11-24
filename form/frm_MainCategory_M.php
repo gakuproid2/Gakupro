@@ -66,27 +66,29 @@ $Data_Table = $dao_MainCategory_M->Get_MainCategory_M();
 
 
 $Table = "
-<table border='1'>
+<table class='DataInfoTable'>
 <tr>
-  <th>大分類コード</th><th>大分類名</th><th></th>
+  <th>大分類コード</th>
+  <th>大分類名</th>
+  <th></th>
+  <th></th>
 </tr>
 ";
 foreach ($Data_Table as $val) {
 
   $Table .=
   "
-  <tr class='InfoTable'>
+  <tr>
     <td>" . $val['MainCategory_CD'] . "</td>
     <td>" . $val['MainCategory_Name'] . " </td>
     <td>
-      <button class='' data-bs-toggle='modal' data-bs-target='#exampleModal' 
+      <button class='' data-bs-toggle='modal' data-bs-target='#InfoModal' 
       data-maincd='" . $val['MainCategory_CD'] . "'
       data-mainname='" . $val['MainCategory_Name'] . "'
       data-UsageFlag='" . $val['UsageFlag'] . "'><i class='far fa-edit'></i></button>   
 
     </td>
-    <td>
-    
+    <td>    
     <button class='' data-bs-toggle='modal' data-bs-target='#deleteModal'
       data-maincd='" . $val['MainCategory_CD'] . "'
       data-mainname='" . $val['MainCategory_Name'] . "'
@@ -103,13 +105,15 @@ foreach ($Data_Table as $val) {
   <?php echo $Table; ?>
 
   <!-- データ詳細Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">  
+  <div class="modal fade" id="InfoModal" tabindex="-1" aria-labelledby="InfoModalLabel" aria-hidden="true">  
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
+
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="InfoModalLabel">データ更新確認</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+
         <div class="modal-body">
 
           <div class="form-group row">
@@ -126,12 +130,48 @@ foreach ($Data_Table as $val) {
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
             <button type="button" class="btn btn-primary">更新</button>
           </div>
+
         </div>
+
       </div>
     </div>
+  </div>
 
 
-   
+
+
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="InfoModalLabel" aria-hidden="true">  
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="InfoModalLabel">削除確認</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+
+          <p>大分類CD = <span id="del_MainCategory_CD"></span> | <span id="del_MainCategory_Name"></span></p>   
+          <p><span class="del_title">非表示</span>にしますか?</p>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+            <button type="button" class="btn btn-primary">削除</button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+  
 
     <?php echo $JS_Info ?>
 </body>
@@ -144,7 +184,7 @@ foreach ($Data_Table as $val) {
 
 
 
-  $('#exampleModal').on('show.bs.modal', function(e) {
+  $('#InfoModal').on('show.bs.modal', function(e) {
     // イベント発生元
     let evCon = $(e.relatedTarget);
 
@@ -157,16 +197,11 @@ foreach ($Data_Table as $val) {
     // イベント発生元
     let evCon = $(e.relatedTarget);
 
-    var MainCategory_CD = evCon.data('maincd');
-   
+    $('#del_MainCategory_CD').html(evCon.data('maincd'));
+    $('#del_MainCategory_Name').html(evCon.data('mainname'));
 
   });
-
   
-  //クリアボタンクリック時
-  $('#btn_Clear').on('click', function() {
-    window.location.href = 'frm_MainCategory_M.php'
-  });
 
   //登録、更新時の値チェック
   function ValueCheck() {
