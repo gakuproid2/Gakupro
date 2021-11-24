@@ -45,11 +45,9 @@ class common
       <head> 
         <meta charset='UTF-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1.0'>      
-        <title>" . $Screen_Name . "</title>
-        "
-      . $CssInfo .
-      "
-        <div class ='Header'>
+        <title>" . $Screen_Name . "</title>"
+          . $CssInfo .
+        "<div class ='Header'>
           <div class='Header_PullMenu'>
             <form name='pullForm'>
             <select name='pullMenu' id='' onChange='screenChange()'>
@@ -155,15 +153,17 @@ class common
     return $Info;
   }
 
-  //Css関連の管理  ＠追加する場合はInfo内に追記してください
+  //css関連の管理  ＠追加する場合はInfo内に追記してください
   function Read_CssConnection()
-  {
-    //<link rel="stylesheet" href="../css/bootstrap.css">
+  { 
+    //Webフォント
+    //<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />   
     $Info = '            
     <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" href="../css/Header.css">    
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/awesome.css">
+    <link rel="stylesheet" href="../css/all.css">
+    
     ';
     return $Info;
   }

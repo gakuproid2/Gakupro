@@ -20,12 +20,6 @@ $HeaderInfo = $common->HeaderCreation(4);
 $JS_Info = $common->Read_JSconnection();
 ?>
 
-<style>
-  .a {
-    fill: #42AFE3;
-  }
-</style>
-
 <?php echo $HeaderInfo; ?>
 
 <?php
@@ -74,20 +68,26 @@ $Data_Table = $dao_MainCategory_M->Get_MainCategory_M();
 $Table = "
 <table border='1'>
 <tr>
-  <th>大分類コード</th><th>大分類名</th><th>ボタン</th>
+  <th>大分類コード</th><th>大分類名</th><th></th>
 </tr>
 ";
 foreach ($Data_Table as $val) {
 
   $Table .=
-    "<tr class='Table'>
+    "<tr class='InfoTable'>
   <td>" . $val['MainCategory_CD'] . "</td>
   <td>" . $val['MainCategory_Name'] . " </td>
   <td>
     <button class='' data-bs-toggle='modal' data-bs-target='#exampleModal' 
     data-maincd='" . $val['MainCategory_CD'] . "'
     data-mainname='" . $val['MainCategory_Name'] . "'
-    data-UsageFlag='" . $val['UsageFlag'] . "'><i class='fas fa-angry'></i></button>
+    data-UsageFlag='" . $val['UsageFlag'] . "'><i class='far fa-edit'></i></button>
+
+    <button class='' data-bs-toggle='modal' data-bs-target='#exampleModal' 
+    data-maincd='" . $val['MainCategory_CD'] . "'
+    data-mainname='" . $val['MainCategory_Name'] . "'
+    data-UsageFlag='" . $val['UsageFlag'] . "'><i class='far fa-times-circle'></i></button>
+
   </td>";
 }
 $Table .= "</table>";
@@ -96,14 +96,7 @@ $Table .= "</table>";
 
 <body>
 
-
-  <i class="fas fa-plus"></i>
-
-
-
   <?php echo $Table; ?>
-
-  <i class="fas fa-address-book"></i>
 
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

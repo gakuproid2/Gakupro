@@ -34,9 +34,11 @@ if (count($_POST) > 1) {
   //メールアドレス認証用テーブルにデータ登録処理
   //失敗時はfalse、成功時はture
   $DataInsertResult = $dao_MailAddressAuthenticate_T->DataInsert($PostInfo);
-  //false時m〇〇
+  
+  //false時は〇〇〇
   if ($DataInsertResult == false) {
   }
+
   //登録された情報をメールアドレス認証用テーブルから再取得する
   $GetMailAddressAuthenticateInfo = $dao_MailAddressAuthenticate_T->GetMailAddressAuthenticateInfo($Key_Code);
 

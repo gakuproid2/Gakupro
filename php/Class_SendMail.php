@@ -1,6 +1,5 @@
 <?php
 
-//画面遷移ボタンの表示判定
 class Class_SendMail
 {
 
@@ -18,9 +17,45 @@ class Class_SendMail
 
   function MailSending($MailInfo)
   {
+
   }
 
-  //メール送信実行
+  //メンバーへのメール送信
+  function MailSendingToMember($MailInfo)
+  {
+
+    $Key_Code = $MailInfo['Key_Code'];
+    $Password = $MailInfo['Password'];
+    $MailAddress = $MailInfo['MailAddress'];
+    $Name = $MailInfo['Name'];
+
+    $URL = "http://localhost/Gakupro/form/frm_MailAddressAuthenticate.php?Key_Code=" . $Key_Code;
+
+    // 変数の設定
+    $to = $MailAddress;
+    $subject = "学プロ仮登録";
+
+    $message  = "
+    $Name 様
+    この度は学プロにご登録いただき誠にありがとうございます。
+    登録頂いたメールアドレスが正しく送受信できることが確認できました。
+
+    以下のURLからご登録の続きをよろしくお願いします。
+    URLをクリックするとパスワードの入力画面が表示されますので、メール内記載の4桁の数字を入力してください。
+
+    URL：$URL
+    パスワード：$Password    
+    ";
+
+  }
+
+  //管理者へのメール送信
+  function MailSendingToAdministrator($MailInfo)
+  {
+
+  }
+
+  //共通メール送信処理
   function Sendmail($MailInfo)
   {
 
@@ -51,11 +86,12 @@ class Class_SendMail
 
     // メール送信
     if (mb_send_mail($to, $subject, $message)) {
-      //送信成功
-      return true;
+    //送信成功
+    return true;
     } else {
-      //送信失敗
-      return false;
+    //送信失敗
+    return false;
     }
   }
+
 }
