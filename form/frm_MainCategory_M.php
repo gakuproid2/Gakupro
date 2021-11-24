@@ -25,6 +25,7 @@ $JS_Info = $common->Read_JSconnection();
 <?php
 
 if (isset($_POST["MainCategory_CD"])) {$MainCategory_CD = $_POST["MainCategory_CD"];} else {$MainCategory_CD = 0;};
+if (isset($_POST["MainCategory_Name"])) {$MainCategory_Name = $_POST["MainCategory_Name"];} else {$MainCategory_Name = '';};
 
 //ポストされた確認する。
 if (count($_POST) > 1) {
@@ -62,6 +63,7 @@ $Max_CD = $dao_MainCategory_M->Get_MaxCD();
 
 $Data_Table = $dao_MainCategory_M->Get_MainCategory_M();
 
+//Table作成 Start
 $Table = "
 <table class='DataInfoTable'>
 <tr>
@@ -82,19 +84,23 @@ foreach ($Data_Table as $val) {
       <button class='' data-bs-toggle='modal' data-bs-target='#InfoModal' 
       data-maincd='" . $val['MainCategory_CD'] . "'
       data-mainname='" . $val['MainCategory_Name'] . "'
-      data-UsageFlag='" . $val['UsageFlag'] . "'><i class='far fa-edit'></i></button>   
-
+      data-UsageFlag='" . $val['UsageFlag'] . "'><i class='far fa-edit'></i></button>
     </td>
     <td>    
-    <button class='' data-bs-toggle='modal' data-bs-target='#deleteModal'
+      <button class='' data-bs-toggle='modal' data-bs-target='#deleteModal'
       data-maincd='" . $val['MainCategory_CD'] . "'
       data-mainname='" . $val['MainCategory_Name'] . "'
       data-UsageFlag='" . $val['UsageFlag'] . "' ><i class='far fa-times-circle'></i></button>   
     </td>
+  <tr>
   "
   ;
+  
 }
-  $Table .= "</table>";
+
+$Table .= "</table>";
+//Table作成 End
+
 ?>
 
 <body>
