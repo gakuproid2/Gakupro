@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 
 
@@ -25,7 +25,7 @@ $JS_Info = $common->Read_JSconnection();
 <?php
 
 
-
+if (isset($_POST["MainCategory_CD"])) {$MainCategory_CD = $_POST["MainCategory_CD"];} else {$MainCategory_CD = 0;};
 
 //ポストされた確認する。
 if (count($_POST) > 1) {
@@ -50,7 +50,7 @@ if (count($_POST) > 1) {
     $Result = $dao_MainCategory_M->DataChange($info, 1);
   } else if (isset($_POST['Update'])) {
     $Result = $dao_MainCategory_M->DataChange($info, 2);
-  } else if (isset($_POST['Delete'])) {
+  } else if (isset($_POST['delete'])) {
     $Result = $dao_MainCategory_M->DataChange($info, 3);
   }
 
@@ -74,32 +74,36 @@ $Table = "
 foreach ($Data_Table as $val) {
 
   $Table .=
-    "<tr class='InfoTable'>
-  <td>" . $val['MainCategory_CD'] . "</td>
-  <td>" . $val['MainCategory_Name'] . " </td>
-  <td>
-    <button class='' data-bs-toggle='modal' data-bs-target='#exampleModal' 
-    data-maincd='" . $val['MainCategory_CD'] . "'
-    data-mainname='" . $val['MainCategory_Name'] . "'
-    data-UsageFlag='" . $val['UsageFlag'] . "'><i class='far fa-edit'></i></button>
+  "
+  <tr class='InfoTable'>
+    <td>" . $val['MainCategory_CD'] . "</td>
+    <td>" . $val['MainCategory_Name'] . " </td>
+    <td>
+      <button class='' data-bs-toggle='modal' data-bs-target='#exampleModal' 
+      data-maincd='" . $val['MainCategory_CD'] . "'
+      data-mainname='" . $val['MainCategory_Name'] . "'
+      data-UsageFlag='" . $val['UsageFlag'] . "'><i class='far fa-edit'></i></button>   
 
-    <button class='' data-bs-toggle='modal' data-bs-target='#exampleModal' 
-    data-maincd='" . $val['MainCategory_CD'] . "'
-    data-mainname='" . $val['MainCategory_Name'] . "'
-    data-UsageFlag='" . $val['UsageFlag'] . "'><i class='far fa-times-circle'></i></button>
-
-  </td>";
+    </td>
+    <td>
+    
+    <button class='' data-bs-toggle='modal' data-bs-target='#deleteModal'
+      data-maincd='" . $val['MainCategory_CD'] . "'
+      data-mainname='" . $val['MainCategory_Name'] . "'
+      data-UsageFlag='" . $val['UsageFlag'] . "' ><i class='far fa-times-circle'></i></button>   
+    </td>
+  "
+  ;
 }
-$Table .= "</table>";
-
+  $Table .= "</table>";
 ?>
 
 <body>
 
   <?php echo $Table; ?>
 
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <!-- データ詳細Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">  
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
@@ -126,21 +130,21 @@ $Table .= "</table>";
       </div>
     </div>
 
+
+   
+
     <?php echo $JS_Info ?>
 </body>
 
 <script>
   //画面遷移時
   $(window).on('load', function(event) {
-    $("#btn_Insert").show();
-    $("#btn_Update").hide();
-    $("#btn_Delete").hide();
+    
   });
 
 
 
   $('#exampleModal').on('show.bs.modal', function(e) {
-
     // イベント発生元
     let evCon = $(e.relatedTarget);
 
@@ -149,47 +153,16 @@ $Table .= "</table>";
 
   });
 
+  $('#deleteModal').on('show.bs.modal', function(e) {
+    // イベント発生元
+    let evCon = $(e.relatedTarget);
 
-  //登録ボタンクリック時
-  $('#btn_Insert').on('click', function() {
-
-    if (ValueCheck() == false) {
-      return false;
-    }
-
-    if (window.confirm('登録してもよろしいですか？')) {
-      $('#form_id').submit();
-    } else {
-      return false;
-    }
+    var MainCategory_CD = evCon.data('maincd');
+   
 
   });
 
-  //更新ボタンクリック時
-  $('#btn_Update').on('click', function() {
-
-    if (ValueCheck() == false) {
-      return false;
-    }
-
-    if (window.confirm('更新してもよろしいですか？')) {
-      $('#form_id').submit();
-    } else {
-      return false;
-    }
-  });
-
-  //削除ボタンクリック時
-  $('#btn_Delete').on('click', function() {
-
-    if (window.confirm('削除してもよろしいですか？')) {
-      $('#form_id').submit();
-    } else {
-      return false;
-    }
-
-  });
-
+  
   //クリアボタンクリック時
   $('#btn_Clear').on('click', function() {
     window.location.href = 'frm_MainCategory_M.php'

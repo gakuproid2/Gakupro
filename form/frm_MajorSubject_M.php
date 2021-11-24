@@ -34,11 +34,8 @@ $JS_Info = $common->Read_JSconnection();
 
 <?php
 
-if (isset($_POST["School_CD"])) {
-  $School_CD = $_POST["School_CD"];
-} else {
-  $School_CD = 0;
-};
+if (isset($_POST["School_CD"])) {$School_CD = $_POST["School_CD"];} else {$School_CD = 0;};
+
 if (isset($_POST["MajorSubject_Name"])) {
   $MajorSubject_Name = $_POST["MajorSubject_Name"];
 } else {
@@ -74,14 +71,9 @@ if (isset($_POST["DataChange"])) {
   //データ変更種類に種別  1=登録、2=更新、3=論理削除
   $Processing = $_POST["DataChange"];
   $Result == false;
-  //インサートとアップデートのみ
-  if ($Processing == 1) {
-    $Result = $dao_MajorSubject_M->DataChange($info, $Processing);
-  } else if ($Processing == 2) {
-    $Result = $dao_MajorSubject_M->DataChange($info, $Processing);
-  } else if ($Processing == 3) {
-    $Result = $dao_MajorSubject_M->DataChange($info, $Processing);
-  }
+  
+  $Result = $dao_MajorSubject_M->DataChange($info, $Processing);
+  
 
   if ($Result == true) {
     Header('Location: ' . $_SERVER['PHP_SELF']);

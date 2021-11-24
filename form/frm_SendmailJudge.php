@@ -20,6 +20,12 @@ $dao_MailAddressAuthenticate_T = new dao_MailAddressAuthenticate_T();
 //ポストされた確認する。
 if (count($_POST) > 1) {
 
+  // 乱数の範囲(4桁に設定する)
+  $Password_min = 1000;
+  $Password_max = 9999;
+  //設定した最小値と最大値の範囲内で乱数生成
+  $Password = mt_rand($Password_min, $Password_max);
+
   //キーコード作成処理  
   $Key_Code = $dao_MailAddressAuthenticate_T->GetMaxKeyCode_OnTheDay();
 
@@ -27,7 +33,7 @@ if (count($_POST) > 1) {
   $PostInfo = array(
     'MailAddress' => $_POST["MailAddress"],
     'FullName' => $_POST['LastName'] . '　' . $_POST['Name'],
-    'Password' => $Class_SendMail->CreatePassword(),
+    'Password' => $Password,
     'Key_Code' => $Key_Code
   );
 
@@ -53,13 +59,14 @@ if (count($_POST) > 1) {
     );
   }
 
-  $Result = $Class_SendMail->MailSending($MailInfo);
+  $Result = $Class_SendMail->TemporaryRegistrationMailSending($MailInfo);
 
   if ($Result == true) {
 
     $Password = $MailInfo['Password'];
     $MailAddress = $MailInfo['MailAddress'];
     $Name = $MailInfo['Name'];
+    
     echo "テストの為
       メール成功
       パスワード = $Password
