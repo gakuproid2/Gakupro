@@ -24,7 +24,6 @@ $JS_Info = $common->Read_JSconnection();
 
 <?php
 
-
 if (isset($_POST["MainCategory_CD"])) {$MainCategory_CD = $_POST["MainCategory_CD"];} else {$MainCategory_CD = 0;};
 
 //ポストされた確認する。
@@ -62,8 +61,6 @@ if (count($_POST) > 1) {
 $Max_CD = $dao_MainCategory_M->Get_MaxCD();
 
 $Data_Table = $dao_MainCategory_M->Get_MainCategory_M();
-
-
 
 $Table = "
 <table class='DataInfoTable'>
