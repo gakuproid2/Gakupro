@@ -94,7 +94,7 @@ class common
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
     //クラスの生成
-    $obj = new connect();
+    $DB_Connection = new connect();
 
     $SQL = "
     SELECT
@@ -110,7 +110,7 @@ class common
     UsageSituation > 0
     ";
     //クラスの中の関数の呼び出し
-    $items = $obj->plural($SQL);
+    $items = $DB_Connection->plural($SQL);
 
     return $items;
   }
@@ -120,7 +120,7 @@ class common
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
     //クラスの生成
-    $obj = new connect();
+    $DB_Connection = new connect();
 
     $SQL = "
     SELECT
@@ -132,7 +132,7 @@ class common
     Screen_ID = $Screen_ID   
     ";
     //クラスの中の関数の呼び出し
-    $items = $obj->plural($SQL);
+    $items = $DB_Connection->plural($SQL);
 
     $Screen_Name = '';
     foreach ($items as $val) {

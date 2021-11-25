@@ -26,31 +26,20 @@ $JS_Info = $common->Read_JSconnection();
 
 if (isset($_POST["MainCategory_CD"])) {$MainCategory_CD = $_POST["MainCategory_CD"];} else {$MainCategory_CD = 0;};
 if (isset($_POST["MainCategory_Name"])) {$MainCategory_Name = $_POST["MainCategory_Name"];} else {$MainCategory_Name = '';};
-if (isset($_POST["UsageSituation"])) {$UsageSituation = 1;} else {$UsageSituation = 0;};
 
-//ポストされた確認する。
-if (count($_POST) > 1) {
-
- 
+//DBアクセス関連の場合
+if (isset($_POST["ProcessingType"])) {
+  
   $info = array(
     'MainCategory_CD' => $MainCategory_CD,
-    'MainCategory_Name' => $MainCategory_Name,
-    'UsageSituation' => $UsageSituation,    
+    'MainCategory_Name' => $MainCategory_Name,    
+    'ProcessingType' => $_POST["ProcessingType"],
   );
 
-  $Result = "";
-
-  //登録、削除、更新の分岐
-  if (isset($_POST['Insert'])) {
-    $Result = $dao_MainCategory_M->DataChange($info, 1);
-  } else if (isset($_POST['Update'])) {
-    $Result = $dao_MainCategory_M->DataChange($info, 2);
-  } else if (isset($_POST['ChangeUsageSituation'])) {
-    $Result = $dao_MainCategory_M->DataChange($info, 3);
-  }
+  $Result = $dao_MainCategory_M->DataChange($info);  
 
   Header('Location: ' . $_SERVER['PHP_SELF']);
-  exit(); //optional
+  exit(); 
 }
 
 
@@ -108,8 +97,7 @@ $Table .= "</table>";
 
 <body>
 
-<a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
-
+<a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal' data-processingtype='1'><i class='fas fa-plus-circle'></i>新規追加</a>
 
   <?php echo $Table; ?>
 
@@ -132,7 +120,7 @@ $Table .= "</table>";
 
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
-            <button type="button" class="btn btn-primary">登録</button>
+            <button type="button" class="btn btn-primary ModalInsertButton">登録</button>
           </div>
 
         </div>
@@ -148,7 +136,7 @@ $Table .= "</table>";
       <div class="modal-content">
 
         <div class="modal-header">
-          <h5 class="modal-title" id="UpdateModalLabel">データ更新確認</h5>
+          <h5 class="modal-title" id="UpdateModalLabel">更新確認</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
@@ -166,7 +154,7 @@ $Table .= "</table>";
 
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
-            <button type="button" class="btn btn-primary">更新</button>
+            <button type="button" class="btn btn-primary ModalUpdateButton">更新</button>
           </div>
 
         </div>
@@ -212,14 +200,16 @@ $Table .= "</table>";
     <?php echo $JS_Info ?>
 </body>
 
-<script>
-  //画面遷移時
-  $(window).on('load', function(event) {
-    
+<script> 
+
+  //登録用モーダル表示時
+  $('#InsertModal').on('show.bs.modal', function(e) {
+
+    $('#Insert_MainCategory_Name').val('');
+
   });
 
-
-
+  //更新用モーダル表示時
   $('#UpdateModal').on('show.bs.modal', function(e) {
     // イベント発生元
     let evCon = $(e.relatedTarget);
@@ -229,6 +219,7 @@ $Table .= "</table>";
 
   });
 
+  //利用状況変更モーダル表示時
   $('#ChangeUsageSituationModal').on('show.bs.modal', function(e) {
     // イベント発生元
     let evCon = $(e.relatedTarget);
@@ -246,12 +237,42 @@ $Table .= "</table>";
 
   });
   
+  //登録ボタンクリック時
+  $('.ModalInsertButton').on('click', function() {
+    
+    //ポストするキーと値を格納
+    var DataArray = {
+      ProcessingType: 1,
+      MainCategory_Name: $("#Insert_MainCategory_Name").val()
+    };
+
+    if (!ValueCheck(DataArray)) {exit;}
+
+    //common.jsに実装
+    originalpost("frm_MainCategory_M.php", DataArray);
+  });
+
+   //更新ボタンクリック時
+   $('.ModalUpdateButton').on('click', function() {
+    
+    //ポストするキーと値を格納
+    var DataArray = {
+      ProcessingType: 2,
+      MainCategory_CD: $("#Update_MainCategory_CD").val(),
+      MainCategory_Name: $("#Update_MainCategory_Name").val()
+    };
+
+    if (!ValueCheck(DataArray)) {exit;}
+
+    //common.jsに実装
+    originalpost("frm_MainCategory_M.php", DataArray);
+  });
 
   //登録、更新時の値チェック
-  function ValueCheck() {
+  function ValueCheck(DataArray) {
 
     var ErrorMsg = '';
-    if ($("#MainCategory_Name").val() == "") {
+    if (DataArray.MainCategory_Name == "") {
       ErrorMsg += '大分類名を入力してください。\n';
     }
 
@@ -262,6 +283,19 @@ $Table .= "</table>";
     } else {
       return true;
     }
+  }
+
+  function PostValueSet() {
+
+    //ポストするキーと値を格納
+    var DataArray = {
+      MainCategory_Name: $("#Insert_MainCategory_Name").val(),
+      
+    };
+
+    //common.jsに実装
+    originalpost("frm_MainCategory_M.php", DataArray);
+
   }
 </script>
 

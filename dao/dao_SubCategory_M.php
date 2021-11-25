@@ -8,7 +8,7 @@
       //クラスファイルの読み込み
       require_once '../dao/DB_Connection.php';
       //クラスの生成
-      $obj = new connect();
+      $DB_Connection = new connect();
       //SQL文の発行
       $SQL = "
       SELECT 
@@ -40,7 +40,7 @@
       ,sub.SubCategory_CD
       ";
 
-      $items = $obj->select($SQL);
+      $items = $DB_Connection->select($SQL);
       return $items;
     }
 
@@ -50,7 +50,7 @@
       //クラスファイルの読み込み
       require_once '../dao/DB_Connection.php';
       //クラスの生成
-      $obj = new connect();
+      $DB_Connection = new connect();
       //SQL文の発行
       $SQL = " 
       SELECT 
@@ -60,7 +60,7 @@
       WHERE
       MainCategory_CD = '$MainCategory_CD';";
     
-      $items = $obj->select($SQL);
+      $items = $DB_Connection->select($SQL);
 
       foreach ($items as $item_val) {
       $Max_CD = $item_val['Max_CD'];
@@ -81,7 +81,7 @@
       //クラスファイルの読み込み
       require_once '../dao/DB_Connection.php';
       //クラスの生成
-      $obj = new connect();
+      $DB_Connection = new connect();
 
       if ($branch == 1) {
 
@@ -129,7 +129,7 @@
       }
 
       //クラスの中の関数の呼び出し
-      $Result = $obj->pluralTransaction($SQL);
+      $Result = $DB_Connection->pluralTransaction($SQL);
 
       return $Result;
     }

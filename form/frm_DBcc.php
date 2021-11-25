@@ -10,12 +10,12 @@
   //クラスファイルの読み込み
   require_once '../dao/DB_Connection.php';
   //クラスの生成
-  $obj=new connect();
+  $DB_Connection=new connect();
   //sql文の発行
   $sql="SHOW TABLES FROM gakupro;";
 
   //クラスの中の関数の呼び出し
-  $AllTables=$obj->select($sql);
+  $AllTables=$DB_Connection->select($sql);
 
   $Table = "";
   $x = 1;

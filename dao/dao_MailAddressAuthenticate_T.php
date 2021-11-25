@@ -18,7 +18,7 @@ class dao_MailAddressAuthenticate_T
         //クラスファイルの読み込み
         require_once '../dao/DB_Connection.php';
         //クラスの生成
-        $obj = new connect();
+        $DB_Connection = new connect();
 
         $SQL = "
             INSERT INTO
@@ -40,7 +40,7 @@ class dao_MailAddressAuthenticate_T
         ";
 
         //クラスの中の関数の呼び出し
-        $Judge = $obj->pluralTransaction($SQL);
+        $Judge = $DB_Connection->pluralTransaction($SQL);
 
         return $Judge;
     }
@@ -51,7 +51,7 @@ class dao_MailAddressAuthenticate_T
         //クラスファイルの読み込み
         require_once '../dao/DB_Connection.php';
         //クラスの生成
-        $obj = new connect();
+        $DB_Connection = new connect();
 
         $StartDateTime = date("Y-m-d 00:00:01");
         $EndeDateTime = date("Y-m-d 23:59:59");
@@ -70,7 +70,7 @@ class dao_MailAddressAuthenticate_T
         ;
         ";
         //クラスの中の関数の呼び出し
-        $items = $obj->plural($SQL);
+        $items = $DB_Connection->plural($SQL);
 
         $MaxCD = 0;
         foreach ($items as $item_val) {
@@ -91,7 +91,7 @@ class dao_MailAddressAuthenticate_T
         //クラスファイルの読み込み
         require_once '../dao/DB_Connection.php';
         //クラスの生成
-        $obj = new connect();
+        $DB_Connection = new connect();
 
         $SQL = "
         SELECT
@@ -108,7 +108,7 @@ class dao_MailAddressAuthenticate_T
         ;
         ";
         //クラスの中の関数の呼び出し
-        $items = $obj->plural($SQL);
+        $items = $DB_Connection->plural($SQL);
 
         return $items;
     }

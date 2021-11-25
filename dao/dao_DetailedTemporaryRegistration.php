@@ -6,7 +6,7 @@ class dao_DetailedTemporaryRegistration {
         //クラスファイルの読み込み
         require_once '../dao/DB_Connection.php';
         //クラスの生成
-        $obj=new connect();
+        $DB_Connection=new connect();
 
         $SQL ="
         SELECT
@@ -18,7 +18,7 @@ class dao_DetailedTemporaryRegistration {
         ";
 
         //クラスの中の関数の呼び出し
-        $items = $obj->select($SQL);
+        $items = $DB_Connection->select($SQL);
         return $items;
     }
 

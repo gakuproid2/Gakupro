@@ -6,7 +6,7 @@ class dao_Staff_M {
         //クラスファイルの読み込み
         require_once '../dao/DB_Connection.php';
         //クラスの生成
-        $obj=new connect();
+        $DB_Connection=new connect();
         
         //SQL文の発行
         $SQL ="
@@ -23,7 +23,7 @@ class dao_Staff_M {
         Staff_m; ";
         
         //クラスの中の関数の呼び出し
-        $DataTable=$obj->select($SQL);
+        $DataTable=$DB_Connection->select($SQL);
         return $DataTable;
     }
 
@@ -31,7 +31,7 @@ class dao_Staff_M {
         //クラスファイルの読み込み
         require_once '../dao/DB_Connection.php';
         //クラスの生成
-        $obj=new connect();
+        $DB_Connection=new connect();
     
         //SELECT_sql文の発行
         $SQL = " SELECT
@@ -40,7 +40,7 @@ class dao_Staff_M {
         Staff_m ";
     
         //クラスの中の関数の呼び出し
-        $items=$obj->select($SQL);
+        $items=$DB_Connection->select($SQL);
     
         foreach($items as $item_val){  
           $Max_CD = $item_val['Max_CD'];
@@ -65,7 +65,7 @@ class dao_Staff_M {
         //クラスファイルの読み込み
         require_once '../dao/DB_Connection.php';
         //クラスの生成
-        $obj=new connect();
+        $DB_Connection=new connect();
         
         if($branch == 1) {
           $SQL = "
@@ -123,7 +123,7 @@ class dao_Staff_M {
         }
             
         //クラスの中の関数の呼び出し
-        $items=$obj->plural($SQL);
+        $items=$DB_Connection->plural($SQL);
         
         return $items;
     }

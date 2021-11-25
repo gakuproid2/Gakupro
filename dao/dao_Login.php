@@ -9,7 +9,7 @@
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
     //クラスの生成
-    $obj = new connect();
+    $DB_Connection = new connect();
 
     $SQL = "
     SELECT 
@@ -29,7 +29,7 @@
     Password = $Password ;
     ";
     //クラスの中の関数の呼び出し
-    $items = $obj->plural($SQL);
+    $items = $DB_Connection->plural($SQL);
 
     return $items;
     }

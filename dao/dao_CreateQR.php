@@ -8,7 +8,7 @@ class dao_CreateQR
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
     //クラスの生成
-    $obj = new connect();
+    $DB_Connection = new connect();
 
     $SQL = "
     INSERT INTO 
@@ -20,7 +20,7 @@ class dao_CreateQR
     ,'$Password');
     ";
     //クラスの中の関数の呼び出し
-    $items = $obj->plural($SQL);
+    $items = $DB_Connection->plural($SQL);
 
     return $items;
   }
@@ -31,7 +31,7 @@ class dao_CreateQR
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
     //クラスの生成
-    $obj = new connect();
+    $DB_Connection = new connect();
 
     $SQL = "
     SELECT
@@ -51,7 +51,7 @@ class dao_CreateQR
     日付 = '$Date';
     ";
     //クラスの中の関数の呼び出し
-    $items = $obj->plural($SQL);
+    $items = $DB_Connection->plural($SQL);
    
     //初期値は0をセット
     $Quantity = 0;
@@ -69,7 +69,7 @@ class dao_CreateQR
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
     //クラスの生成
-    $obj = new connect();
+    $DB_Connection = new connect();
 
     $SQL = "
     SELECT 
@@ -81,7 +81,7 @@ class dao_CreateQR
     LEFT(Key_Code,8) = '$Date';
     ";
     //クラスの中の関数の呼び出し
-    $items = $obj->plural($SQL);
+    $items = $DB_Connection->plural($SQL);
     
     return $items;
 
@@ -93,7 +93,7 @@ class dao_CreateQR
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
     //クラスの生成
-    $obj = new connect();
+    $DB_Connection = new connect();
 
     $SQL = "
     SELECT
@@ -106,7 +106,7 @@ class dao_CreateQR
     ;
     ";
     //クラスの中の関数の呼び出し
-    $items = $obj->plural($SQL);
+    $items = $DB_Connection->plural($SQL);
 
     return $items;
   }

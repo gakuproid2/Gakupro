@@ -6,7 +6,7 @@ class dao_MajorSubject_M {
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
     //クラスの生成
-    $obj=new connect();
+    $DB_Connection=new connect();
     
     //SQL文の発行
     $SQL ="
@@ -21,7 +21,7 @@ class dao_MajorSubject_M {
     ";
     
     //クラスの中の関数の呼び出し
-    $items = $obj->select($SQL);
+    $items = $DB_Connection->select($SQL);
     return $items;
   }
 
@@ -29,7 +29,7 @@ class dao_MajorSubject_M {
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
     //クラスの生成
-    $obj = new connect();
+    $DB_Connection = new connect();
 
     //SQL文の発行
     $SQL = "
@@ -61,7 +61,7 @@ class dao_MajorSubject_M {
     ";
 
     //クラスの中の関数の呼び出し
-    $items = $obj->select($SQL);
+    $items = $DB_Connection->select($SQL);
     return $items;
   }
 
@@ -70,7 +70,7 @@ class dao_MajorSubject_M {
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
     //クラスの生成
-    $obj=new connect();
+    $DB_Connection=new connect();
 
     //SELECT_sql文の発行
     //SQL文の発行
@@ -83,7 +83,7 @@ class dao_MajorSubject_M {
     School_CD = ' $School_CD ';";
 
     //クラスの中の関数の呼び出し
-    $items=$obj->select($SQL);
+    $items=$DB_Connection->select($SQL);
 
     foreach($items as $item_val){  
       $Max_CD = $item_val['Max_CD'];
@@ -108,7 +108,7 @@ class dao_MajorSubject_M {
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
     //クラスの生成
-    $obj=new connect();
+    $DB_Connection=new connect();
     
     if($branch == 1) {
       $SQL = "
@@ -159,7 +159,7 @@ class dao_MajorSubject_M {
     }
         
     //クラスの中の関数の呼び出し
-    $Result=$obj->pluralTransaction($SQL);
+    $Result=$DB_Connection->pluralTransaction($SQL);
   
     return $Result;
   }
