@@ -284,19 +284,7 @@ $Table .= "</table>";
       return true;
     }
   }
-
-  function PostValueSet() {
-
-    //ポストするキーと値を格納
-    var DataArray = {
-      MainCategory_Name: $("#Insert_MainCategory_Name").val(),
-      
-    };
-
-    //common.jsに実装
-    originalpost("frm_MainCategory_M.php", DataArray);
-
-  }
+ 
 </script>
 
 </html>
