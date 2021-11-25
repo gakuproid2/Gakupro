@@ -16,7 +16,7 @@ class dao_School_M {
     ,School_Name
     ,TEL
     ,URL
-    ,UsageFlag
+    ,UsageSituation
     FROM
     School_m";
 
@@ -68,7 +68,7 @@ class dao_School_M {
     $Name = $info['Name'];
     $TEL = $info['TEL'];
     $URL = $info['URL'];
-    $UsageFlag = $info['UsageFlag'];
+    $UsageSituation = $info['UsageSituation'];
     $Changer = $info['Changer'];
     $UpdateDate = $info['UpdateDate'];
 
@@ -86,7 +86,7 @@ class dao_School_M {
       ,School_Name
       ,TEL
       ,URL
-      ,UsageFlag
+      ,UsageSituation
       ,Changer
       ,UpdateDate
       )VALUES(
@@ -95,7 +95,7 @@ class dao_School_M {
       ,'$Name'
       ,'$TEL'
       ,'$URL'
-      ,'$UsageFlag'
+      ,'$UsageSituation'
       ,'$Changer'
       ,'$UpdateDate'
     ); ";
@@ -109,7 +109,7 @@ class dao_School_M {
       ,School_Name = '$Name'
       ,TEL = '$TEL'
       ,URL = '$URL'
-      ,UsageFlag = '$UsageFlag'
+      ,UsageSituation = '$UsageSituation'
       ,Changer = '$Changer'
       ,UpdateDate = '$UpdateDate'
       WHERE

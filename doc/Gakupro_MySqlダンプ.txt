@@ -51,7 +51,7 @@ INSERT INTO `imageget_t` (`Key_Code`, `Password`) VALUES
 CREATE TABLE `MainCategory_m` (
   `MainCategory_CD` int(11) NOT NULL COMMENT '大分類コード',
   `MainCategory_Name` varchar(30) NOT NULL COMMENT '大分類名',
-  `UsageFlag` int(11) NOT NULL COMMENT '利用有無フラグ',
+  `UsageSituation` int(11) NOT NULL COMMENT '利用状況',
   `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
   `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='大分類マスタ';
@@ -60,7 +60,7 @@ CREATE TABLE `MainCategory_m` (
 -- テーブルのデータのダンプ `MainCategory_m`
 --
 
-INSERT INTO `MainCategory_m` (`MainCategory_CD`, `MainCategory_Name`, `UsageFlag`, `Changer`, `UpdateDate`) VALUES
+INSERT INTO `MainCategory_m` (`MainCategory_CD`, `MainCategory_Name`, `UsageSituation`, `Changer`, `UpdateDate`) VALUES
 (1, '性別', 1, 1, '2021-08-06 22:28:53'),
 (2, '権限', 1, 1, '2021-09-04 01:12:50'),
 (3, '学校区分', 1, 1, '2021-09-04 01:15:21'),
@@ -80,7 +80,7 @@ CREATE TABLE `majorsubject_m` (
   `MajorSubject_Name` varchar(30) NOT NULL COMMENT '専攻名',
   `StudyPeriod` int(11) NOT NULL COMMENT '学習期間(月単位)',
   `Remarks` varchar(100) DEFAULT NULL COMMENT '備考',
-  `UsageFlag` int(11) NOT NULL COMMENT '利用有無フラグ',
+  `UsageSituation` int(11) NOT NULL COMMENT '利用状況',
   `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
   `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='専攻マスタ';
@@ -89,7 +89,7 @@ CREATE TABLE `majorsubject_m` (
 -- テーブルのデータのダンプ `majorsubject_m`
 --
 
-INSERT INTO `majorsubject_m` (`School_CD`, `MajorSubject_CD`, `MajorSubject_Name`, `StudyPeriod`, `Remarks`, `UsageFlag`, `Changer`, `UpdateDate`) VALUES
+INSERT INTO `majorsubject_m` (`School_CD`, `MajorSubject_CD`, `MajorSubject_Name`, `StudyPeriod`, `Remarks`, `UsageSituation`, `Changer`, `UpdateDate`) VALUES
 (1, 1, '高校コース1', 36, 'テスト', 1, 1, '2021-08-14 10:51:06'),
 (1, 2, '高校コース2', 36, 'テスト', 1, 1, NULL),
 (1, 3, '高校コース3', 36, 'テスト３', 1, 1, '2021-08-14 10:51:12'),
@@ -145,7 +145,7 @@ CREATE TABLE `school_m` (
   `School_Name` varchar(30) NOT NULL COMMENT '学校名',
   `TEL` varchar(15) DEFAULT NULL COMMENT 'TEL',
   `URL` varchar(50) DEFAULT NULL COMMENT 'HP_URL',
-  `UsageFlag` int(11) DEFAULT NULL COMMENT '利用有無フラグ',
+  `UsageSituation` int(11) DEFAULT NULL COMMENT '利用状況',
   `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
   `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='学校マスタ';
@@ -154,7 +154,7 @@ CREATE TABLE `school_m` (
 -- テーブルのデータのダンプ `school_m`
 --
 
-INSERT INTO `school_m` (`School_CD`, `School_Division`, `School_Name`, `TEL`, `URL`, `UsageFlag`, `Changer`, `UpdateDate`) VALUES
+INSERT INTO `school_m` (`School_CD`, `School_Division`, `School_Name`, `TEL`, `URL`, `UsageSituation`, `Changer`, `UpdateDate`) VALUES
 (1, 1, 'テスト高校', '090-1234-5678', 'nishihara', 1, 1, '2021-08-16 21:47:47'),
 (2, 2, 'テスト大学', '090-1234-5678', 'urasoe', 1, 2, '2021-08-16 21:47:47'),
 (3, 3, '専門学校テスト', '098-1234-2699', 'tessss', 1, 1, '2021-08-16 21:47:47');
@@ -171,7 +171,7 @@ CREATE TABLE `screen_m` (
   `Screen_Name` varchar(50) DEFAULT NULL COMMENT '画面名',
   `Screen_Path` varchar(200) DEFAULT NULL COMMENT 'スクリーンパス',
   `Authority` varchar(1) DEFAULT NULL COMMENT '利用権限',
-  `UsageFlag` int(11) NOT NULL COMMENT '利用有無フラグ',
+  `UsageSituation` int(11) NOT NULL COMMENT '利用状況',
   `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
   `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='画面マスタ';
@@ -180,7 +180,7 @@ CREATE TABLE `screen_m` (
 -- テーブルのデータのダンプ `screen_m`
 --
 
-INSERT INTO `screen_m` (`Screen_ID`, `Screen_Name`, `Screen_Path`, `Authority`, `UsageFlag`, `Changer`, `UpdateDate`) VALUES
+INSERT INTO `screen_m` (`Screen_ID`, `Screen_Name`, `Screen_Path`, `Authority`, `UsageSituation`, `Changer`, `UpdateDate`) VALUES
 (1, 'ログイン', 'frm_Login.php', '3', 1, 1, '2021-09-04 10:54:31'),
 (2, 'メインメニュー', 'frm_MainMenu.php', '3', 1, 2, '2021-09-04 10:54:31'),
 (3, 'DB接続確認', 'frm_DBcc.php', '1', 1, 1, '2021-09-04 10:54:31'),
@@ -215,7 +215,7 @@ CREATE TABLE `staff_m` (
   `TEL` varchar(15) DEFAULT NULL COMMENT 'TEL',
   `MailAddress` varchar(50) DEFAULT NULL COMMENT 'メールアドレス',
   `Authority` varchar(1) DEFAULT NULL COMMENT '権限',
-  `UsageFlag` int(11) NOT NULL COMMENT '利用有無フラグ',
+  `UsageSituation` int(11) NOT NULL COMMENT '利用状況',
   `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
   `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='スタッフマスタ';
@@ -224,7 +224,7 @@ CREATE TABLE `staff_m` (
 --
 -- テーブルのデータのダンプ `staff_m`
 --
-INSERT INTO `staff_m` (`Staff_ID`, `Staff_Name`, `Staff_NameYomi`, `NickName`, `Login_ID`, `Password`, `TEL`, `MailAddress`, `Authority`, `UsageFlag`, `Changer`, `UpdateDate`) VALUES
+INSERT INTO `staff_m` (`Staff_ID`, `Staff_Name`, `Staff_NameYomi`, `NickName`, `Login_ID`, `Password`, `TEL`, `MailAddress`, `Authority`, `UsageSituation`, `Changer`, `UpdateDate`) VALUES
 (1, '島袋　信彦', 'シマブクロ　ノブヒコ', 'のーぶー', '1', '1', '090-6868-2937', 'gakuproid1@gmail.com', '1', 1, 1, '2021-11-15 11:04:38'),
 (2, '崎原　悠磨', 'サキハラ　ユウマ', 'とーくー', '2', '2', '090-1111-6666', 'gakuproid2@gmail.com', '1', 1, 1, '2021-11-15 11:04:38');
 
@@ -238,7 +238,7 @@ CREATE TABLE `SubCategory_m` (
   `MainCategory_CD` int(11) NOT NULL COMMENT '大分類コード',
   `SubCategory_CD` int(11) NOT NULL COMMENT '中分類コード',
   `SubCategory_Name` varchar(30) NOT NULL COMMENT '中分類名',
-  `UsageFlag` int(11) NOT NULL COMMENT '利用有無フラグ',
+  `UsageSituation` int(11) NOT NULL COMMENT '利用状況',
   `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
   `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='中分類マスタ';
@@ -247,7 +247,7 @@ CREATE TABLE `SubCategory_m` (
 -- テーブルのデータのダンプ `SubCategory_m`
 --
 
-INSERT INTO `SubCategory_m` (`MainCategory_CD`, `SubCategory_CD`, `SubCategory_Name`, `UsageFlag`, `Changer`, `UpdateDate`) VALUES
+INSERT INTO `SubCategory_m` (`MainCategory_CD`, `SubCategory_CD`, `SubCategory_Name`, `UsageSituation`, `Changer`, `UpdateDate`) VALUES
 (1, 1, '男性', 1, 1, '2021-08-06 22:30:15'),
 (1, 2, '女性', 1, 1, '2021-08-06 22:30:22'),
 (2, 1, '管理者', 1, 1, '2021-09-04 01:15:38'),

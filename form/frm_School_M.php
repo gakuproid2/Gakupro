@@ -52,9 +52,9 @@
     //ポストされた確認する。
     if (count($_POST) > 0) {
 
-      $UsageFlag = 0;
-      if (isset ($_POST["UsageFlag"])){
-        $UsageFlag = 1;
+      $UsageSituation = 0;
+      if (isset ($_POST["UsageSituation"])){
+        $UsageSituation = 1;
       };
       
       $info = array(
@@ -63,7 +63,7 @@
         'Name' => $_POST["Name"],
         'TEL' => $_POST["TEL"],
         'URL' => $_POST["URL"],
-        'UsageFlag' => $UsageFlag,
+        'UsageSituation' => $UsageSituation,
         'Changer' => $_SESSION["Staff_ID"],
         'UpdateDate' => date("Y-m-d H:i:s")
       );
@@ -113,7 +113,7 @@
       <td>" . $val['TEL']." </td>
       <td>" . $val['URL']." </td>";
     
-      if ($val['UsageFlag'] == 0) {
+      if ($val['UsageSituation'] == 0) {
         $Table .=" <td>×</td>";
       } else {
         $Table .=" <td>〇</td>";
@@ -133,7 +133,7 @@
     <p>学校名：<input type="text" id="Name" name="Name" autocomplete="off"></p>
     <p>代表電話番号：<input type="text" id="TEL" name="TEL" autocomplete="off"></p>
     <p>ホームページURL：<input type="text" id="URL" name="URL" autocomplete="off"></p>
-    <p>利用フラグ：<input type="checkbox" id="chk_UsageFlag" name="UsageFlag" value="1" checked="checked"></p>
+    <p>利用フラグ：<input type="checkbox" id="chk_UsageSituation" name="UsageSituation" value="1" checked="checked"></p>
 
     <button class="btn_Insert" id="btn_Insert" name="Insert" value="1">登録</button>
     <button class="btn_Update" id="btn_Update" name="Update" value="2">更新</button>
@@ -185,12 +185,12 @@
       $("#URL").val(URL);
 
       //利用フラグ
-      var UsageFlag = $(this).children('td')[5].innerText;
+      var UsageSituation = $(this).children('td')[5].innerText;
 
-    if (UsageFlag == '〇') {
-      $("#chk_UsageFlag").prop('checked', true);
+    if (UsageSituation == '〇') {
+      $("#chk_UsageSituation").prop('checked', true);
     } else {
-      $("#chk_UsageFlag").prop('checked', false);
+      $("#chk_UsageSituation").prop('checked', false);
     }
 
     $("#btn_Insert").hide();

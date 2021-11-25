@@ -18,7 +18,7 @@ class dao_Staff_M {
         ,Login_ID
         ,Password
         ,Authority
-        ,UsageFlag
+        ,UsageSituation
         FROM
         Staff_m; ";
         
@@ -58,7 +58,7 @@ class dao_Staff_M {
         $LoginID = $info['LoginID'];
         $Password = $info['Password'];
         $Authority = $info['Authority'];
-        $UsageFlag = $info['UsageFlag'];
+        $UsageSituation = $info['UsageSituation'];
         $Changer = $info['Changer'];
         $UpdateDate = $info['UpdateDate'];
     
@@ -78,7 +78,7 @@ class dao_Staff_M {
           ,Login_ID
           ,Password
           ,Authority
-          ,UsageFlag
+          ,UsageSituation
           ,Changer
           ,UpdateDate
           )VALUES(
@@ -89,7 +89,7 @@ class dao_Staff_M {
           ,'$LoginID'
           ,'$Password'
           ,'$Authority'
-          ,'$UsageFlag'
+          ,'$UsageSituation'
           ,'$Changer'
           ,'$UpdateDate'
         ); ";
@@ -105,7 +105,7 @@ class dao_Staff_M {
           ,Login_ID = '$LoginID'
           ,Password = '$Password'
           ,Authority = '$Authority'
-          ,UsageFlag = '$UsageFlag'
+          ,UsageSituation = '$UsageSituation'
           ,Changer = '$Changer'
           ,UpdateDate = '$UpdateDate'
           WHERE

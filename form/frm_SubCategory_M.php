@@ -39,16 +39,16 @@ if (isset($_POST["MainCategory_CD"])) {
 if (isset($_POST["DataChange"])) {
 
   //利用フラグを宣言し、チェック時は1を格納するIf文    
-  $UsageFlag = 0;
-  if (isset($_POST["UsageFlag"])) {
-    $UsageFlag = 1;
+  $UsageSituation = 0;
+  if (isset($_POST["UsageSituation"])) {
+    $UsageSituation = 1;
   };
 
   $info = array(
     'MainCategory_CD' => $_POST["MainCategory_CD"],
     'SubCategory_CD' => $_POST["SubCategory_CD"],
     'SubCategory_Name' => $_POST["SubCategory_Name"],
-    'UsageFlag' => $UsageFlag,
+    'UsageSituation' => $UsageSituation,
     'Changer' => $_SESSION["Staff_ID"],
     'UpdateDate' => date("Y-m-d H:i:s")
   );
@@ -99,7 +99,7 @@ foreach ($Data_Table as $val) {
     <td>" . $val['SubCategory_Name'] . "</td>
     ";
 
-  if ($val['UsageFlag'] == 0) {
+  if ($val['UsageSituation'] == 0) {
     $Table .= " <td>×</td>";
   } else {
     $Table .= " <td>〇</td>";
@@ -122,7 +122,7 @@ if ($MainCategory_CD > 0) {
     <p>大分類：<select ID='MainCategory_CD' name='MainCategory_CD'><?php echo $PullDown; ?></select></p>
     <p>中分類コード：<input type='text' id="SubCategory_CD" name='SubCategory_CD' value='<?php echo $Max_CD; ?>' readonly></p>
     <p>中分類名：<input type="text" id="SubCategory_Name" name="SubCategory_Name" autocomplete="off"></p>
-    <p>利用フラグ：<input type="checkbox" id="chk_UsageFlag" name="UsageFlag" value="1" checked="checked"></p>
+    <p>利用フラグ：<input type="checkbox" id="chk_UsageSituation" name="UsageSituation" value="1" checked="checked"></p>
 
     <button class="btn_Insert" id="btn_Insert" name="DataChange" value="1">登録</button>
     <button class="btn_Update" id="btn_Update" name="DataChange" value="2">更新</button>
@@ -163,12 +163,12 @@ if ($MainCategory_CD > 0) {
     var SubCategory_Name = $(this).children('td')[3].innerText;
     $("#SubCategory_Name").val(SubCategory_Name);
 
-    var UsageFlag = $(this).children('td')[4].innerText;
+    var UsageSituation = $(this).children('td')[4].innerText;
 
-    if (UsageFlag == '〇') {
-      $("#chk_UsageFlag").prop('checked', true);
+    if (UsageSituation == '〇') {
+      $("#chk_UsageSituation").prop('checked', true);
     } else {
-      $("#chk_UsageFlag").prop('checked', false);
+      $("#chk_UsageSituation").prop('checked', false);
     }
 
     $("#btn_Insert").hide();

@@ -20,7 +20,7 @@
     ,Login_ID
     ,Password
     ,Authority
-    ,UsageFlag
+    ,UsageSituation
     FROM
     Staff_M
     WHERE

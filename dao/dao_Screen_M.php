@@ -16,7 +16,7 @@
     ,Screen_m.Screen_Path
     ,Screen_m.Authority
     ,CONCAT(SubCategory_m.SubCategory_Name,'以上') AS AuthorityInfo
-    ,Screen_m.UsageFlag
+    ,Screen_m.UsageSituation
     ,staff_m.Staff_Name AS ChangerName
     ,Screen_m.UpdateDate
     FROM
@@ -86,10 +86,10 @@
        MainCategory_CD 
        ,SubCategory_CD 
        ,SubCategory_Name 
-       ,UsageFlag
+       ,UsageSituation
        FROM
        SubCategory_m
-       WHERE UsageFlag = 1
+       WHERE UsageSituation = 1
        AND
        MainCategory_CD = 2
        ;
@@ -106,7 +106,7 @@
     $Screen_Name = $info['Screen_Name'];
     $Screen_Path = $info['Screen_Path'];
     $Authority = $info['Authority'];
-    $UsageFlag = $info['UsageFlag'];    
+    $UsageSituation = $info['UsageSituation'];    
     $Changer = $info['Changer'];
     $UpdateDate = $info['UpdateDate'];
 
@@ -124,7 +124,7 @@
       ,Screen_Name 
       ,Screen_Path 
       ,Authority
-      ,UsageFlag
+      ,UsageSituation
       ,Changer
       ,UpdateDate
       )VALUES( 
@@ -132,7 +132,7 @@
       ,'$Screen_Name'
       ,'$Screen_Path'
       ,'$Authority'
-      ,'$UsageFlag'
+      ,'$UsageSituation'
       ,'$Changer'
       ,'$UpdateDate'
 
@@ -147,7 +147,7 @@
       Screen_Name = '$Screen_Name'
       ,Screen_Path = '$Screen_Path'
       ,Authority = '$Authority'
-      ,UsageFlag = '$UsageFlag'
+      ,UsageSituation = '$UsageSituation'
       ,Changer = '$Changer'
       ,UpdateDate = '$UpdateDate'
       WHERE

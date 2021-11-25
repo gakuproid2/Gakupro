@@ -13,7 +13,7 @@
     SELECT
     MainCategory_CD
     ,MainCategory_Name 
-    ,UsageFlag 
+    ,UsageSituation 
     FROM
     MainCategory_m; ";
 
@@ -50,7 +50,7 @@
 
     $MainCategory_CD = $info['MainCategory_CD'];
     $MainCategory_Name = $info['MainCategory_Name'];
-    $UsageFlag = $info['UsageFlag'];
+    $UsageSituation = $info['UsageSituation'];
     $Changer = $info['Changer'];
     $UpdateDate = $info['UpdateDate'];
 
@@ -66,13 +66,13 @@
       gakupro.MainCategory_m (
       MainCategory_CD 
       ,MainCategory_Name 
-      ,UsageFlag 
+      ,UsageSituation 
       ,Changer
       ,UpdateDate
       )VALUES( 
       '$MainCategory_CD'
       ,'$MainCategory_Name'
-      ,'$UsageFlag'
+      ,'$UsageSituation'
       ,'$Changer'
       ,'$UpdateDate'
 
@@ -85,7 +85,7 @@
       gakupro.MainCategory_m 
       SET 
       MainCategory_Name = '$MainCategory_Name'
-      ,UsageFlag = '$UsageFlag'
+      ,UsageSituation = '$UsageSituation'
       ,Changer = '$Changer'
       ,UpdateDate = '$UpdateDate'
       WHERE

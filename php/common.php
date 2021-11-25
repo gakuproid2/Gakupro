@@ -107,7 +107,7 @@ class common
     WHERE
     Authority >= $Authority
     AND
-    UsageFlag > 0
+    UsageSituation > 0
     ";
     //クラスの中の関数の呼び出し
     $items = $obj->plural($SQL);

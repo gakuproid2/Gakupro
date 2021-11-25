@@ -1,5 +1,4 @@
-.DataInfoTable{
-  min-width:100px;
+.DataInfoTable{  
   border-collapse:separate;
   border-spacing: 0;
 }
@@ -45,4 +44,49 @@
 
 .DataInfoTable tr:last-child td:last-child {
   border-radius: 0 0 5px 0;
+}
+
+.ModalButton{  
+  border: none;  /* 枠線を消す */
+  outline: none; /* クリックしたときに表示される枠線を消す */
+  background: transparent; /* 背景の灰色を消す */
+}
+
+.fa-edit{
+  color: green;
+  margin: 0px 30px 0px 0px;
+  font-size:1.5em; /*1.5倍にする*/
+}
+
+.fa-thumbs-down{
+  color: red;
+  margin: 0px 5px 0px 5px;
+  font-size:1.5em; /*1.5倍にする*/
+}
+
+.fa-thumbs-up{
+  color: blue;
+  margin: 0px 5px 0px 5px;
+  font-size:1.5em; /*1.5倍にする*/
+}
+
+
+a.btn--red.btn--cubic {
+  background-color: rgb(206, 247, 204);
+  border-bottom: 5px solid #37e640;  
+}
+
+a.btn--red.btn--cubic:hover {
+  margin-top: 3px;
+  border-bottom: 2px solid #37e640;  
+}
+
+a.btn--radius {
+  border-radius: 100vh;
+}
+
+.fa-position-right {
+  position: absolute;
+  top: calc(50% - .5em);
+  right: 1rem;
 }

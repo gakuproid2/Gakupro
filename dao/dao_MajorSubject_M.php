@@ -13,11 +13,11 @@ class dao_MajorSubject_M {
     SELECT
     School_CD
     ,School_Name
-    ,UsageFlag
+    ,UsageSituation
     FROM
     School_m
     WHERE
-    UsageFlag = 1;
+    UsageSituation = 1;
     ";
     
     //クラスの中の関数の呼び出し
@@ -40,7 +40,7 @@ class dao_MajorSubject_M {
     ,majorsub.majorsubject_name AS majorsubject_name
     ,majorsub.studyPeriod AS studyPeriod
     ,majorsub.remarks AS remarks
-    ,majorsub.UsageFlag AS UsageFlag
+    ,majorsub.UsageSituation AS UsageSituation
     FROM
     majorsubject_m AS majorsub
     INNER JOIN
@@ -100,7 +100,7 @@ class dao_MajorSubject_M {
     $MajorSubject_Name = $info['MajorSubject_Name'];
     $StudyPeriod = $info['StudyPeriod'];
     $Remarks = $info['Remarks'];
-    $UsageFlag = $info['UsageFlag'];
+    $UsageSituation = $info['UsageSituation'];
     $Changer = $info['Changer'];
     $UpdateDate = $info['UpdateDate'];
     
@@ -119,7 +119,7 @@ class dao_MajorSubject_M {
       ,MajorSubject_Name
       ,StudyPeriod
       ,Remarks
-      ,UsageFlag
+      ,UsageSituation
       ,Changer
       ,UpdateDate
       )VALUES(
@@ -128,7 +128,7 @@ class dao_MajorSubject_M {
       ,'$MajorSubject_Name'
       ,'$StudyPeriod'
       ,'$Remarks'
-      ,'$UsageFlag'
+      ,'$UsageSituation'
       ,'$Changer'
       ,'$UpdateDate'); ";
     } else if($branch == 2) {    
@@ -139,7 +139,7 @@ class dao_MajorSubject_M {
       MajorSubject_Name = '$MajorSubject_Name'
       ,StudyPeriod = '$StudyPeriod'
       ,Remarks = '$Remarks'
-      ,UsageFlag = '$UsageFlag'
+      ,UsageSituation = '$UsageSituation'
       ,Changer = '$Changer'
       ,UpdateDate = '$UpdateDate'
       WHERE

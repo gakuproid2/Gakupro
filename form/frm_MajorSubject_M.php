@@ -56,16 +56,16 @@ if (isset($_POST["Remarks"])) {
 } else {
   $Remarks = '';
 };
-if (isset($_POST["UsageFlag"])) {
-  $UsageFlag = $_POST["UsageFlag"];
+if (isset($_POST["UsageSituation"])) {
+  $UsageSituation = $_POST["UsageSituation"];
 } else {
-  $UsageFlag = 0;
+  $UsageSituation = 0;
 };
 
 if (isset($_POST["DataChange"])) {
 
   $info = array(
-    'School_CD' => $School_CD, 'MajorSubject_CD' => $MajorSubject_CD, 'MajorSubject_Name' => $MajorSubject_Name, 'StudyPeriod' => $StudyPeriod, 'Remarks' => $Remarks, 'UsageFlag' => $UsageFlag, 'Changer' => $_SESSION["Staff_ID"], 'UpdateDate' => date("Y-m-d H:i:s")
+    'School_CD' => $School_CD, 'MajorSubject_CD' => $MajorSubject_CD, 'MajorSubject_Name' => $MajorSubject_Name, 'StudyPeriod' => $StudyPeriod, 'Remarks' => $Remarks, 'UsageSituation' => $UsageSituation, 'Changer' => $_SESSION["Staff_ID"], 'UpdateDate' => date("Y-m-d H:i:s")
   );
 
   //データ変更種類に種別  1=登録、2=更新、3=論理削除
@@ -118,7 +118,7 @@ foreach ($Data_Table as $val) {
   <td>" . $val['studyPeriod'] . "</td>
   <td>" . $val['remarks'] . "</td>";
 
-  if ($val['UsageFlag'] == 0) {
+  if ($val['UsageSituation'] == 0) {
     $Table .= " <td>×</td>";
   } else {
     $Table .= " <td>〇</td>";
@@ -144,7 +144,7 @@ if ($School_CD > 0) {
     <p>専攻名：<input type="text" id='MajorSubject_Name' name="MajorSubject_Name" value='<?php echo $MajorSubject_Name; ?>' autocomplete="off"></p>
     <p>在学期間：<input type="text" id='StudyPeriod' class='StudyPeriod' name="StudyPeriod" value='<?php echo $StudyPeriod; ?>' placeholder="ヶ月" autocomplete="off"></p>
     <p>備考：<input type="text" id='Remarks' name="Remarks" value='<?php echo $Remarks; ?>' autocomplete="off"></p>
-    <p>利用フラグ：<input type="checkbox" id="chk_UsageFlag" name="UsageFlag" value="1" checked="checked"></p>
+    <p>利用フラグ：<input type="checkbox" id="chk_UsageSituation" name="UsageSituation" value="1" checked="checked"></p>
 
     <button class="btn_Insert" id="btn_Insert" name="DataChange" value="1">登録</button>
     <button class="btn_Update" id="btn_Update" name="DataChange" value="2">更新</button>
@@ -181,12 +181,12 @@ if ($School_CD > 0) {
     var Remarks = $(this).children('td')[5].innerText;
     $("#Remarks").val(Remarks);
 
-    var UsageFlag = $(this).children('td')[6].innerText;
+    var UsageSituation = $(this).children('td')[6].innerText;
 
-    if (UsageFlag == '〇') {
-      $("#chk_UsageFlag").prop('checked', true);
+    if (UsageSituation == '〇') {
+      $("#chk_UsageSituation").prop('checked', true);
     } else {
-      $("#chk_UsageFlag").prop('checked', false);
+      $("#chk_UsageSituation").prop('checked', false);
     }
 
     $("#btn_Insert").hide();

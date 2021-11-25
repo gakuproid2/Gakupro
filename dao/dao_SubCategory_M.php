@@ -16,7 +16,7 @@
       ,main.MainCategory_Name AS MainCategory_Name 
       ,sub.SubCategory_CD AS SubCategory_CD
       ,sub.SubCategory_Name AS SubCategory_Name
-      ,sub.UsageFlag AS UsageFlag
+      ,sub.UsageSituation AS UsageSituation
       FROM
       SubCategory_m AS sub
       INNER JOIN
@@ -25,7 +25,7 @@
       sub.MainCategory_CD = main.MainCategory_CD
       WHERE 1 = 1
       AND
-      main.UsageFlag = 1    
+      main.UsageSituation = 1    
       ";
 
       if ($MainCategory_CD > 0) {
@@ -74,7 +74,7 @@
       $MainCategory_CD = $info['MainCategory_CD'];
       $SubCategory_CD = $info['SubCategory_CD'];
       $SubCategory_Name = $info['SubCategory_Name'];
-      $UsageFlag = $info['UsageFlag'];
+      $UsageSituation = $info['UsageSituation'];
       $Changer = $info['Changer'];
       $UpdateDate = $info['UpdateDate'];
 
@@ -91,14 +91,14 @@
         MainCategory_CD
         ,SubCategory_CD
         ,SubCategory_Name
-        ,UsageFlag
+        ,UsageSituation
         ,Changer
         ,UpdateDate
         )VALUES(
         '$MainCategory_CD'
         ,'$SubCategory_CD'
         ,'$SubCategory_Name'
-        ,'$UsageFlag'
+        ,'$UsageSituation'
         ,'$Changer'
         ,'$UpdateDate'); ";
       } else if ($branch == 2) {
@@ -108,7 +108,7 @@
         gakupro.SubCategory_m 
         SET 
         SubCategory_Name = '$SubCategory_Name'
-        ,UsageFlag = '$UsageFlag'
+        ,UsageSituation = '$UsageSituation'
         ,Changer = '$Changer'
         ,UpdateDate = '$UpdateDate'
         WHERE

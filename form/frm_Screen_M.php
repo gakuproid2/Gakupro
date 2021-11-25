@@ -30,9 +30,9 @@
   //ポストされた確認する。
   if (count($_POST) > 1) {
     
-    $UsageFlag = 0;
-    if (isset($_POST["UsageFlag"])) {
-      $UsageFlag = 1;
+    $UsageSituation = 0;
+    if (isset($_POST["UsageSituation"])) {
+      $UsageSituation = 1;
     };
 
     $info = array(
@@ -40,7 +40,7 @@
       'Screen_Name' => $_POST["Screen_Name"],
       'Screen_Path' => $_POST["Screen_Path"],
       'Authority' => $_POST["Authority"],
-      'UsageFlag' => $UsageFlag,
+      'UsageSituation' => $UsageSituation,
       'Changer' => $_SESSION["Staff_ID"],
       'UpdateDate' => date("Y-m-d H:i:s")
     );
@@ -89,7 +89,7 @@
     "
     ;
 
-    if ($val['UsageFlag'] == 0) {
+    if ($val['UsageSituation'] == 0) {
       $Table .= " <td>×</td>";
     } else {
       $Table .= " <td>〇</td>";
@@ -105,7 +105,7 @@
     <p>画面名：<input type="text" id="Screen_Name" name="Screen_Name" autocomplete="off"></p>
     <p>画面パス：<input type="text" id="Screen_Path" name="Screen_Path" autocomplete="off"></p>
     <p>権限選択：<select id='Authority' name='Authority'><?php echo $PullDown; ?></select></p>
-    <p>利用フラグ：<input type="checkbox" id="chk_UsageFlag" name="UsageFlag" value="1" checked="checked"></p>
+    <p>利用フラグ：<input type="checkbox" id="chk_UsageSituation" name="UsageSituation" value="1" checked="checked"></p>
 
     <button class="btn_Insert" id="btn_Insert" name="Insert" value="1">登録</button>
     <button class="btn_Update" id="btn_Update" name="Update" value="2">更新</button>
@@ -152,12 +152,12 @@
     var Authority = $(this).children('td')[3].innerText;
     $("#Authority").val(Authority);
 
-    var UsageFlag = $(this).children('td')[5].innerText;
+    var UsageSituation = $(this).children('td')[5].innerText;
 
-    if (UsageFlag == '〇') {
-      $("#chk_UsageFlag").prop('checked', true);
+    if (UsageSituation == '〇') {
+      $("#chk_UsageSituation").prop('checked', true);
     } else {
-      $("#chk_UsageFlag").prop('checked', false);
+      $("#chk_UsageSituation").prop('checked', false);
     }
 
     $("#btn_Insert").hide();

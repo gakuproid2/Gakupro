@@ -33,9 +33,9 @@
   //ポストされた確認する。
   if (count($_POST) > 0) {
 
-    $UsageFlag = 0;
-    if (isset ($_POST["UsageFlag"])){
-      $UsageFlag = 1;
+    $UsageSituation = 0;
+    if (isset ($_POST["UsageSituation"])){
+      $UsageSituation = 1;
     };
 
     //名前の結合
@@ -50,7 +50,7 @@
       'LoginID' => $_POST["LoginID"],
       'Password' => $_POST["Password"],
       'Authority' => $_POST["Authority"],
-      'UsageFlag' => $UsageFlag,
+      'UsageSituation' => $UsageSituation,
       'Changer' => $_SESSION["Staff_ID"],
       'UpdateDate' => date("Y-m-d H:i:s")
     );
@@ -96,7 +96,7 @@
     <td>" . $val['Password']." </td>
     <td>" . $val['Authority']." </td>";
   
-    if ($val['UsageFlag'] == 0) {
+    if ($val['UsageSituation'] == 0) {
       $Table .=" <td>×</td>";
     } else {
       $Table .=" <td>〇</td>";
@@ -125,7 +125,7 @@
     <p>ログインID：<input type="text" id="LoginID" name="LoginID" autocomplete="off"></p>
     <p>パスワード：<input type="text" id="Password" name="Password" autocomplete="off"></p>
     <p>権限：<select id="Authority" name="Authority"><?php echo $PullDown; ?></select></p>
-    <p>利用フラグ：<input type="checkbox" id="chk_UsageFlag" name="UsageFlag" value="1" checked="checked"></p>
+    <p>利用フラグ：<input type="checkbox" id="chk_UsageSituation" name="UsageSituation" value="1" checked="checked"></p>
 
     <button class="btn_Insert" id="btn_Insert" name="Insert" value="1">登録</button>
     <button class="btn_Update" id="btn_Update" name="Update" value="2">更新</button>
@@ -191,12 +191,12 @@
       $("#Authority").val(URL);
 
       //利用フラグ
-      var UsageFlag = $(this).children('td')[7].innerText;
+      var UsageSituation = $(this).children('td')[7].innerText;
 
-    if (UsageFlag == '〇') {
-      $("#chk_UsageFlag").prop('checked', true);
+    if (UsageSituation == '〇') {
+      $("#chk_UsageSituation").prop('checked', true);
     } else {
-      $("#chk_UsageFlag").prop('checked', false);
+      $("#chk_UsageSituation").prop('checked', false);
     }
 
     $("#btn_Insert").hide();

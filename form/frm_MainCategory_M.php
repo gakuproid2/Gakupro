@@ -26,21 +26,16 @@ $JS_Info = $common->Read_JSconnection();
 
 if (isset($_POST["MainCategory_CD"])) {$MainCategory_CD = $_POST["MainCategory_CD"];} else {$MainCategory_CD = 0;};
 if (isset($_POST["MainCategory_Name"])) {$MainCategory_Name = $_POST["MainCategory_Name"];} else {$MainCategory_Name = '';};
+if (isset($_POST["UsageSituation"])) {$UsageSituation = 1;} else {$UsageSituation = 0;};
 
 //ポストされた確認する。
 if (count($_POST) > 1) {
 
-  $UsageFlag = 0;
-  if (isset($_POST["UsageFlag"])) {
-    $UsageFlag = 1;
-  };
-
+ 
   $info = array(
-    'MainCategory_CD' => $_POST["MainCategory_CD"],
-    'MainCategory_Name' => $_POST["MainCategory_Name"],
-    'UsageFlag' => $UsageFlag,
-    'Changer' => $_SESSION["Staff_ID"],
-    'UpdateDate' => date("Y-m-d H:i:s")
+    'MainCategory_CD' => $MainCategory_CD,
+    'MainCategory_Name' => $MainCategory_Name,
+    'UsageSituation' => $UsageSituation,    
   );
 
   $Result = "";
@@ -50,7 +45,7 @@ if (count($_POST) > 1) {
     $Result = $dao_MainCategory_M->DataChange($info, 1);
   } else if (isset($_POST['Update'])) {
     $Result = $dao_MainCategory_M->DataChange($info, 2);
-  } else if (isset($_POST['delete'])) {
+  } else if (isset($_POST['ChangeUsageSituation'])) {
     $Result = $dao_MainCategory_M->DataChange($info, 3);
   }
 
@@ -58,8 +53,6 @@ if (count($_POST) > 1) {
   exit(); //optional
 }
 
-//MainCategory_MのMaxCD取得処理
-$Max_CD = $dao_MainCategory_M->Get_MaxCD();
 
 $Data_Table = $dao_MainCategory_M->Get_MainCategory_M();
 
@@ -69,11 +62,18 @@ $Table = "
 <tr>
   <th>大分類コード</th>
   <th>大分類名</th>
-  <th></th>
-  <th></th>
+  <th></th>  
 </tr>
 ";
-foreach ($Data_Table as $val) {
+foreach ($Data_Table as $val) {  
+
+  if($val['UsageSituation']==0){
+    $IconType = "<i class='far fa-thumbs-down'></i><i class='fas fa-arrow-right'></i><i class='far fa-thumbs-up'></i>";    
+    $processingtype ="3";
+  }else{
+    $IconType = "<i class='far fa-thumbs-up'></i><i class='fas fa-arrow-right'></i><i class='far fa-thumbs-down'></i>";
+    $processingtype ="4";
+  }
 
   $Table .=
   "
@@ -81,16 +81,19 @@ foreach ($Data_Table as $val) {
     <td>" . $val['MainCategory_CD'] . "</td>
     <td>" . $val['MainCategory_Name'] . " </td>
     <td>
-      <button class='' data-bs-toggle='modal' data-bs-target='#InfoModal' 
+      <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#UpdateModal' 
+      data-maincd='" . $val['MainCategory_CD'] . "'
+      data-mainname='" . $val['MainCategory_Name'] . "'        
+      data-processingtype='2'>
+      <i class='far fa-edit'></i>
+      </button> 
+   
+      <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#ChangeUsageSituationModal'
       data-maincd='" . $val['MainCategory_CD'] . "'
       data-mainname='" . $val['MainCategory_Name'] . "'
-      data-UsageFlag='" . $val['UsageFlag'] . "'><i class='far fa-edit'></i></button>
-    </td>
-    <td>    
-      <button class='' data-bs-toggle='modal' data-bs-target='#deleteModal'
-      data-maincd='" . $val['MainCategory_CD'] . "'
-      data-mainname='" . $val['MainCategory_Name'] . "'
-      data-UsageFlag='" . $val['UsageFlag'] . "' ><i class='far fa-times-circle'></i></button>   
+      data-processingtype='" . $processingtype . "'>
+      " . $IconType . "              
+      </button>         
     </td>
   <tr>
   "
@@ -105,28 +108,60 @@ $Table .= "</table>";
 
 <body>
 
+<a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
+
+
   <?php echo $Table; ?>
 
-  <!-- データ詳細Modal -->
-  <div class="modal fade" id="InfoModal" tabindex="-1" aria-labelledby="InfoModalLabel" aria-hidden="true">  
+    <!-- 登録用Modal -->
+    <div class="modal fade" id="InsertModal" tabindex="-1" aria-labelledby="InsertModalLabel" aria-hidden="true">  
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
 
         <div class="modal-header">
-          <h5 class="modal-title" id="InfoModalLabel">データ更新確認</h5>
+          <h5 class="modal-title" id="InsertModalLabel">登録確認</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">         
+
+          <div class="form-group row">
+            <label for="Insert_MainCategory_Name" class="col-md-3 col-form-label">大分類名</label>
+            <input type="text" name="Insert_MainCategory_Name" id="Insert_MainCategory_Name" value="" class="form-control col-md-3">
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+            <button type="button" class="btn btn-primary">登録</button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 更新用Modal -->
+  <div class="modal fade" id="UpdateModal" tabindex="-1" aria-labelledby="UpdateModalLabel" aria-hidden="true">  
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="UpdateModalLabel">データ更新確認</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
         <div class="modal-body">
 
           <div class="form-group row">
-            <label for="MainCategory_CD" class="col-md-3 col-form-label">大分類コード</label>
-            <input type="text" name="MainCategory_CD" id="MainCategory_CD" value="" class="form-control col-md-3" readonly>
+            <label for="Update_MainCategory_CD" class="col-md-3 col-form-label">大分類コード</label>
+            <input type="text" name="Update_MainCategory_CD" id="Update_MainCategory_CD" value="" class="form-control col-md-3" readonly>
           </div>
 
           <div class="form-group row">
-            <label for="MainCategory_Name" class="col-md-3 col-form-label">大分類名</label>
-            <input type="text" name="MainCategory_Name" id="MainCategory_Name" value="" class="form-control col-md-3">
+            <label for="Update_MainCategory_Name" class="col-md-3 col-form-label">大分類名</label>
+            <input type="text" name="Update_MainCategory_Name" id="Update_MainCategory_Name" value="" class="form-control col-md-3">
           </div>
 
           <div class="modal-footer">
@@ -140,22 +175,20 @@ $Table .= "</table>";
     </div>
   </div>
 
-
-
-
-  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="InfoModalLabel" aria-hidden="true">  
+  <!-- 利用状況更新用Modal -->
+  <div class="modal fade" id="ChangeUsageSituationModal" tabindex="-1" aria-labelledby="ChangeUsageSituationModalLabel" aria-hidden="true">  
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
 
         <div class="modal-header">
-          <h5 class="modal-title" id="InfoModalLabel">削除確認</h5>
+          <h5 class="modal-title" id="ChangeUsageSituationModalLabel">利用状況変更確認</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
         <div class="modal-body">
 
-          <p>大分類CD = <span id="del_MainCategory_CD"></span> | <span id="del_MainCategory_Name"></span></p>   
-          <p><span class="del_title">非表示</span>にしますか?</p>
+          <p>大分類CD = <span id="ChangeUsageSituation_MainCategory_CD"></span> | <span id="ChangeUsageSituation_MainCategory_Name"></span></p>   
+          <p><span id="ChangeUsageSituation_Message"></span></p>
 
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
@@ -187,21 +220,29 @@ $Table .= "</table>";
 
 
 
-  $('#InfoModal').on('show.bs.modal', function(e) {
+  $('#UpdateModal').on('show.bs.modal', function(e) {
     // イベント発生元
     let evCon = $(e.relatedTarget);
 
-    $('#MainCategory_CD').val(evCon.data('maincd'));
-    $('#MainCategory_Name').val(evCon.data('mainname'));
+    $('#Update_MainCategory_CD').val(evCon.data('maincd'));
+    $('#Update_MainCategory_Name').val(evCon.data('mainname'));
 
   });
 
-  $('#deleteModal').on('show.bs.modal', function(e) {
+  $('#ChangeUsageSituationModal').on('show.bs.modal', function(e) {
     // イベント発生元
     let evCon = $(e.relatedTarget);
 
-    $('#del_MainCategory_CD').html(evCon.data('maincd'));
-    $('#del_MainCategory_Name').html(evCon.data('mainname'));
+    var processingtype = evCon.data('processingtype');
+
+    if (processingtype == 3) {      
+      $('#ChangeUsageSituation_Message').html('データを利用可能にしますか？');
+    } else {      
+      $('#ChangeUsageSituation_Message').html('データ利用不可にしますか？');
+    }
+
+    $('#ChangeUsageSituation_MainCategory_CD').html(evCon.data('maincd'));
+    $('#ChangeUsageSituation_MainCategory_Name').html(evCon.data('mainname'));
 
   });
   
