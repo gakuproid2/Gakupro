@@ -1,16 +1,17 @@
 <?php
 
-  class dao_SubCategory_M{
+class dao_SubCategory_M
+{
 
-    //メインカテゴリーコードを条件にサブカテゴリーを取得する
-    function GET_SubCategory_m($MainCategory_CD){
-
-      //クラスファイルの読み込み
-      require_once '../dao/DB_Connection.php';
-      //クラスの生成
-      $DB_Connection = new connect();
-      //SQL文の発行
-      $SQL = "
+  //メインカテゴリーコードを条件にサブカテゴリーを取得する
+  function GET_SubCategory_m($MainCategory_CD)
+  {
+    //クラスファイルの読み込み
+    require_once '../dao/DB_Connection.php';
+    //クラスの生成
+    $DB_Connection = new connect();
+    //SQL文の発行
+    $SQL = "
       SELECT 
       sub.MainCategory_CD AS MainCategory_CD 
       ,main.MainCategory_Name AS MainCategory_Name 
@@ -28,64 +29,77 @@
       main.UsageSituation = 1    
       ";
 
-      if ($MainCategory_CD > 0) {
-        $SQL .= "
+    if ($MainCategory_CD > 0) {
+      $SQL .= "
         AND
         sub.MainCategory_CD ='$MainCategory_CD'";
-      }
+    }
 
-      $SQL .= "
+    $SQL .= "
       ORDER BY
       sub.MainCategory_CD 
       ,sub.SubCategory_CD
       ";
 
-      $items = $DB_Connection->select($SQL);
-      return $items;
-    }
+    $items = $DB_Connection->select($SQL);
+    return $items;
+  }
 
-    
-    function Get_MaxCD($MainCategory_CD){
 
-      //クラスファイルの読み込み
-      require_once '../dao/DB_Connection.php';
-      //クラスの生成
-      $DB_Connection = new connect();
-      //SQL文の発行
-      $SQL = " 
+  function Get_MaxCD($MainCategory_CD)
+  {
+
+    //クラスファイルの読み込み
+    require_once '../dao/DB_Connection.php';
+    //クラスの生成
+    $DB_Connection = new connect();
+    //SQL文の発行
+    $SQL = " 
       SELECT 
       IFNULL(MAX(SubCategory_CD),0)+1 AS Max_CD 
       FROM
       SubCategory_m
       WHERE
       MainCategory_CD = '$MainCategory_CD';";
-    
-      $items = $DB_Connection->select($SQL);
 
-      foreach ($items as $item_val) {
+    $items = $DB_Connection->select($SQL);
+
+    foreach ($items as $item_val) {
       $Max_CD = $item_val['Max_CD'];
-      }
-
-      return $Max_CD;
     }
 
-    function DataChange($info){
+    return $Max_CD;
+  }
 
-      $MainCategory_CD = $info['MainCategory_CD'];
-      $SubCategory_CD = $info['SubCategory_CD'];
-      $SubCategory_Name = $info['SubCategory_Name'];
-      $UsageSituation = $info['UsageSituation'];
-      $Changer = $info['Changer'];
-      $UpdateDate = $info['UpdateDate'];
+  function DataChange($info)
+  {
+    //クラスファイルの読み込み
+    require_once '../dao/DB_Connection.php';
+    //クラスの生成
+    $DB_Connection = new connect();
 
-      //クラスファイルの読み込み
-      require_once '../dao/DB_Connection.php';
-      //クラスの生成
-      $DB_Connection = new connect();
+    //1 = 登録、2 = 更新、3 = 利用可能に更新、 4 = 利用不可に更新
+    $ProcessingType = $info['ProcessingType'];
 
-      if ($branch == 1) {
+    if ($ProcessingType == 4) {
+      $UsageSituation = 0;
+    } else {
+      $UsageSituation = 1;
+    }
 
-        $SQL = " 
+    $MainCategory_CD = $info['MainCategory_CD'];
+    $SubCategory_CD = $info['SubCategory_CD'];
+    $SubCategory_Name = $info['SubCategory_Name'];
+    $Changer = $_SESSION["Staff_ID"];
+    $UpdateDate = date("Y-m-d H:i:s");
+
+
+    if ($ProcessingType == 1) {
+
+      //新規登録時はMaxID取得      
+      $SubCategory_CD = $this->Get_MaxCD($MainCategory_CD);
+
+      $SQL = " 
         INSERT INTO 
         gakupro.SubCategory_m (
         MainCategory_CD
@@ -101,14 +115,13 @@
         ,'$UsageSituation'
         ,'$Changer'
         ,'$UpdateDate'); ";
-      } else if ($branch == 2) {
+    } else if ($ProcessingType == 2) {
 
-        $SQL = "
+      $SQL = "
         UPDATE 
         gakupro.SubCategory_m 
         SET 
-        SubCategory_Name = '$SubCategory_Name'
-        ,UsageSituation = '$UsageSituation'
+        SubCategory_Name = '$SubCategory_Name'        
         ,Changer = '$Changer'
         ,UpdateDate = '$UpdateDate'
         WHERE
@@ -116,22 +129,23 @@
         AND
         SubCategory_CD = '$SubCategory_CD';
         ";
-      } else if ($branch == 3) {
+    } else if ($ProcessingType == 3 or $ProcessingType == 4) {
 
-        $SQL = "
-        DELETE FROM 
-        gakupro.SubCategory_m 
-        WHERE
-        MainCategory_CD = '$MainCategory_CD'
-        AND
-        SubCategory_CD = '$SubCategory_CD' ;
-        ";
-      }
-
-      //クラスの中の関数の呼び出し
-      $Result = $DB_Connection->pluralTransaction($SQL);
-
-      return $Result;
+      $SQL = "
+      UPDATE 
+      gakupro.SubCategory_m 
+      SET 
+      UsageSituation = '$UsageSituation'        
+      ,Changer = '$Changer'
+      ,UpdateDate = '$UpdateDate'
+      WHERE
+      MainCategory_CD = '$MainCategory_CD'
+      AND
+      SubCategory_CD = '$SubCategory_CD';
+      ";
     }
+
+    //クラスの中の関数の呼び出し true or false
+    return $DB_Connection->pluralTransaction($SQL);
   }
-?>
+}

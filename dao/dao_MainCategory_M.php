@@ -1,15 +1,17 @@
 <?php
 
-  class dao_MainCategory_M {
+class dao_MainCategory_M
+{
 
-    function Get_MainCategory_M(){
+  function Get_MainCategory_M()
+  {
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
     //クラスの生成
-    $DB_Connection=new connect();
+    $DB_Connection = new connect();
 
     //SELECT_SQL文の発行
-    $SQL ="
+    $SQL = "
     SELECT
     MainCategory_CD
     ,MainCategory_Name 
@@ -18,16 +20,17 @@
     MainCategory_m; ";
 
     //クラスの中の関数の呼び出し
-    $DataTable=$DB_Connection->select($SQL);
+    $DataTable = $DB_Connection->select($SQL);
     return $DataTable;
-    }
+  }
 
 
-  function Get_MaxCD(){
+  function Get_MaxCD()
+  {
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
     //クラスの生成
-    $DB_Connection=new connect();
+    $DB_Connection = new connect();
 
     //SELECT_SQL文の発行
     $SQL =  " 
@@ -37,43 +40,44 @@
     MainCategory_m ";
 
     //クラスの中の関数の呼び出し
-    $items=$DB_Connection->select($SQL);
+    $items = $DB_Connection->select($SQL);
 
-    foreach($items as $item_val){  
+    foreach ($items as $item_val) {
       $Max_CD = $item_val['Max_CD'];
-    } 
-    
+    }
+
     return $Max_CD;
-    }
+  }
 
-    function DataChange($info){
-
-    //1 = 登録、2 = 更新、3 = 利用可能に更新、 4 = 利用不可に更新
-    $ProcessingType = $info['ProcessingType'];
-
-    if($ProcessingType == 4){
-      $UsageSituation=0;
-    }else{
-      $UsageSituation=1;
-    }
-
-    $MainCategory_CD = $info['MainCategory_CD'];    
-    $MainCategory_Name = $info['MainCategory_Name'];    
-    $Changer = $_SESSION["Staff_ID"];
-    $UpdateDate = date("Y-m-d H:i:s");    
+  function DataChange($info)
+  {
 
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
     //クラスの生成
-    $DB_Connection=new connect();
+    $DB_Connection = new connect();
 
-    if($ProcessingType == 1) {
-      
+    //1 = 登録、2 = 更新、3 = 利用可能に更新、 4 = 利用不可に更新
+    $ProcessingType = $info['ProcessingType'];
+
+    if ($ProcessingType == 4) {
+      $UsageSituation = 0;
+    } else {
+      $UsageSituation = 1;
+    }
+
+    $MainCategory_CD = $info['MainCategory_CD'];
+    $MainCategory_Name = $info['MainCategory_Name'];
+    $Changer = $_SESSION["Staff_ID"];
+    $UpdateDate = date("Y-m-d H:i:s");
+
+    if ($ProcessingType == 1) {
+
       //新規登録時はMaxID取得      
       $MainCategory_CD = $this->Get_MaxCD();
 
-      $SQL = 
-      "
+      $SQL =
+        "
       INSERT INTO 
       gakupro.MainCategory_m (
       MainCategory_CD 
@@ -89,8 +93,7 @@
       ,'$UpdateDate'
       ); 
       ";
-
-    } else if($ProcessingType == 2) {
+    } else if ($ProcessingType == 2) {
 
       $SQL = "
       UPDATE 
@@ -101,10 +104,8 @@
       ,UpdateDate = '$UpdateDate'
       WHERE
       MainCategory_CD = $MainCategory_CD
-      ;"
-      ;
-
-    } else if($ProcessingType == 3 or $ProcessingType == 4) {     
+      ;";
+    } else if ($ProcessingType == 3 or $ProcessingType == 4) {
 
       $SQL = "
       UPDATE 
@@ -114,12 +115,10 @@
       ,Changer = '$Changer'
       ,UpdateDate = '$UpdateDate'
       WHERE
-      MainCategory_CD = $MainCategory_CD;"
-      ;
+      MainCategory_CD = $MainCategory_CD;";
     }
 
     //クラスの中の関数の呼び出し true or false
     return $DB_Connection->pluralTransaction($SQL);
-    }
   }
-?>
+}

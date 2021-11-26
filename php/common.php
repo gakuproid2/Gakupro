@@ -46,8 +46,8 @@ class common
         <meta charset='UTF-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1.0'>      
         <title>" . $Screen_Name . "</title>"
-          . $CssInfo .
-        "<div class ='Header'>
+      . $CssInfo .
+      "<div class ='Header'>
           <div class='Header_PullMenu'>
             <form name='pullForm'>
             <select name='pullMenu' id='' onChange='screenChange()'>
@@ -155,7 +155,7 @@ class common
 
   //css関連の管理  ＠追加する場合はInfo内に追記してください
   function Read_CssConnection()
-  { 
+  {
     //Webフォント
     //<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />   
     $Info = '            
@@ -168,5 +168,4 @@ class common
     ';
     return $Info;
   }
-
 }

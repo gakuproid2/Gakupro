@@ -1,3 +1,4 @@
+/* マスタ画面のtable設定 Start */
 .DataInfoTable{  
   border-collapse:separate;
   border-spacing: 0;
@@ -45,16 +46,33 @@
 .DataInfoTable tr:last-child td:last-child {
   border-radius: 0 0 5px 0;
 }
+/* マスタ画面のtable設定 End */
 
+
+/* モーダル内のボタン設定 Start */
 .ModalButton{  
-  border: none;  /* 枠線を消す */
+  border: none;
   outline: none; /* クリックしたときに表示される枠線を消す */
   background: transparent; /* 背景の灰色を消す */
 }
 
+.ModalButton:hover {
+  background-color: #cdf06d;
+  cursor: pointer;
+}
+.ModalButton.active {
+  background-color: #cdf06d;
+}
+
+.ModalButton.focus {
+  background-color: #cdf06d;
+}
+/* モーダル内のボタン設定 End */
+
+/* モーダル内のアイコン設定 Start */
 .fa-edit{
   color: green;
-  margin: 0px 30px 0px 0px;
+  margin: 0px 5px 0px 5px;
   font-size:1.5em; /*1.5倍にする*/
 }
 
@@ -69,8 +87,10 @@
   margin: 0px 5px 0px 5px;
   font-size:1.5em; /*1.5倍にする*/
 }
+/* モーダル内のアイコン設定 End */
 
 
+/* マスタ画面の新規登録ボタン設定 Start */
 a.btn--red.btn--cubic {
   background-color: rgb(206, 247, 204);
   border-bottom: 5px solid #37e640;  
@@ -90,3 +110,4 @@ a.btn--radius {
   top: calc(50% - .5em);
   right: 1rem;
 }
+/* マスタ画面の新規登録ボタン設定 End */
