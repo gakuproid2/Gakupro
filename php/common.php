@@ -169,15 +169,4 @@ class common
     return $Info;
   }
 
-  function NullCheck($TargetData, $SetValue)
-  {
-    $ReturnData = '';
-    if (isset($TargetData)) {
-      $ReturnData = $TargetData;
-    } else {
-      $ReturnData = $SetValue;
-    }
-
-    return $ReturnData;
-  }
 }

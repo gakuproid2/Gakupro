@@ -51,10 +51,16 @@
     //1 = 登録、2 = 更新、3 = 利用可能に更新、 4 = 利用不可に更新
     $ProcessingType = $info['ProcessingType'];
 
+    if($ProcessingType == 4){
+      $UsageSituation=0;
+    }else{
+      $UsageSituation=1;
+    }
+
     $MainCategory_CD = $info['MainCategory_CD'];    
     $MainCategory_Name = $info['MainCategory_Name'];    
     $Changer = $_SESSION["Staff_ID"];
-    $UpdateDate = date("Y-m-d H:i:s");
+    $UpdateDate = date("Y-m-d H:i:s");    
 
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
@@ -62,8 +68,8 @@
     $DB_Connection=new connect();
 
     if($ProcessingType == 1) {
-
-      $UsageSituation = 1;
+      
+      //新規登録時はMaxID取得      
       $MainCategory_CD = $this->Get_MaxCD();
 
       $SQL = 
@@ -98,13 +104,8 @@
       ;"
       ;
 
-    } else if($ProcessingType == 3 or $ProcessingType == 4) {
+    } else if($ProcessingType == 3 or $ProcessingType == 4) {     
 
-      if($ProcessingType == 3){
-        $UsageSituation=1;
-      }else{
-        $UsageSituation=2;
-      }
       $SQL = "
       UPDATE 
       gakupro.MainCategory_m 

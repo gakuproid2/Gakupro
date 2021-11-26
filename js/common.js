@@ -24,3 +24,26 @@ function originalpost(path, params, method = 'post') {
     document.body.appendChild(form);
     form.submit();
 }
+
+function ConfirmationMessage(TargetName,ProcessingType) {
+
+  var ConfirmationMessage;
+
+  if (ProcessingType == 1) {
+    ConfirmationMessage = TargetName + 'を登録しますか？';
+  }else if(ProcessingType == 2){
+    ConfirmationMessage = TargetName + 'を更新しますか？';
+  }else if(ProcessingType == 3){
+    ConfirmationMessage = TargetName + 'を利用可能にしますか？';
+  }else if(ProcessingType == 4){
+    ConfirmationMessage = TargetName + 'を利用不可にしますか？';
+  }
+
+  if (window.confirm(ConfirmationMessage)) {
+    return true;
+  } else {
+    return false;
+  }
+
+  
+}

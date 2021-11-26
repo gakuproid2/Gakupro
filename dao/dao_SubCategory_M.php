@@ -69,7 +69,7 @@
       return $Max_CD;
     }
 
-    function DataChange($info, $branch){
+    function DataChange($info){
 
       $MainCategory_CD = $info['MainCategory_CD'];
       $SubCategory_CD = $info['SubCategory_CD'];

@@ -33,7 +33,7 @@ if (isset($_POST["ProcessingType"])) {
   $info = array(
     'MainCategory_CD' => $MainCategory_CD,
     'MainCategory_Name' => $MainCategory_Name,    
-    'ProcessingType' => $_POST["ProcessingType"],
+    'ProcessingType' => $_POST["ProcessingType"]
   );
 
   $Result = $dao_MainCategory_M->DataChange($info);  
@@ -57,11 +57,9 @@ $Table = "
 foreach ($Data_Table as $val) {  
 
   if($val['UsageSituation']==0){
-    $IconType = "<i class='far fa-thumbs-down'></i><i class='fas fa-arrow-right'></i><i class='far fa-thumbs-up'></i>";    
-    $processingtype ="3";
+    $IconType = "<i class='far fa-thumbs-down'></i><i class='fas fa-arrow-right'></i><i class='far fa-thumbs-up'></i>";        
   }else{
-    $IconType = "<i class='far fa-thumbs-up'></i><i class='fas fa-arrow-right'></i><i class='far fa-thumbs-down'></i>";
-    $processingtype ="4";
+    $IconType = "<i class='far fa-thumbs-up'></i><i class='fas fa-arrow-right'></i><i class='far fa-thumbs-down'></i>";    
   }
 
   $Table .=
@@ -70,19 +68,21 @@ foreach ($Data_Table as $val) {
     <td>" . $val['MainCategory_CD'] . "</td>
     <td>" . $val['MainCategory_Name'] . " </td>
     <td>
+
       <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#UpdateModal' 
       data-maincd='" . $val['MainCategory_CD'] . "'
       data-mainname='" . $val['MainCategory_Name'] . "'        
-      data-processingtype='2'>
+      data-usage='" . $val['UsageSituation'] . "' >
       <i class='far fa-edit'></i>
       </button> 
    
       <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#ChangeUsageSituationModal'
       data-maincd='" . $val['MainCategory_CD'] . "'
       data-mainname='" . $val['MainCategory_Name'] . "'
-      data-processingtype='" . $processingtype . "'>
+      data-usage='" . $val['UsageSituation'] . "' >
       " . $IconType . "              
-      </button>         
+      </button>
+
     </td>
   <tr>
   "
@@ -97,7 +97,7 @@ $Table .= "</table>";
 
 <body>
 
-<a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal' data-processingtype='1'><i class='fas fa-plus-circle'></i>新規追加</a>
+<a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
 
   <?php echo $Table; ?>
 
@@ -175,12 +175,14 @@ $Table .= "</table>";
 
         <div class="modal-body">
 
-          <p>大分類CD = <span id="ChangeUsageSituation_MainCategory_CD"></span> | <span id="ChangeUsageSituation_MainCategory_Name"></span></p>   
-          <p><span id="ChangeUsageSituation_Message"></span></p>
+          <p>大分類CD = <span id="ChangeUsageSituation_MainCategory_CD"></span> | <span id="ChangeUsageSituation_MainCategory_Name"></span></p>             
+          <span id="ChangeUsageSituation_UsageSituation" hidden></span>             
+          <p><span id="ChangeUsageSituation_Message"></span></p>                
+          
 
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
-            <button type="button" class="btn btn-primary">削除</button>
+            <button type="button" class="btn btn-primary ModalChangeUsageSituationButton"><span id="ChangeUsageSituation_ButtonName"></span></button>
           </div>
 
         </div>
@@ -224,29 +226,40 @@ $Table .= "</table>";
     // イベント発生元
     let evCon = $(e.relatedTarget);
 
-    var processingtype = evCon.data('processingtype');
+    var UsageSituation = evCon.data('usage');
 
-    if (processingtype == 3) {      
-      $('#ChangeUsageSituation_Message').html('データを利用可能にしますか？');
+    
+    if (UsageSituation == 0) {      
+      $('#ChangeUsageSituation_Message').html('利用可能にしますか？');
+      $('#ChangeUsageSituation_ButtonName').html('利用可能にする');
     } else {      
-      $('#ChangeUsageSituation_Message').html('データ利用不可にしますか？');
+      $('#ChangeUsageSituation_Message').html('利用不可にしますか？');
+      $('#ChangeUsageSituation_ButtonName').html('利用不可にする');
     }
 
     $('#ChangeUsageSituation_MainCategory_CD').html(evCon.data('maincd'));
-    $('#ChangeUsageSituation_MainCategory_Name').html(evCon.data('mainname'));
+    $('#ChangeUsageSituation_MainCategory_Name').html(evCon.data('mainname'));    
+    
+    $('#ChangeUsageSituation_MainCategory_CD').val(evCon.data('maincd'));
+    $('#ChangeUsageSituation_MainCategory_Name').val(evCon.data('mainname'));    
+    $('#ChangeUsageSituation_UsageSituation').val(evCon.data('usage'));    
 
   });
   
   //登録ボタンクリック時
   $('.ModalInsertButton').on('click', function() {
     
+    var SelctProcessingType=1;
+
     //ポストするキーと値を格納
     var DataArray = {
-      ProcessingType: 1,
+      ProcessingType: SelctProcessingType,
       MainCategory_Name: $("#Insert_MainCategory_Name").val()
     };
 
     if (!ValueCheck(DataArray)) {exit;}
+
+    if (!ConfirmationMessage($("#Insert_MainCategory_Name").val(),SelctProcessingType)) {exit;}
 
     //common.jsに実装
     originalpost("frm_MainCategory_M.php", DataArray);
@@ -255,18 +268,46 @@ $Table .= "</table>";
    //更新ボタンクリック時
    $('.ModalUpdateButton').on('click', function() {
     
+    var SelctProcessingType=2;
+
     //ポストするキーと値を格納
     var DataArray = {
-      ProcessingType: 2,
+      ProcessingType: SelctProcessingType,
       MainCategory_CD: $("#Update_MainCategory_CD").val(),
       MainCategory_Name: $("#Update_MainCategory_Name").val()
     };
 
     if (!ValueCheck(DataArray)) {exit;}
 
+    if (!ConfirmationMessage('大分類コード:' + $("#Update_MainCategory_CD").val(),SelctProcessingType)) {exit;}
+
     //common.jsに実装
     originalpost("frm_MainCategory_M.php", DataArray);
   });
+
+   //利用状況変更ボタンクリック時
+   $('.ModalChangeUsageSituationButton').on('click', function() {
+    
+    var UsageSituation = $("#ChangeUsageSituation_UsageSituation").val();
+    
+    if(UsageSituation==0){
+      var SelctProcessingType=3;
+    }else{
+      var SelctProcessingType=4;
+    }
+    
+    if (!ConfirmationMessage($("#ChangeUsageSituation_MainCategory_Name").val(),SelctProcessingType)) {exit;}
+
+    //ポストするキーと値を格納
+    var DataArray = {
+      ProcessingType: SelctProcessingType,
+      MainCategory_CD: $("#ChangeUsageSituation_MainCategory_CD").val()      
+    };
+    
+    //common.jsに実装
+    originalpost("frm_MainCategory_M.php", DataArray);
+  });
+
 
   //登録、更新時の値チェック
   function ValueCheck(DataArray) {
