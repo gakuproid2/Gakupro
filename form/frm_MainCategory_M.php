@@ -24,6 +24,7 @@ $JS_Info = $common->Read_JSconnection();
 
 <?php
 
+//非post時は初期値を設定する。['']or[0]
 if (isset($_POST["MainCategory_CD"])) {
   $MainCategory_CD = $_POST["MainCategory_CD"];
 } else {
@@ -34,8 +35,9 @@ if (isset($_POST["MainCategory_Name"])) {
 } else {
   $MainCategory_Name = '';
 };
+//非post時は初期値を設定する。['']or[0] End--
 
-//DBアクセス関連の場合
+//データ更新処理実行時  Start--
 if (isset($_POST["ProcessingType"])) {
 
   $info = array(
@@ -49,9 +51,12 @@ if (isset($_POST["ProcessingType"])) {
   Header('Location: ' . $_SERVER['PHP_SELF']);
   exit();
 }
+//データ更新処理実行時  End--
 
 
 $Data_Table = $dao_MainCategory_M->Get_MainCategory_M();
+
+$Data_Count = count($Data_Table);
 
 //Table作成 Start
 $Table = "
@@ -59,7 +64,7 @@ $Table = "
 <tr>
   <th>大分類コード</th>
   <th>大分類名</th>
-  <th></th>  
+  <th>データ総数[".$Data_Count. "件]</th>
 </tr>
 ";
 foreach ($Data_Table as $val) {

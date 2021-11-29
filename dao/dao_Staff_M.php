@@ -2,7 +2,7 @@
 
 class dao_Staff_M {
 
-    function Get_Staff_M() {
+    function Get_Staff_M($Authority) {
         //クラスファイルの読み込み
         require_once '../dao/DB_Connection.php';
         //クラスの生成
@@ -11,17 +11,39 @@ class dao_Staff_M {
         //SQL文の発行
         $SQL ="
         SELECT
-        Staff_ID
-        ,Staff_Name
-        ,Staff_NameYomi
-        ,NickName
-        ,Login_ID
-        ,Password
-        ,Authority
-        ,UsageSituation
+        Staff_m.Staff_ID
+        ,Staff_m.Staff_Name
+        ,Staff_m.Staff_NameYomi
+        ,Staff_m.NickName
+        ,Staff_m.Login_ID
+        ,Staff_m.Password
+        ,Staff_m.TEL
+        ,Staff_m.MailAddress
+        ,Staff_m.Authority
+        ,SubCategory_m.SubCategory_Name AS AuthorityInfo
+        ,Staff_m.UsageSituation
         FROM
-        Staff_m; ";
-        
+        Staff_m        
+        INNER JOIN
+        SubCategory_m
+        ON
+        SubCategory_m.MainCategory_CD = 2
+        AND
+        SubCategory_m.SubCategory_CD = Staff_m.Authority
+        WHERE 1 = 1
+     
+        ";
+  
+      if ($Authority > 0) {
+        $SQL .= "
+        AND 
+        Staff_m.Authority ='$Authority'";
+      }
+  
+      $SQL .= "
+      ORDER BY 
+      Staff_m.Staff_ID;";
+
         //クラスの中の関数の呼び出し
         $DataTable=$DB_Connection->select($SQL);
         return $DataTable;
@@ -49,7 +71,7 @@ class dao_Staff_M {
         return $Max_CD;
     }
 
-    function DataChange($info,$branch){
+    function DataChange($info){
 
         $ID = $info['ID'];
         $Name = $info['Name'];

@@ -2,7 +2,7 @@
 
   class dao_Screen_M {
 
-    function Get_Screen_M(){
+    function Get_Screen_M($Authority){
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
     //クラスの生成
@@ -42,10 +42,20 @@
         )AS staff_m
      ON
      Screen_m.Changer = staff_m.Staff_ID
+     WHERE 1 = 1     
+     ";
 
-    ;
+    if ($Authority > 0) {      
+      $SQL .= "
+      AND
+      Screen_m.Authority >=$Authority";
+    }
+
+   
+    $SQL .= "
+    ORDER BY
+    Screen_m.Screen_ID       
     ";
-
     //クラスの中の関数の呼び出し
     $DataTable=$DB_Connection->select($SQL);
     return $DataTable;
@@ -75,47 +85,33 @@
     return $Max_CD;
     }
 
-    function Get_Authority(){
-       //クラスファイルの読み込み
-       require_once '../dao/DB_Connection.php';
-       //クラスの生成
-       $DB_Connection = new connect();
-       //SQL文の発行  
-       $SQL = "
-       SELECT 
-       MainCategory_CD 
-       ,SubCategory_CD 
-       ,SubCategory_Name 
-       ,UsageSituation
-       FROM
-       SubCategory_m
-       WHERE UsageSituation = 1
-       AND
-       MainCategory_CD = 2
-       ;
-       ";
- 
-       //クラスの中の関数の呼び出し
-       $items = $DB_Connection->select($SQL);
-       return $items;
-      }
+    function DataChange($info){
 
-    function DataChange($info,$branch){
+    //クラスファイルの読み込み
+    require_once '../dao/DB_Connection.php';
+    //クラスの生成
+    $DB_Connection = new connect();
+
+    //1 = 登録、2 = 更新、3 = 利用可能に更新、 4 = 利用不可に更新
+    $ProcessingType = $info['ProcessingType'];
+
+    if ($ProcessingType == 4) {
+      $UsageSituation = 0;
+    } else {
+      $UsageSituation = 1;
+    }    
 
     $Screen_ID = $info['Screen_ID'];
     $Screen_Name = $info['Screen_Name'];
     $Screen_Path = $info['Screen_Path'];
     $Authority = $info['Authority'];
-    $UsageSituation = $info['UsageSituation'];    
-    $Changer = $info['Changer'];
-    $UpdateDate = $info['UpdateDate'];
+    $Changer = $_SESSION["Staff_ID"];
+    $UpdateDate = date("Y-m-d H:i:s");
 
-    //クラスファイルの読み込み
-    require_once '../dao/DB_Connection.php';
-    //クラスの生成
-    $DB_Connection=new connect();
+    if ($ProcessingType == 1) {
 
-    if($branch == 1) {
+      //新規登録時はMaxID取得      
+      $SubCategory_CD = $this->Get_MaxCD();
 
       $SQL = "
       INSERT INTO 
@@ -123,22 +119,20 @@
       Screen_ID 
       ,Screen_Name 
       ,Screen_Path 
-      ,Authority
-      ,UsageSituation
+      ,Authority      
       ,Changer
       ,UpdateDate
       )VALUES( 
       '$Screen_ID'
       ,'$Screen_Name'
       ,'$Screen_Path'
-      ,'$Authority'
-      ,'$UsageSituation'
+      ,'$Authority'      
       ,'$Changer'
       ,'$UpdateDate'
 
       ); ";
 
-    } else if($branch == 2) {
+    } else if ($ProcessingType == 2) {
 
       $SQL = "
       UPDATE 
@@ -146,19 +140,22 @@
       SET 
       Screen_Name = '$Screen_Name'
       ,Screen_Path = '$Screen_Path'
-      ,Authority = '$Authority'
-      ,UsageSituation = '$UsageSituation'
+      ,Authority = '$Authority'      
       ,Changer = '$Changer'
       ,UpdateDate = '$UpdateDate'
       WHERE
       Screen_ID = $Screen_ID;
       ";
 
-    } else if($branch == 3) {
+    } else if ($ProcessingType == 3 or $ProcessingType == 4) {
 
       $SQL = "
-      DELETE FROM
+      UPDATE 
       gakupro.Screen_M 
+      SET 
+      UsageSituation = '$UsageSituation'      
+      ,Changer = '$Changer'
+      ,UpdateDate = '$UpdateDate'
       WHERE
       Screen_ID = $Screen_ID;
       ";
@@ -166,9 +163,8 @@
     }
 
     //クラスの中の関数の呼び出し
-    $items=$DB_Connection->plural($SQL);
-
-    return $items;
+    return $DB_Connection->pluralTransaction($SQL);
+   
     }
   }
 ?>

@@ -30,6 +30,7 @@ $JS_Info = $common->Read_JSconnection();
 
 <?php
 
+//非post時は初期値を設定する。['']or[0] Start--
 if (isset($_POST["MainCategory_CD"])) {
   $MainCategory_CD = $_POST["MainCategory_CD"];
 } else {
@@ -45,8 +46,9 @@ if (isset($_POST["SubCategory_Name"])) {
 } else {
   $SubCategory_Name = '';
 };
+//非post時は初期値を設定する。['']or[0] End--
 
-//DBアクセス関連の場合
+//データ更新処理実行時  Start--
 if (isset($_POST["ProcessingType"])) {
 
   $info = array(
@@ -60,8 +62,8 @@ if (isset($_POST["ProcessingType"])) {
 
   Header('Location: ' . $_SERVER['PHP_SELF']);
   exit(); //optional
-
 }
+//データ更新処理実行時  End--
 
 //メインカテゴリーのプルダウン作成する為
 $items = $dao_MainCategory_M->GET_MainCategory_m();
@@ -82,14 +84,16 @@ foreach ($items as $item_val) {
 //表示用Table作成用（メインカテゴリーコードで参照）
 $Data_Table = $dao_SubCategory_M->Get_SubCategory_M($MainCategory_CD);
 
-//Table作成 Start
+$Data_Count = count($Data_Table);
+
+//Table作成 Start--
 $Table = "
 <table class='DataInfoTable' id='DataInfoTable'>
 <tr>
   <th>大分類名</th>
   <th>中分類コード</th>
   <th>中分類名</th>
-  <th></th>  
+  <th>データ総数[".$Data_Count. "件]</th>
 </tr>
 ";
 foreach ($Data_Table as $val) {
@@ -131,7 +135,7 @@ foreach ($Data_Table as $val) {
 }
 
 $Table .= "</table>";
-//Table作成 End
+//Table作成 End--
 
 ?>
 

@@ -27,34 +27,43 @@
 <?php echo $HeaderInfo; ?>
 
 <?php 
-  //ポストされた確認する。
-  if (count($_POST) > 1) {
-    
-    $UsageSituation = 0;
-    if (isset($_POST["UsageSituation"])) {
-      $UsageSituation = 1;
-    };
+
+
+//非post時は初期値を設定する。['']or[0]
+if (isset($_POST["Screen_ID"])) {
+  $Screen_ID = $_POST["Screen_ID"];
+} else {
+  $Screen_ID = 0;
+};
+if (isset($_POST["Screen_Name"])) {
+  $Screen_Name = $_POST["Screen_Name"];
+} else {
+  $Screen_Name = '';
+};
+if (isset($_POST["Screen_Path"])) {
+  $Screen_Path = $_POST["Screen_Path"];
+} else {
+  $Screen_Path = '';
+};
+if (isset($_POST["Authority"])) {
+  $Authority = $_POST["Authority"];
+} else {
+  $Authority = 0;
+};
+//非post時は初期値を設定する。['']or[0] End--
+
+//データ更新処理実行時  Start--
+if (isset($_POST["ProcessingType"])) {
 
     $info = array(
-      'Screen_ID' => $_POST["Screen_ID"],
-      'Screen_Name' => $_POST["Screen_Name"],
-      'Screen_Path' => $_POST["Screen_Path"],
-      'Authority' => $_POST["Authority"],
-      'UsageSituation' => $UsageSituation,
-      'Changer' => $_SESSION["Staff_ID"],
-      'UpdateDate' => date("Y-m-d H:i:s")
+      'Screen_ID' => $Screen_ID,
+      'Screen_Name' => $Screen_Name,
+      'Screen_Path' => $Screen_Path,
+      'Authority' => $Authority,
+      'ProcessingType' => $_POST["ProcessingType"]
     );
 
-    $Result = "";
-
-    //登録、削除、更新の分岐
-    if (isset($_POST['Insert'])) {
-      $Result = $dao_Screen_M->DataChange($info, 1);
-    } else if (isset($_POST['Update'])) {
-      $Result = $dao_Screen_M->DataChange($info, 2);
-    } else if (isset($_POST['Delete'])) {
-      $Result = $dao_Screen_M->DataChange($info, 3);
-    }
+    $Result = $dao_Screen_M->DataChange($info);
 
     Header('Location: ' . $_SERVER['PHP_SELF']);
     exit(); //optional
@@ -62,182 +71,357 @@
 
   //権限のプルダウン作成する為
   $items = $dao_SubCategory_M->GET_SubCategory_m(2);
-  //0行目
+
   $PullDown = "<option value = 0 >選択してください</option>";
   foreach ($items as $item_val) {
 
-    $PullDown .= "<option value = " . $item_val['SubCategory_CD'] . '>'. $item_val['SubCategory_Name'] . "</option>";
-  }
+    $PullDown .= "<option value = " . $item_val['SubCategory_CD'];
 
-  //Screen_MのMaxCD取得処理
-  $Max_CD = $dao_Screen_M->Get_MaxCD();
-
-  $Data_Table = $dao_Screen_M->Get_Screen_M();
-
-  $Table = "";
-  foreach ($Data_Table as $val) {
-
-    $Table .=
-    "<tr class='Table'>
-      <td>" . $val['Screen_ID'] . "</td>
-      <td>" . $val['Screen_Name'] . " </td>
-      <td>" . $val['Screen_Path'] . " </td>
-      <td style=display:none>" . $val['Authority'] . "</td>      
-      <td>" . $val['AuthorityInfo'] . " </td>
-      <td>" . $val['ChangerName'] . " </td>
-      <td>" . $val['UpdateDate'] . " </td>
-    "
-    ;
-
-    if ($val['UsageSituation'] == 0) {
-      $Table .= " <td>×</td>";
+    if ($Authority >= $item_val['SubCategory_CD']) {
+      $PullDown .= " selected>";
     } else {
-      $Table .= " <td>〇</td>";
+      $PullDown .= " >";
     }
-
-    $Table .= "</tr>";
+    $PullDown  .= $item_val['SubCategory_Name'] . "以上</option>";
   }
+  
+
+$Data_Table = $dao_Screen_M->Get_Screen_M($Authority);
+
+$Data_Count = count($Data_Table);
+
+//Table作成 Start
+$Table = "
+<table class='DataInfoTable'>
+<tr>
+  <th>画面ID</th>
+  <th>画面名</th>
+  <th>利用可能権限</th>
+  <th>データ総数[".$Data_Count. "件]</th>
+</tr>
+";
+foreach ($Data_Table as $val) {
+
+  if ($val['UsageSituation'] == 0) {
+    $IconType = "<i class='far fa-thumbs-down'></i><i class='fas fa-arrow-right'></i><i class='far fa-thumbs-up'></i>";
+  } else {
+    $IconType = "<i class='far fa-thumbs-up'></i><i class='fas fa-arrow-right'></i><i class='far fa-thumbs-down'></i>";
+  }
+
+  $Table .=
+    "
+  <tr>
+    <td>" . $val['Screen_ID'] . "</td>    
+    <td><a href='" . $val['Screen_Path'] . "' style='text-decoration:none;'>" . $val['Screen_Name'] . "</a></td>
+    <td>" . $val['AuthorityInfo'] ." </td>
+    <td>
+
+      <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#UpdateModal' 
+      data-screenid='" . $val['Screen_ID'] . "'
+      data-screenname='" . $val['Screen_Name'] . "'        
+      data-authority='" . $val['Authority'] . "'
+      data-usage='" . $val['UsageSituation'] . "' >
+      <i class='far fa-edit'></i>
+      </button> 
+   
+      <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#ChangeUsageSituationModal'
+      data-screenid='" . $val['Screen_ID'] . "'
+      data-screenname='" . $val['Screen_Name'] . "'
+      data-authority='" . $val['Authority'] . "'
+      data-usage='" . $val['UsageSituation'] . "' >
+      " . $IconType . "              
+      </button>
+
+    </td>
+  </tr>
+  ";
+}
+
+$Table .= "</table>";
+//Table作成 End
 ?>
+
 <body>
+<div>
+    <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
+    <a>閲覧可能権限：<select name='Authority' id='Authority'><?php echo $PullDown; ?></select></a>
+  </div>
+  <?php echo $Table; ?>
 
-  <form action="frm_Screen_M.php" method="post">
-    <p>画面ID：<input type="text" id="Screen_ID" name="Screen_ID" value='<?php echo $Max_CD; ?>' readonly> </p>
-    <p>画面名：<input type="text" id="Screen_Name" name="Screen_Name" autocomplete="off"></p>
-    <p>画面パス：<input type="text" id="Screen_Path" name="Screen_Path" autocomplete="off"></p>
-    <p>権限選択：<select id='Authority' name='Authority'><?php echo $PullDown; ?></select></p>
-    <p>利用フラグ：<input type="checkbox" id="chk_UsageSituation" name="UsageSituation" value="1" checked="checked"></p>
+  <!-- 登録用Modal -->
+  <div class="modal fade" id="InsertModal" tabindex="-1" aria-labelledby="InsertModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
 
-    <button class="btn_Insert" id="btn_Insert" name="Insert" value="1">登録</button>
-    <button class="btn_Update" id="btn_Update" name="Update" value="2">更新</button>
-    <button class="btn_Delete" id="btn_Delete" name="Delete" value="3">削除</button>
-    <button class="btn_Clear" id="btn_Clear" name="Clear" value="4">クリア</button>
-  </form>
+        <div class="modal-header">
+          <h5 class="modal-title" id="InsertModalLabel">登録確認</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
 
-  <table border='1'>
-    <tr>
-    <th>画面ID</th>
-    <th>画面名</th>
-    <th>画面パス</th>
-    <th>操作権限</th>
-    <th>最終更新者</th>
-    <th>最終更新日</th>
-    <th>利用フラグ</th>
-    </tr>
-    <?php echo $Table; ?>
-  </table>
+        <div class="modal-body">         
+
+          <div class="form-group row">
+            <label for="Insert_Screen_Name" class="col-md-3 col-form-label">画面名</label>
+            <input type="text" name="Insert_Screen_Name" id="Insert_Screen_Name" value="" class="form-control col-md-3">
+          </div>
+
+          <div class="form-group row">
+            <label for="Insert_Screen_Path" class="col-md-3 col-form-label">URL</label>
+            <input type="text" name="Insert_Screen_Path" id="Insert_Screen_Path" value="" class="form-control col-md-3">
+          </div>
+
+          <div class="form-group row">
+            <label for="Insert_Authority" class="col-md-3 col-form-label">利用可能権限</label>
+            <select name='Insert_Authority' id='Insert_Authority' class="form-control col-md-3"><?php echo $PullDown; ?></select>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+            <button type="button" class="btn btn-primary ModalInsertButton">登録</button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
 
 
-  <?php echo $JS_Info?>
+  <!-- 更新用Modal -->
+  <div class="modal fade" id="UpdateModal" tabindex="-1" aria-labelledby="UpdateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="UpdateModalLabel">更新確認</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          
+     
+          <div class="form-group row">
+            <label for="Update_Screen_ID" class="col-md-3 col-form-label">画面ID</label>
+            <input type="text" name="Update_Screen_ID" id="Update_Screen_ID" value="" class="form-control col-md-3" readonly>
+          </div>
+
+          <div class="form-group row">
+            <label for="Update_Screen_Name" class="col-md-3 col-form-label">画面名</label>
+            <input type="text" name="Update_Screen_Name" id="Update_Screen_Name" value="" class="form-control col-md-3">
+          </div>
+
+          <div class="form-group row">
+            <label for="Update_Authority" class="col-md-3 col-form-label">利用可能権限</label>
+            <select name='Update_Authority' id='Update_Authority' class="form-control col-md-3"><?php echo $PullDown; ?></select>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+            <button type="button" class="btn btn-primary ModalUpdateButton">更新</button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 利用状況更新用Modal -->
+  <div class="modal fade" id="ChangeUsageSituationModal" tabindex="-1" aria-labelledby="ChangeUsageSituationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="ChangeUsageSituationModalLabel">利用状況変更確認</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+
+          <p>画面ID = <span id="ChangeUsageSituation_Screen_ID"></span> | 画面名 =<span id="ChangeUsageSituation_Screen_Name"></span></p>
+
+          <span id="ChangeUsageSituation_Screen_ID" hidden></span>
+          <span id="ChangeUsageSituation_Screen_Name" hidden></span>
+          <span id="ChangeUsageSituation_UsageSituation" hidden></span>
+          <p><span id="ChangeUsageSituation_Message"></span></p>
+
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+            <button type="button" class="btn btn-primary ModalChangeUsageSituationButton"><span id="ChangeUsageSituation_ButtonName"></span></button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+  <?php echo $JS_Info ?>
 </body>
 
 <script>
-  //画面起動時の処理
-  $(window).on('load', function(event) {
-    $("#btn_Insert").show();
-    $("#btn_Update").hide();
-    $("#btn_Delete").hide();
+
+document.getElementById("Authority").onchange = function() {
+
+//ポストするキーと値を格納
+var DataArray = {
+  Authority: $("#Authority").val(),
+};
+
+//common.jsに実装
+originalpost("frm_Screen_M.php", DataArray);
+
+};
+  //登録用モーダル表示時
+  $('#InsertModal').on('show.bs.modal', function(e) {
+
+    $('#Insert_Screen_Name').val('');
+
   });
 
-  //テーブルクリック時
-  $('.Table').on('click', function() {
-    var Screen_ID = $(this).children('td')[0].innerText;
-    $("#Screen_ID").val(Screen_ID);
+  //更新用モーダル表示時
+  $('#UpdateModal').on('show.bs.modal', function(e) {
+    // イベント発生元
+    let evCon = $(e.relatedTarget);
 
-    var Screen_Name = $(this).children('td')[1].innerText;
-    $("#Screen_Name").val(Screen_Name);
+    $('#Update_Screen_ID').val(evCon.data('screenid'));
+    $('#Update_Screen_Name').val(evCon.data('screenname'));    
+    $('#Update_Authority').val(evCon.data('authority'));
 
-    var Screen_Path = $(this).children('td')[2].innerText;
-    $("#Screen_Path").val(Screen_Path);
+  });
 
-    var Authority = $(this).children('td')[3].innerText;
-    $("#Authority").val(Authority);
+  //利用状況変更モーダル表示時
+  $('#ChangeUsageSituationModal').on('show.bs.modal', function(e) {
+    // イベント発生元
+    let evCon = $(e.relatedTarget);
 
-    var UsageSituation = $(this).children('td')[5].innerText;
+    var UsageSituation = evCon.data('usage');
 
-    if (UsageSituation == '〇') {
-      $("#chk_UsageSituation").prop('checked', true);
+
+    if (UsageSituation == 0) {
+      $('#ChangeUsageSituation_Message').html('利用可能にしますか？');
+      $('#ChangeUsageSituation_ButtonName').html('利用可能にする');
     } else {
-      $("#chk_UsageSituation").prop('checked', false);
+      $('#ChangeUsageSituation_Message').html('利用不可にしますか？');
+      $('#ChangeUsageSituation_ButtonName').html('利用不可にする');
     }
 
-    $("#btn_Insert").hide();
-    document.getElementById("btn_Insert").disabled = true;
-    $("#btn_Update").show();
-    $("#btn_Delete").show();    
+    $('#ChangeUsageSituation_Screen_ID').html(evCon.data('screenid'));
+    $('#ChangeUsageSituation_Screen_Name').html(evCon.data('screenname'));
+
+
+    $('#ChangeUsageSituation_Screen_ID').val(evCon.data('screenid'));
+    $('#ChangeUsageSituation_Screen_Name').val(evCon.data('screenname'));    
+    $('#ChangeUsageSituation_UsageSituation').val(evCon.data('usage'));
 
   });
-
 
   //登録ボタンクリック時
-  $('#btn_Insert').on('click', function() {
+  $('.ModalInsertButton').on('click', function() {
 
-   
-    if (ValueCheck() == false) {
-      return false;
+    var SelectProcessingType = 1;
+
+    var SelectScreen_ID = $("#Insert_Screen_Path").val();
+    //ポストするキーと値を格納
+    var DataArray = {
+      ProcessingType: SelectProcessingType,
+      Screen_Name: $("#Insert_Screen_Name").val(),
+      Screen_Path: $("#Insert_Screen_Path").val(),
+      Authority: $("#Insert_Authority").val()
+    };
+
+    if (!ValueCheck(DataArray)) {
+      return;
     }
 
-    if (window.confirm('登録してもよろしいですか？')) {
-      $('#form_id').submit();
-    } else {
-      return false;
+    if (!ConfirmationMessage($("#Insert_Screen_Name").val(), SelectProcessingType)) {
+      return;
     }
+
+    BeforePosting(DataArray);
 
   });
 
   //更新ボタンクリック時
-  $('#btn_Update').on('click', function() {
+  $('.ModalUpdateButton').on('click', function() {
 
-    if (ValueCheck() == false) {
-      return false;
+    var SelectProcessingType = 2;
+
+    //ポストするキーと値を格納
+    var DataArray = {
+      ProcessingType: SelectProcessingType,
+      Screen_ID: $("#Update_Screen_ID").val(),     
+      Screen_Name: $("#Update_Screen_Name").val(),
+      Authority: $("#Update_Authority").val(),
+    };
+
+    if (!ValueCheck(DataArray)) {
+      return;
     }
 
-    if (window.confirm('更新してもよろしいですか？')) {
-      $('#form_id').submit();
+    if (!ConfirmationMessage('画面ID：' + $("#Update_Screen_ID").val(), SelectProcessingType)) {
+      return;
+    }
+
+    BeforePosting(DataArray);
+  });
+
+  //利用状況変更ボタンクリック時
+  $('.ModalChangeUsageSituationButton').on('click', function() {
+
+    var UsageSituation = $("#ChangeUsageSituation_UsageSituation").val();
+
+    if (UsageSituation == 0) {
+      var SelectProcessingType = 3;
     } else {
-      return false;
-    }
-  });
-
-  //削除ボタンクリック時
-  $('#btn_Delete').on('click', function() {
-
-    if (window.confirm('削除してもよろしいですか？')) {
-      $('#form_id').submit();
-    } else {
-      return false;
+      var SelectProcessingType = 4;
     }
 
+
+    //ポストするキーと値を格納
+    var DataArray = {
+      ProcessingType: SelectProcessingType,
+      Screen_ID: $("#ChangeUsageSituation_Screen_ID").val()  
+    };
+
+    BeforePosting(DataArray);
+
   });
 
-  //クリアボタンクリック時
-  $('#btn_Clear').on('click', function() {
-    window.location.href = 'frm_Screen_M.php'
-  });
+  function BeforePosting(DataArray) {
+    //common.jsに実装
+    originalpost("frm_Screen_M.php", DataArray);
+  }
+
 
   //登録、更新時の値チェック
-  function ValueCheck() {
+  function ValueCheck(DataArray) {
 
     var ErrorMsg = '';
-    if ($("#Screen_Name").val() == "") {
+
+    if (DataArray.Screen_Name == "") {
       ErrorMsg += '画面名を入力してください。\n';
     }
 
-    if ($("#Screen_Path").val() == "") {
-      ErrorMsg += '画面パスを入力してください。\n';
+    if (DataArray.Screen_Path == "") {
+      ErrorMsg += 'URLを入力してください。\n';
     }
 
-    if ($("#Authority").val() == "0") {
-      ErrorMsg += '権限を選択してください。\n';
+    if (DataArray.Authority == "0") {
+      ErrorMsg += '利用可能権限を選択してください。\n';
     }
 
     if (!ErrorMsg == "") {
       ErrorMsg = '以下は必須項目です。\n' + ErrorMsg;
-      window.alert(ErrorMsg); 
+      window.alert(ErrorMsg);
       return false;
     } else {
       return true;
     }
-  }  
+  }
 </script>
 
 </html>

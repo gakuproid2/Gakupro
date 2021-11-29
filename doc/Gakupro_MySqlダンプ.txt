@@ -170,7 +170,7 @@ CREATE TABLE `screen_m` (
   `Screen_ID` int(11) NOT NULL COMMENT '画面ID',
   `Screen_Name` varchar(50) DEFAULT NULL COMMENT '画面名',
   `Screen_Path` varchar(200) DEFAULT NULL COMMENT 'スクリーンパス',
-  `Authority` varchar(1) DEFAULT NULL COMMENT '利用権限',
+  `Authority` int(11) DEFAULT NULL COMMENT '閲覧可能権限(権限以上)',
   `UsageSituation` int(11) NOT NULL COMMENT '利用状況',
   `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
   `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
@@ -181,23 +181,23 @@ CREATE TABLE `screen_m` (
 --
 
 INSERT INTO `screen_m` (`Screen_ID`, `Screen_Name`, `Screen_Path`, `Authority`, `UsageSituation`, `Changer`, `UpdateDate`) VALUES
-(1, 'ログイン', 'frm_Login.php', '3', 1, 1, '2021-09-04 10:54:31'),
-(2, 'メインメニュー', 'frm_MainMenu.php', '3', 1, 2, '2021-09-04 10:54:31'),
-(3, 'DB接続確認', 'frm_DBcc.php', '1', 1, 1, '2021-09-04 10:54:31'),
-(4, '大分類マスタ', 'frm_MainCategory_M.php', '2', 1, 2, '2021-09-04 10:54:31'),
-(5, '中分類マスタ', 'frm_SubCategory_M.php', '2', 1, 1, '2021-09-04 10:54:31'),
-(6, '画像アップロード検証用', 'frm_ImageUpload.php', '1', 1, 2, '2021-09-04 10:54:31'),
-(7, '写真取得検証用', 'frm_ImageGet.php', '1', 1, 1, '2021-09-04 10:54:31'),
-(8, 'QRチケット作成', 'frm_CreateQR.php', '3', 1, 2, '2021-09-04 10:54:31'),
-(9, '画面管理', 'frm_Screen_M.php', '2', 1, 1, '2021-09-04 10:54:31'),
-(10, '学校マスタ', 'frm_School_M.php', '1', 1, 1, '2021-09-04 10:54:31'),
-(11, '専攻マスタ', 'frm_MajorSubject_M.php', '2', 1, 2, '2021-09-04 01:23:59'),
-(12, 'スタッフマスタ', 'frm_Staff_M.php', '2', 1, 2, '2021-09-04 01:30:27'),
-(13, 'メンバーマスタ', 'frm_Member_M.php', '1', 1, 1, '2021-09-11 10:27:00'),
-(14, 'メンバー仮登録画面', 'frm_TemporaryRegistration.php', '3', 1, 1, '2021-09-11 10:27:00'),
-(15, 'メンバー本登録画面', 'frm_Registration.php', '1', 1, 1, '2021-09-11 10:27:00'),
-(16, 'テスト＿メールアドレス認証画面', 'frm_MailAddressAuthenticate.php?Key_Code=23001231001', '3', 1, 1, '2021-09-11 10:27:00'),
-(17, 'テスト＿メール送信画面', 'frm_Sendmail.php', '3', 1, 1, '2021-09-11 10:27:00');
+(1, 'ログイン', 'frm_Login.php', 3, 1, 1, '2021-09-04 10:54:31'),
+(2, 'メインメニュー', 'frm_MainMenu.php', 3, 1, 2, '2021-09-04 10:54:31'),
+(3, 'DB接続確認', 'frm_DBcc.php', 1, 1, 1, '2021-09-04 10:54:31'),
+(4, '大分類マスタ', 'frm_MainCategory_M.php', 2, 1, 2, '2021-09-04 10:54:31'),
+(5, '中分類マスタ', 'frm_SubCategory_M.php', 2, 1, 1, '2021-09-04 10:54:31'),
+(6, '画像アップロード検証用', 'frm_ImageUpload.php', 1, 1, 2, '2021-09-04 10:54:31'),
+(7, '写真取得検証用', 'frm_ImageGet.php', 1, 1, 1, '2021-09-04 10:54:31'),
+(8, 'QRチケット作成', 'frm_CreateQR.php', 3, 1, 2, '2021-09-04 10:54:31'),
+(9, '画面管理', 'frm_Screen_M.php', 2, 1, 1, '2021-09-04 10:54:31'),
+(10, '学校マスタ', 'frm_School_M.php', 1, 1, 1, '2021-09-04 10:54:31'),
+(11, '専攻マスタ', 'frm_MajorSubject_M.php', 2, 1, 2, '2021-09-04 01:23:59'),
+(12, 'スタッフマスタ', 'frm_Staff_M.php', 2, 1, 2, '2021-09-04 01:30:27'),
+(13, 'メンバーマスタ', 'frm_Member_M.php', 1, 1, 1, '2021-09-11 10:27:00'),
+(14, 'メンバー仮登録画面', 'frm_TemporaryRegistration.php', 3, 1, 1, '2021-09-11 10:27:00'),
+(15, 'メンバー本登録画面', 'frm_Registration.php', 1, 1, 1, '2021-09-11 10:27:00'),
+(16, 'テスト＿メールアドレス認証画面', 'frm_MailAddressAuthenticate.php?Key_Code=23001231001', 3, 1, 1, '2021-09-11 10:27:00'),
+(17, 'テスト＿メール送信画面', 'frm_Sendmail.php', 3, 1, 1, '2021-09-11 10:27:00');
 
 -- --------------------------------------------------------
 
@@ -214,7 +214,7 @@ CREATE TABLE `staff_m` (
   `Password` varchar(8) DEFAULT NULL COMMENT 'ログインパスワード',
   `TEL` varchar(15) DEFAULT NULL COMMENT 'TEL',
   `MailAddress` varchar(50) DEFAULT NULL COMMENT 'メールアドレス',
-  `Authority` varchar(1) DEFAULT NULL COMMENT '権限',
+  `Authority` int(1) DEFAULT NULL COMMENT '権限',
   `UsageSituation` int(11) NOT NULL COMMENT '利用状況',
   `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
   `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
@@ -225,8 +225,8 @@ CREATE TABLE `staff_m` (
 -- テーブルのデータのダンプ `staff_m`
 --
 INSERT INTO `staff_m` (`Staff_ID`, `Staff_Name`, `Staff_NameYomi`, `NickName`, `Login_ID`, `Password`, `TEL`, `MailAddress`, `Authority`, `UsageSituation`, `Changer`, `UpdateDate`) VALUES
-(1, '島袋　信彦', 'シマブクロ　ノブヒコ', 'のーぶー', '1', '1', '090-6868-2937', 'gakuproid1@gmail.com', '1', 1, 1, '2021-11-15 11:04:38'),
-(2, '崎原　悠磨', 'サキハラ　ユウマ', 'とーくー', '2', '2', '090-1111-6666', 'gakuproid2@gmail.com', '1', 1, 1, '2021-11-15 11:04:38');
+(1, '島袋　信彦', 'シマブクロ　ノブヒコ', 'のーぶー', '1', '1', '090-6868-2937', 'gakuproid1@gmail.com', 1, 1, 1, '2021-11-15 11:04:38'),
+(2, '崎原　悠磨', 'サキハラ　ユウマ', 'とーくー', '2', '2', '090-1111-6666', 'gakuproid2@gmail.com', 1, 1, 1, '2021-11-15 11:04:38');
 
 -- --------------------------------------------------------
 

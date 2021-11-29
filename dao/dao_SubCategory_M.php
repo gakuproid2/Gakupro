@@ -13,32 +13,30 @@ class dao_SubCategory_M
     //SQL文の発行
     $SQL = "
       SELECT 
-      sub.MainCategory_CD AS MainCategory_CD 
-      ,main.MainCategory_Name AS MainCategory_Name 
-      ,sub.SubCategory_CD AS SubCategory_CD
-      ,sub.SubCategory_Name AS SubCategory_Name
-      ,sub.UsageSituation AS UsageSituation
+      SubCategory_m.MainCategory_CD AS MainCategory_CD 
+      ,MainCategory_m.MainCategory_Name AS MainCategory_Name 
+      ,SubCategory_m.SubCategory_CD AS SubCategory_CD
+      ,SubCategory_m.SubCategory_Name AS SubCategory_Name
+      ,SubCategory_m.UsageSituation AS UsageSituation
       FROM
-      SubCategory_m AS sub
+      SubCategory_m
       INNER JOIN
-      MainCategory_m AS main
+      MainCategory_m
       ON
-      sub.MainCategory_CD = main.MainCategory_CD
-      WHERE 1 = 1
-      AND
-      main.UsageSituation = 1    
+      SubCategory_m.MainCategory_CD = MainCategory_m.MainCategory_CD
+      WHERE 1 = 1     
       ";
-
+      
     if ($MainCategory_CD > 0) {
       $SQL .= "
         AND
-        sub.MainCategory_CD ='$MainCategory_CD'";
+        SubCategory_m.MainCategory_CD ='$MainCategory_CD'";
     }
 
     $SQL .= "
       ORDER BY
-      sub.MainCategory_CD 
-      ,sub.SubCategory_CD
+      SubCategory_m.MainCategory_CD 
+      ,SubCategory_m.SubCategory_CD
       ";
 
     $items = $DB_Connection->select($SQL);
