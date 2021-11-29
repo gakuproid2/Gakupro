@@ -232,7 +232,7 @@ $Table .= "</table>";
 
         <div class="modal-body">
 
-          <p>大分類名 = <span id="ChangeUsageSituation_MainCategory_Name"></span> | 中分類名 =<span id="ChangeUsageSituation_SubCategory_Name"></span></p>
+          <p>大分類名 = <span id="ChangeUsageSituation_MainCategory_Name"></span> | 中分類名 = <span id="ChangeUsageSituation_SubCategory_Name"></span></p>
 
           <span id="ChangeUsageSituation_MainCategory_CD" hidden></span>
           <span id="ChangeUsageSituation_SubCategory_CD" hidden></span>

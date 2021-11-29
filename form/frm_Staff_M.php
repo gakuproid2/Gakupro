@@ -40,10 +40,10 @@ if (isset($_POST["Staff_Name"])) {
 } else {
   $Staff_Name = '';
 };
-if (isset($_POST["Staff_FirstNameYomi"])) {
-  $Staff_FirstNameYomi = $_POST["Staff_FirstNameYomi"];
+if (isset($_POST["Staff_NameYomi"])) {
+  $Staff_NameYomi = $_POST["Staff_NameYomi"];
 } else {
-  $Staff_FirstNameYomi = '';
+  $Staff_NameYomi = '';
 };
 if (isset($_POST["NickName"])) {
   $NickName = $_POST["NickName"];
@@ -83,7 +83,7 @@ if (isset($_POST["ProcessingType"])) {
     $info = array(
       'Staff_ID' => $Staff_ID,
       'Staff_Name' => $Staff_Name,
-      'Staff_FirstNameYomi' => $Staff_FirstNameYomi,      
+      'Staff_NameYomi' => $Staff_NameYomi,      
       'NickName' => $NickName,
       'Login_ID' => $Login_ID,
       'Password' => $Password,
@@ -96,8 +96,9 @@ if (isset($_POST["ProcessingType"])) {
     $Result = $dao_Staff_M->DataChange($info);
 
     Header('Location: ' . $_SERVER['PHP_SELF']);
-    exit(); //optional
+    exit(); 
   }
+  //データ更新処理実行時  End--
 
   //権限のプルダウン作成する為
   $items = $dao_SubCategory_M->GET_SubCategory_m(2);
@@ -107,13 +108,14 @@ if (isset($_POST["ProcessingType"])) {
 
     $PullDown .= "<option value = " . $item_val['SubCategory_CD'];
 
-    if ($Authority >= $item_val['SubCategory_CD']) {
+    if ($Authority == $item_val['SubCategory_CD']) {
       $PullDown .= " selected>";
     } else {
       $PullDown .= " >";
     }
     $PullDown  .= $item_val['SubCategory_Name'] . "</option>";
   }
+  
   
 
 $Data_Table = $dao_Staff_M->Get_Staff_M($Authority);
@@ -151,7 +153,7 @@ foreach ($Data_Table as $val) {
       data-staffname='" . $val['Staff_Name'] . "'
       data-staffnameyomi='" . $val['Staff_NameYomi'] . "'
       data-nickname='" . $val['NickName'] . "'
-      data-loginiD='" . $val['Login_ID'] . "'
+      data-Loginid='" . $val['Login_ID'] . "'
       data-password='" . $val['Password'] . "'
       data-tel='" . $val['TEL'] . "'
       data-mailaddress='" . $val['MailAddress'] . "'
@@ -180,7 +182,7 @@ $Table .= "</table>";
 <body>
 <div>
     <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
-    <a>権限：<select name='Authority' id='Authority'><?php echo $PullDown; ?></select></a>
+    <a>権限：<select name='Authority' id='Authority' placeholder='Source Type'><?php echo $PullDown; ?></select></a>
   </div>
   <?php echo $Table; ?>
 
@@ -216,8 +218,8 @@ $Table .= "</table>";
           </div>
 
           <div class="form-group row">
-            <label for="Insert_Staff_Login_ID" class="col-md-3 col-form-label">ログインID</label>
-            <input type="text" name="Insert_Staff_Login_ID" id="Insert_Staff_Login_ID" value="" class="form-control col-md-3">
+            <label for="Insert_Login_ID" class="col-md-3 col-form-label">ログインID</label>
+            <input type="text" name="Insert_Login_ID" id="Insert_Login_ID" value="" class="form-control col-md-3">
           </div>
 
           <div class="form-group row">
@@ -237,7 +239,7 @@ $Table .= "</table>";
 
           <div class="form-group row">
             <label for="Insert_Authority" class="col-md-3 col-form-label">権限</label>
-            <select name='Insert_Authority' id='Insert_Authority' class="form-control col-md-3"><?php echo $PullDown; ?></select>
+            <select name='Insert_Authority' id='Insert_Authority' class="form-control col-md-3" ><?php echo $PullDown; ?></select>
           </div>
 
           <div class="modal-footer">
@@ -288,8 +290,8 @@ $Table .= "</table>";
           </div>
 
           <div class="form-group row">
-            <label for="Update_Staff_Login_ID" class="col-md-3 col-form-label">ログインID</label>
-            <input type="text" name="Update_Staff_Login_ID" id="Update_Staff_Login_ID" value="" class="form-control col-md-3">
+            <label for="Update_Login_ID" class="col-md-3 col-form-label">ログインID</label>
+            <input type="text" name="Update_Login_ID" id="Update_Login_ID" value="" class="form-control col-md-3">
           </div>
 
           <div class="form-group row">
@@ -363,17 +365,18 @@ $Table .= "</table>";
 
 document.getElementById("Authority").onchange = function() {
 
-//ポストするキーと値を格納
-var DataArray = {
-  Authority: $("#Authority").val(),
-};
+  //ポストするキーと値を格納
+  var DataArray = {
+    Authority: $("#Authority").val(),
+  };
 
-//common.jsに実装
-originalpost("frm_Staff_M.php", DataArray);
+  //common.jsに実装
+  originalpost("frm_Staff_M.php", DataArray);
 
-};
+  };
+
   //登録用モーダル表示時
-  $('#InsertModal').on('show.bs.modal', function(e) {
+  $('#InsertModal').on('show.bs.modal', function(e) {   
 
     $('#Insert_Staff_LastName').val('');
     $('#Insert_Staff_FirstName').val('');    
@@ -383,8 +386,8 @@ originalpost("frm_Staff_M.php", DataArray);
     $('#Insert_Staff_Login_ID').val('');
     $('#Insert_Password').val('');
     $('#Insert_TEL').val('');
-    $('#Insert_MailAddress').val(''); 
-
+    $('#Insert_MailAddress').val('');   
+    
   });
 
   //更新用モーダル表示時
@@ -392,7 +395,9 @@ originalpost("frm_Staff_M.php", DataArray);
     // イベント発生元
     let evCon = $(e.relatedTarget);
    
-    var FullNameyomiSplit = (evCon.data('staffname')).split('　');
+    $('#Update_Staff_ID').val(evCon.data('staffid'));
+
+    var FullNameSplit = (evCon.data('staffname')).split('　');
     $('#Update_Staff_LastName').val(FullNameSplit[0]);
     $('#Update_Staff_FirstName').val(FullNameSplit[1]);
 
@@ -400,12 +405,11 @@ originalpost("frm_Staff_M.php", DataArray);
     $('#Update_Staff_LastNameYomi').val(FullNameyomiYomiSplit[0]);
     $('#Update_Staff_FirstNameYomi').val(FullNameyomiYomiSplit[1]);
 
-    $('#Update_Staff_ID').val(evCon.data('staffid'));
-    $('#Update_Staff_ID').val(evCon.data('staffid'));
-    $('#Update_Authority').val(evCon.data('authority'));
-    $('#Update_Staff_ID').val(evCon.data('staffid'));
-    $('#Update_Authority').val(evCon.data('authority'));
-    $('#Update_Staff_ID').val(evCon.data('staffid'));
+    $('#Update_NickName').val(evCon.data('nickname'));
+    $('#Update_Login_ID').val(evCon.data('loginid'));
+    $('#Update_Password').val(evCon.data('password'));
+    $('#Update_TEL').val(evCon.data('tel'));
+    $('#Update_MailAddress').val(evCon.data('mailaddress'));    
     $('#Update_Authority').val(evCon.data('authority'));
 
   });
@@ -441,20 +445,24 @@ originalpost("frm_Staff_M.php", DataArray);
 
     var SelectProcessingType = 1;
 
-    var SelectStaff_ID = $("#Insert_Staff_FirstNameYomi").val();
     //ポストするキーと値を格納
     var DataArray = {
       ProcessingType: SelectProcessingType,
-      Staff_Name: $("#Insert_Staff_Name").val(),
-      Staff_FirstNameYomi: $("#Insert_Staff_FirstNameYomi").val(),
-      Authority: $("#Insert_Authority").val()
+      Staff_Name: $("#Insert_Staff_LastName").val() + '　' + $("#Insert_Staff_FirstName").val(),
+      Staff_NameYomi: $("#Insert_Staff_LastNameYomi").val() + '　' + $("#Insert_Staff_FirstNameYomi").val(),      
+      NickName: $("#Insert_NickName").val(),
+      Login_ID: $("#Insert_Login_ID").val(),
+      Password: $("#Insert_Password").val(),
+      TEL: $("#Insert_TEL").val(),
+      MailAddress: $("#Insert_MailAddress").val(),
+      Authority: $("#Insert_Authority").val() 
     };
 
     if (!ValueCheck(DataArray)) {
       return;
     }
 
-    if (!ConfirmationMessage($("#Insert_Staff_Name").val(), SelectProcessingType)) {
+    if (!ConfirmationMessage(DataArray.Staff_Name, SelectProcessingType)) {
       return;
     }
 
@@ -471,15 +479,21 @@ originalpost("frm_Staff_M.php", DataArray);
     var DataArray = {
       ProcessingType: SelectProcessingType,
       Staff_ID: $("#Update_Staff_ID").val(),     
-      Staff_Name: $("#Update_Staff_Name").val(),
-      Authority: $("#Update_Authority").val(),
+      Staff_Name: $("#Update_Staff_LastName").val() + '　' + $("#Update_Staff_FirstName").val(),
+      Staff_NameYomi: $("#Update_Staff_LastNameYomi").val() + '　' + $("#Update_Staff_FirstNameYomi").val(),  
+      NickName: $("#Update_NickName").val(),
+      Login_ID: $("#Update_Login_ID").val(),
+      Password: $("#Update_Password").val(),
+      TEL: $("#Update_TEL").val(),
+      MailAddress: $("#Update_MailAddress").val(),
+      Authority: $("#Update_Authority").val() 
     };
 
     if (!ValueCheck(DataArray)) {
       return;
     }
 
-    if (!ConfirmationMessage('画面ID：' + $("#Update_Staff_ID").val(), SelectProcessingType)) {
+    if (!ConfirmationMessage('スタッフID：' + $("#Update_Staff_ID").val(), SelectProcessingType)) {
       return;
     }
 
@@ -497,7 +511,6 @@ originalpost("frm_Staff_M.php", DataArray);
       var SelectProcessingType = 4;
     }
 
-
     //ポストするキーと値を格納
     var DataArray = {
       ProcessingType: SelectProcessingType,
@@ -505,7 +518,6 @@ originalpost("frm_Staff_M.php", DataArray);
     };
 
     BeforePosting(DataArray);
-
   });
 
   function BeforePosting(DataArray) {
@@ -518,17 +530,25 @@ originalpost("frm_Staff_M.php", DataArray);
   function ValueCheck(DataArray) {
 
     var ErrorMsg = '';
-
-    if (DataArray.Staff_Name == "") {
-      ErrorMsg += '画面名を入力してください。\n';
+    
+    if (DataArray.Staff_Name.replace("　", "") == "") {
+      ErrorMsg += '氏名を入力してください。\n';
     }
 
-    if (DataArray.Staff_FirstNameYomi == "") {
-      ErrorMsg += 'URLを入力してください。\n';
+    if (DataArray.Staff_NameYomi.replace("　", "") == "") {
+      ErrorMsg += '氏名（フリガナ）を入力してください。\n';
+    }
+
+    if (DataArray.Login_ID == "") {
+      ErrorMsg += 'ログインIDを入力してください。\n';
+    }
+
+    if (DataArray.Password == "") {
+      ErrorMsg += 'パスワードを入力してください。\n';
     }
 
     if (DataArray.Authority == "0") {
-      ErrorMsg += '利用可能権限を選択してください。\n';
+      ErrorMsg += '権限を選択してください。\n';
     }
 
     if (!ErrorMsg == "") {

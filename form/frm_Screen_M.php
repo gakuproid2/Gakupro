@@ -238,7 +238,7 @@ $Table .= "</table>";
 
         <div class="modal-body">
 
-          <p>画面ID = <span id="ChangeUsageSituation_Screen_ID"></span> | 画面名 =<span id="ChangeUsageSituation_Screen_Name"></span></p>
+          <p>画面ID = <span id="ChangeUsageSituation_Screen_ID"></span> | 画面名 = <span id="ChangeUsageSituation_Screen_Name"></span></p>
 
           <span id="ChangeUsageSituation_Screen_ID" hidden></span>
           <span id="ChangeUsageSituation_Screen_Name" hidden></span>

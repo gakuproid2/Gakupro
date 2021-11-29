@@ -26,274 +26,428 @@
 
 <?php echo $HeaderInfo; ?>
 
-<body>
+<?php 
 
-  <?php
-    $CD = 0;
-    //学校区分があれば格納する
-    if (!empty($_GET['School_Division'])) {
-      //if ($_GET['chk_Search'] == 1) {
-        $CD = $_GET['School_Division'];
-      //}
-    } //else {
-      //$CD = 0;
-    //}
 
-    $check = "";
-    //チェックボックスの０か１を格納する
-    if (!empty($_GET['chk_Search'])) {
-      if (!$_GET['chk_Search'] == 0) {
-        $check = 'checked="checked"';
-      } else {
-        $check = "";
-      }
-    }  
+//非post時は初期値を設定する。['']or[0]
+if (isset($_POST["School_CD"])) {
+  $School_CD = $_POST["School_CD"];
+} else {
+  $School_CD = 0;
+};
+if (isset($_POST["School_Division"])) {
+  $School_Division = $_POST["School_Division"];
+} else {
+  $School_Division = 0;
+};
+if (isset($_POST["School_Name"])) {
+  $School_Name = $_POST["School_Name"];
+} else {
+  $School_Name = '';
+};
+if (isset($_POST["TEL"])) {
+  $TEL = $_POST["TEL"];
+} else {
+  $TEL = '';
+};
+if (isset($_POST["URL"])) {
+  $URL = $_POST["URL"];
+} else {
+  $URL = '';
+};
+if (isset($_POST["UsageSituation"])) {
+  $UsageSituation = $_POST["UsageSituation"];
+} else {
+  $UsageSituation = 0;
+};
+//非post時は初期値を設定する。['']or[0] End--
 
-    //ポストされた確認する。
-    if (count($_POST) > 0) {
+//データ更新処理実行時  Start--
+if (isset($_POST["ProcessingType"])) {
 
-      $UsageSituation = 0;
-      if (isset ($_POST["UsageSituation"])){
-        $UsageSituation = 1;
-      };
-      
-      $info = array(
-        'CD' => $_POST["CD"],
-        'Division' => $_POST["Division"],
-        'Name' => $_POST["Name"],
-        'TEL' => $_POST["TEL"],
-        'URL' => $_POST["URL"],
-        'UsageSituation' => $UsageSituation,
-        'Changer' => $_SESSION["Staff_ID"],
-        'UpdateDate' => date("Y-m-d H:i:s")
-      );
-      
-      $Result = "";
-      
-      //登録、削除、更新の分岐
-      if (isset($_POST['Insert'])) {
-        $Result = $dao_School_M->DataChange($info, 1);
-      } else if (isset($_POST['Update'])) {
-        $Result = $dao_School_M->DataChange($info, 2);
-      } else if (isset($_POST['Delete'])) {
-        $Result = $dao_School_M->DataChange($info, 3);
-      }
+    $info = array(
+      'School_CD' => $School_CD,
+      'School_Division' => $School_Division,
+      'School_Name' => $School_Name,      
+      'TEL' => $TEL,
+      'URL' => $URL,  
+      'Authority' => $Authority,
+      'ProcessingType' => $_POST["ProcessingType"]
+    );
 
-      Header('Location: ' . $_SERVER['PHP_SELF']);
-      exit(); //optional
+    $Result = $dao_School_M->DataChange($info);
+
+    Header('Location: ' . $_SERVER['PHP_SELF']);
+    exit(); 
+  }
+  //データ更新処理実行時  End--
+
+  //学校区分のプルダウン作成する為
+  $items = $dao_SubCategory_M->GET_SubCategory_m(3);
+
+  $PullDown = "<option value = 0 >選択してください</option>";
+  foreach ($items as $item_val) {
+
+    $PullDown .= "<option value = " . $item_val['SubCategory_CD'];
+
+    if ($School_Division == $item_val['SubCategory_CD']) {
+      $PullDown .= " selected>";
+    } else {
+      $PullDown .= " >";
     }
+    $PullDown  .= $item_val['SubCategory_Name'] . "</option>";
+  }  
+  
 
-    //学校区分のプルダウン作成する為
-    $items = $dao_SubCategory_M->GET_SubCategory_m(3);
-    //0行目
-    $PullDown = "<option value = 0 >選択してください</option>";
-    foreach ($items as $item_val) {
+$Data_Table = $dao_School_M->Get_School_M($School_Division);
 
-      $PullDown .= "<option value = " . $item_val['SubCategory_CD'];
+$Data_Count = count($Data_Table);
 
-      if ($CD == $item_val['SubCategory_CD']) {
-        $PullDown .= " selected>";
-      } else {
-        $PullDown .= " >";
-      }
-      $PullDown  .= $item_val['SubCategory_Name'] . "</option>";
-    }
-    
-    //School_MのMaxCD取得処理
-    $Max_CD = $dao_School_M->Get_MaxCD();
-    
-    $Data_Table = $dao_School_M->Get_School_M($CD, $check);
-    $Table = "";
-    
-    foreach ($Data_Table as $val) {
-      $Table .= "<tr class='Table'>
-      <td>" . $val['School_CD'] . "</td>
-      <td>" . $val['School_Division'] . "</td>
-      <td>" . $val['School_Name']." </td>
-      <td>" . $val['TEL']." </td>
-      <td>" . $val['URL']." </td>";
-    
-      if ($val['UsageSituation'] == 0) {
-        $Table .=" <td>×</td>";
-      } else {
-        $Table .=" <td>〇</td>";
-      } 
-      
-      $Table .= "</tr>";
-    }
+//Table作成 Start
+$Table = "
+<table class='DataInfoTable'>
+<tr>
+  <th>学校CD</th>
+  <th>学校区分</th>
+  <th>学校名</th>  
+  <th>HP_URL</th>  
+  <th>データ総数[".$Data_Count. "件]</th>
+</tr>
+";
+foreach ($Data_Table as $val) {
 
-  ?>
+  if ($val['UsageSituation'] == 0) {
+    $IconType = "<i class='far fa-thumbs-down'></i><i class='fas fa-arrow-right'></i><i class='far fa-thumbs-up'></i>";
+  } else {
+    $IconType = "<i class='far fa-thumbs-up'></i><i class='fas fa-arrow-right'></i><i class='far fa-thumbs-down'></i>";
+  }
 
-  <form action="frm_School_M.php" method="post">
-    <p>学校CD：<input type="text" id="CD" name="CD" value='<?php echo $Max_CD; ?>' readonly> </p>
-    <p>
-      学校区分：<select id='School_Division' name='Division'><?php echo $PullDown; ?></select>　
-      データ絞り込み機能：<input type="checkbox" id="chk_Search" name="Search" value="1" <?php echo $check; ?>>
-    </p>
-    <p>学校名：<input type="text" id="Name" name="Name" autocomplete="off"></p>
-    <p>代表電話番号：<input type="text" id="TEL" name="TEL" autocomplete="off"></p>
-    <p>ホームページURL：<input type="text" id="URL" name="URL" autocomplete="off"></p>
-    <p>利用フラグ：<input type="checkbox" id="chk_UsageSituation" name="UsageSituation" value="1" checked="checked"></p>
-
-    <button class="btn_Insert" id="btn_Insert" name="Insert" value="1">登録</button>
-    <button class="btn_Update" id="btn_Update" name="Update" value="2">更新</button>
-    <button class="btn_Delete" id="btn_Delete" name="Delete" value="3">削除</button>
-    <button class="btn_Clear" id="btn_Clear" name="Clear" value="4">クリア</button>
-  </form>
-
-  <table border='1'>
+  $Table .=
+    "
     <tr>
-      <th>学校CD</th>
-      <th>学校区分</th>
-      <th>学校名</th>
-      <th>代表電話番号</th>
-      <th>ホームページURL</th>
-      <th>利用フラグ</th>
-    </tr>
-    <?php echo $Table; ?>
-  </table>
+    <td>" . $val['School_CD'] . "</td>        
+    <td>" . $val['DivisionInfo'] ." </td>
+    <td>" . $val['School_Name'] ." </td>
+    <td><a href='" . $val['URL'] . "' style='text-decoration:none;'>" . "icon表示予定" . "</a></td>
+    <td>
 
-  <?php echo $JS_Info?>
+      <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#UpdateModal' 
+      data-schoolcd='" . $val['School_CD'] . "'
+      data-schooldivision='" . $val['School_Division'] . "'
+      data-schoolname='" . $val['School_Name'] . "'
+      data-tel='" . $val['TEL'] . "'
+      data-url='" . $val['URL'] . "'             
+      data-usage='" . $val['UsageSituation'] . "' >
+      <i class='far fa-edit'></i>
+      </button> 
+   
+      <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#ChangeUsageSituationModal'
+      data-schoolcd='" . $val['School_CD'] . "'
+      data-schoolname='" . $val['School_Name'] . "'      
+      data-usage='" . $val['UsageSituation'] . "' >
+      " . $IconType . "              
+      </button>
+
+    </td>
+  </tr>
+  ";
+}
+
+$Table .= "</table>";
+//Table作成 End
+?>
+
+<body>
+<div>
+    <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
+    <a>学校区分：<select name='School_Division' id='School_Division' placeholder='Source Type'><?php echo $PullDown; ?></select></a>
+  </div>
+  <?php echo $Table; ?>
+
+  <!-- 登録用Modal -->
+  <div class="modal fade" id="InsertModal" tabindex="-1" aria-labelledby="InsertModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="InsertModalLabel">登録確認</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">         
+                 
+          <div class="form-group row">
+            <label for="Insert_School_Division" class="col-md-3 col-form-label">学校区分</label>
+            <select name='Insert_School_Division' id='Insert_School_Division' class="form-control col-md-3" ><?php echo $PullDown; ?></select>
+          </div>
+
+
+          <div class="form-group row">
+            <label for="Insert_School_Name" class="col-md-3 col-form-label">学校名</label>
+            <input type="text" name="Insert_School_Name" id="Insert_School_Name" value="" class="form-control col-md-3">
+          </div>
+
+          <div class="form-group row">
+            <label for="Insert_TEL" class="col-md-3 col-form-label">TEL</label>
+            <input type="text" name="Insert_TEL" id="Insert_TEL" value="" class="form-control col-md-3">
+          </div>
+
+          <div class="form-group row">
+            <label for="Insert_URL" class="col-md-5 col-form-label">学校HP</label>
+            <input type="text" name="Insert_URL" id="Insert_URL" value="" class="form-control col-md-3">
+          </div>
+
+   
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+            <button type="button" class="btn btn-primary ModalInsertButton">登録</button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 更新用Modal -->
+  <div class="modal fade" id="UpdateModal" tabindex="-1" aria-labelledby="UpdateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="UpdateModalLabel">更新確認</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">          
+     
+        <div class="form-group row">
+            <label for="Update_School_Division" class="col-md-3 col-form-label">学校区分</label>
+            <select name='Update_School_Division' id='Update_School_Division' class="form-control col-md-3" ><?php echo $PullDown; ?></select>
+          </div>
+
+
+          <div class="form-group row">
+            <label for="Update_School_Name" class="col-md-3 col-form-label">学校名</label>
+            <input type="text" name="Update_School_Name" id="Update_School_Name" value="" class="form-control col-md-3">
+          </div>
+
+          <div class="form-group row">
+            <label for="Update_TEL" class="col-md-3 col-form-label">TEL</label>
+            <input type="text" name="Update_TEL" id="Update_TEL" value="" class="form-control col-md-3">
+          </div>
+
+          <div class="form-group row">
+            <label for="Update_URL" class="col-md-5 col-form-label">学校HP</label>
+            <input type="text" name="Update_URL" id="Update_URL" value="" class="form-control col-md-3">
+          </div>
+
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+            <button type="button" class="btn btn-primary ModalUpdateButton">更新</button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 利用状況更新用Modal -->
+  <div class="modal fade" id="ChangeUsageSituationModal" tabindex="-1" aria-labelledby="ChangeUsageSituationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="ChangeUsageSituationModalLabel">利用状況変更確認</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+
+          <p>学校CD = <span id="ChangeUsageSituation_School_CD"></span> | 学校名 = <span id="ChangeUsageSituation_School_Name"></span></p>
+
+          <span id="ChangeUsageSituation_School_CD" hidden></span>
+          <span id="ChangeUsageSituation_School_Name" hidden></span>
+          <span id="ChangeUsageSituation_UsageSituation" hidden></span>
+          <p><span id="ChangeUsageSituation_Message"></span></p>
+
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+            <button type="button" class="btn btn-primary ModalChangeUsageSituationButton"><span id="ChangeUsageSituation_ButtonName"></span></button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+  <?php echo $JS_Info ?>
 </body>
 
 <script>
-  $(window).on('load', function(event) {
-    $("#btn_Insert").show();
-    $("#btn_Update").hide();
-    $("#btn_Delete").hide();
-  });
 
-  $('.Table').on('click', function() {
-      //学校CD
-      var School_CD = $(this).children('td')[0].innerText;
-      $("#CD").val(School_CD);
+document.getElementById("School_Division").onchange = function() {
 
-      //学校区分
-      var School_Division = $(this).children('td')[1].innerText;
-      $("#School_Division").val(School_Division);
-
-      //学校名
-      var School_Name = $(this).children('td')[2].innerText;
-      $("#Name").val(School_Name);
-
-      //代表電話番号
-      var TEL = $(this).children('td')[3].innerText;
-      $("#TEL").val(TEL);
-
-      //ホームページURL
-      var URL = $(this).children('td')[4].innerText;
-      $("#URL").val(URL);
-
-      //利用フラグ
-      var UsageSituation = $(this).children('td')[5].innerText;
-
-    if (UsageSituation == '〇') {
-      $("#chk_UsageSituation").prop('checked', true);
-    } else {
-      $("#chk_UsageSituation").prop('checked', false);
-    }
-
-    $("#btn_Insert").hide();
-    $("#btn_Update").show();
-    $("#btn_Delete").show();
-  });
-
-  //チェックボックスでデータを絞り込む機能を作成
-  document.getElementById("chk_Search").onchange = function() {
-    const Division = document.getElementById("School_Division");
-    const value = Division.value;
-    var check;
-    <?php 
-    if ($check != "") {
-    ?>
-    check = 0;
-    <?php
-    } else {
-    ?>
-    check = 1;
-    <?php
-    }
-    ?>
-    window.location.href = 'frm_School_M.php?School_Division=' + value + '&chk_Search=' + check; // 通常の遷移
+  //ポストするキーと値を格納
+  var DataArray = {
+    School_Division: $("#School_Division").val(),
   };
 
-  //チェックボックスがON状態の場合
-  <?php
-  if (!empty($_GET['chk_Search'])) {
-    if ($_GET['chk_Search'] == 1) {
-  ?>
-  document.getElementById("School_Division").onchange = function() {
-    var CD = this.value;
-    var check = 1;
-    window.location.href = 'frm_School_M.php?School_Division=' + CD + '&chk_Search=' + check; // 通常の遷移
-  }
-  <?php
+  //common.jsに実装
+  originalpost("frm_School_M.php", DataArray);
+
+  };
+
+  //登録用モーダル表示時
+  $('#InsertModal').on('show.bs.modal', function(e) {   
+  
+    $('#Insert_School_Name').val('');       
+    $('#Insert_TEL').val('');
+    $('#Insert_URL').val('');   
+    
+  });
+
+  //更新用モーダル表示時
+  $('#UpdateModal').on('show.bs.modal', function(e) {
+    // イベント発生元
+    let evCon = $(e.relatedTarget);
+   
+    $('#Update_School_CD').val(evCon.data('schoolcd'));
+    $('#Update_School_Division').val(evCon.data('schooldivision'));     
+    $('#Update_School_Name').val(evCon.data('schoolname'));       
+    $('#Update_URL').val(evCon.data('url'));  
+    $('#Update_TEL').val(evCon.data('tel'));
+     
+
+  });
+
+  //利用状況変更モーダル表示時
+  $('#ChangeUsageSituationModal').on('show.bs.modal', function(e) {
+    // イベント発生元
+    let evCon = $(e.relatedTarget);
+
+    var UsageSituation = evCon.data('usage');
+
+
+    if (UsageSituation == 0) {
+      $('#ChangeUsageSituation_Message').html('利用可能にしますか？');
+      $('#ChangeUsageSituation_ButtonName').html('利用可能にする');
+    } else {
+      $('#ChangeUsageSituation_Message').html('利用不可にしますか？');
+      $('#ChangeUsageSituation_ButtonName').html('利用不可にする');
     }
-  }
-  ?>
+
+    $('#ChangeUsageSituation_School_CD').html(evCon.data('schoolcd'));
+    $('#ChangeUsageSituation_School_Name').html(evCon.data('schoolname'));
+
+
+    $('#ChangeUsageSituation_School_CD').val(evCon.data('schoolcd'));
+    $('#ChangeUsageSituation_School_Name').val(evCon.data('schoolname'));    
+    $('#ChangeUsageSituation_UsageSituation').val(evCon.data('usage'));
+
+  });
 
   //登録ボタンクリック時
-  $('#btn_Insert').on('click', function() {
-    if (ValueCheck() == false) {
-      return false;
+  $('.ModalInsertButton').on('click', function() {
+
+    var SelectProcessingType = 1;
+
+    //ポストするキーと値を格納
+    var DataArray = {
+      ProcessingType: SelectProcessingType,  
+      School_Division: $("#Insert_School_Division").val(),
+      School_Name: $("#Insert_School_Name").val(),
+      TEL: $("#Insert_TEL").val(),   
+      URL: $("#Insert_School_Name").val(),      
+    };
+
+    if (!ValueCheck(DataArray)) {
+      return;
     }
 
-    if (window.confirm('登録してもよろしいですか？')) {
-      $('#form_id').submit();
-    } else {
-      return false;
+    if (!ConfirmationMessage(DataArray.School_Name, SelectProcessingType)) {
+      return;
     }
+
+    BeforePosting(DataArray);
+
   });
 
   //更新ボタンクリック時
-  $('#btn_Update').on('click', function() {
-    if (ValueCheck() == false) {
-      return false;
+  $('.ModalUpdateButton').on('click', function() {
+
+    var SelectProcessingType = 2;
+
+    //ポストするキーと値を格納
+    var DataArray = {
+      ProcessingType: SelectProcessingType,  
+      School_Division: $("#Update_School_Division").val(),
+      School_Name: $("#Update_School_Name").val(),
+      TEL: $("#Update_TEL").val(),   
+      URL: $("#Update_School_Name").val(),      
+    };
+
+    if (!ValueCheck(DataArray)) {
+      return;
     }
 
-    if (window.confirm('更新してもよろしいですか？')) {
-      $('#form_id').submit();
+    if (!ConfirmationMessage('スクールCD：' + $("#Update_School_CD").val(), SelectProcessingType)) {
+      return;
+    }
+
+    BeforePosting(DataArray);
+  });
+
+  //利用状況変更ボタンクリック時
+  $('.ModalChangeUsageSituationButton').on('click', function() {
+
+    var UsageSituation = $("#ChangeUsageSituation_UsageSituation").val();
+
+    if (UsageSituation == 0) {
+      var SelectProcessingType = 3;
     } else {
-      return false;
+      var SelectProcessingType = 4;
     }
+
+    //ポストするキーと値を格納
+    var DataArray = {
+      ProcessingType: SelectProcessingType,
+      School_CD: $("#ChangeUsageSituation_School_CD").val()  
+    };
+
+    BeforePosting(DataArray);
   });
 
-  //削除ボタンクリック時
-  $('#btn_Delete').on('click', function() {
-    if (window.confirm('削除してもよろしいですか？')) {
-      $('#form_id').submit();
-    } else {
-      return false;
-    }
-  });
+  function BeforePosting(DataArray) {
+    //common.jsに実装
+    originalpost("frm_School_M.php", DataArray);
+  }
 
-  //クリアボタンクリック時
-  $('#btn_Clear').on('click', function() {
-    window.location.href = 'frm_MainCategory_M.php'
-  });
 
-  function ValueCheck() {
+  //登録、更新時の値チェック
+  function ValueCheck(DataArray) {
 
-    var ErrorMsg = '';
-    if ($("#School_Division").val() == "") {
+    var ErrorMsg = '';  
+  
+    if (DataArray.School_Division == "0") {
       ErrorMsg += '学校区分を選択してください。\n';
     }
 
-    if ($("#Name").val() == "") {
+    if (DataArray.School_Name == "") {
       ErrorMsg += '学校名を入力してください。\n';
-    }
-
-    if ($("#TEL").val() == "") {
-      ErrorMsg += '代表電話番号を入力してください。\n';
-    }
-
-    if ($("#URL").val() == "") {
-      ErrorMsg += 'ホームページURLを入力してください。\n';
     }
 
     if (!ErrorMsg == "") {
       ErrorMsg = '以下は必須項目です。\n' + ErrorMsg;
-      window.alert(ErrorMsg); // 
+      window.alert(ErrorMsg);
       return false;
     } else {
       return true;

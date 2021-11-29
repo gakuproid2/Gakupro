@@ -186,7 +186,7 @@ $Table .= "</table>";
 
         <div class="modal-body">
 
-          <p>大分類CD = <span id="ChangeUsageSituation_MainCategory_CD"></span> | <span id="ChangeUsageSituation_MainCategory_Name"></span></p>
+          <p>大分類CD = <span id="ChangeUsageSituation_MainCategory_CD"></span> | 大分類名 = <span id="ChangeUsageSituation_MainCategory_Name"></span></p>
           <span id="ChangeUsageSituation_UsageSituation" hidden></span>
           <p><span id="ChangeUsageSituation_Message"></span></p>
 

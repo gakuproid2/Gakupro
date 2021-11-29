@@ -2,7 +2,7 @@
 
 class dao_School_M {
   
-  function Get_School_M($School_Division, $checkFLG){
+  function Get_School_M($School_Division){
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
     //クラスの生成
@@ -11,25 +11,34 @@ class dao_School_M {
     //SQL文の発行
     $SQL ="
     SELECT
-    School_CD
-    ,School_Division
-    ,School_Name
-    ,TEL
-    ,URL
-    ,UsageSituation
+    School_m.School_CD
+    ,School_m.School_Division
+    ,Subcategory_m.SubCategory_Name AS DivisionInfo
+    ,School_m.School_Name
+    ,School_m.TEL
+    ,School_m.URL
+    ,School_m.UsageSituation
     FROM
-    School_m";
+    School_m
+    INNER JOIN
+    Subcategory_m
+    ON
+    Subcategory_m.MainCategory_CD = 3
+    AND
+    Subcategory_m.SubCategory_CD = School_m.School_Division    
+    " 
+    ;
 
-    if (!empty($checkFLG)) {
+    if ($School_Division > 0) {
       $SQL .="
       WHERE
-      School_Division = '$School_Division'";
+      School_m.School_Division = '$School_Division'";
     }
 
     $SQL .="
     ORDER BY
-    School_CD
-    ,School_Division";
+    School_m.School_CD
+    ,School_m.School_Division";
     
     //クラスの中の関数の呼び出し
     $DataTable=$DB_Connection->select($SQL);
@@ -61,7 +70,7 @@ class dao_School_M {
 
 
 
-  function DataChange($info,$branch){
+  function DataChange($info){
 
     $CD = $info['CD'];
     $Division = $info['Division'];
