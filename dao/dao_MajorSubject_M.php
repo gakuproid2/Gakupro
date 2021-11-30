@@ -2,29 +2,7 @@
 
 class dao_MajorSubject_M {
 
-  function Get_School_M(){
-    //クラスファイルの読み込み
-    require_once '../dao/DB_Connection.php';
-    //クラスの生成
-    $DB_Connection=new connect();
-    
-    //SQL文の発行
-    $SQL ="
-    SELECT
-    School_CD
-    ,School_Name
-    ,UsageSituation
-    FROM
-    School_m
-    WHERE
-    UsageSituation = 1;
-    ";
-    
-    //クラスの中の関数の呼び出し
-    $items = $DB_Connection->select($SQL);
-    return $items;
-  }
-
+ 
   function GET_Majorsubject_m($School_CD){
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
@@ -34,12 +12,13 @@ class dao_MajorSubject_M {
     //SQL文の発行
     $SQL = "
     SELECT
-    majorsub.school_cd AS school_cd
-    ,school.school_name AS school_name
-    ,majorsub.majorsubject_cd AS majorsubject_cd
-    ,majorsub.majorsubject_name AS majorsubject_name
-    ,majorsub.studyPeriod AS studyPeriod
-    ,majorsub.remarks AS remarks
+    majorsub.school_cd AS School_CD
+    ,school.school_name AS School_Name
+    ,majorsub.majorsubject_cd AS MajorSubject_CD
+    ,majorsub.majorsubject_name AS MajorSubject_Name
+    ,majorsub.studyPeriod AS StudyPeriod
+    ,majorsub.studyPeriod + 'ヶ月' AS StudyPeriodInfo
+    ,majorsub.remarks AS Remarks
     ,majorsub.UsageSituation AS UsageSituation
     FROM
     majorsubject_m AS majorsub
@@ -93,7 +72,7 @@ class dao_MajorSubject_M {
   }
 
 
-  function DataChange($info,$branch){
+  function DataChange($info){
 
     $School_CD = $info['School_CD'];
     $MajorSubject_CD = $info['MajorSubject_CD'];

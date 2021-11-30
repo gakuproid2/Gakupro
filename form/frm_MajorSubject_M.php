@@ -34,22 +34,32 @@ $JS_Info = $common->Read_JSconnection();
 
 <?php
 
-if (isset($_POST["School_CD"])) {$School_CD = $_POST["School_CD"];} else {$School_CD = 0;};
-
-if (isset($_POST["MajorSubject_Name"])) {
-  $MajorSubject_Name = $_POST["MajorSubject_Name"];
+//非post時は初期値を設定する。['']or[0]
+if (isset($_POST["School_Division"])) {
+  $School_Division = $_POST["School_Division"];
 } else {
-  $MajorSubject_Name = '';
+  $School_Division = 0;
+};
+
+if (isset($_POST["School_CD"])) {
+  $School_CD = $_POST["School_CD"];
+} else {
+  $School_CD = 0;
 };
 if (isset($_POST["MajorSubject_CD"])) {
   $MajorSubject_CD = $_POST["MajorSubject_CD"];
 } else {
   $MajorSubject_CD = 0;
 };
+if (isset($_POST["MajorSubject_Name"])) {
+  $MajorSubject_Name = $_POST["MajorSubject_Name"];
+} else {
+  $MajorSubject_Name = '';
+};
 if (isset($_POST["StudyPeriod"])) {
   $StudyPeriod = $_POST["StudyPeriod"];
 } else {
-  $StudyPeriod = '';
+  $StudyPeriod = 0;
 };
 if (isset($_POST["Remarks"])) {
   $Remarks = $_POST["Remarks"];
@@ -61,214 +71,386 @@ if (isset($_POST["UsageSituation"])) {
 } else {
   $UsageSituation = 0;
 };
+//非post時は初期値を設定する。['']or[0] End--
 
-if (isset($_POST["DataChange"])) {
+//データ更新処理実行時  Start--
+if (isset($_POST["ProcessingType"])) {
 
-  $info = array(
-    'School_CD' => $School_CD, 'MajorSubject_CD' => $MajorSubject_CD, 'MajorSubject_Name' => $MajorSubject_Name, 'StudyPeriod' => $StudyPeriod, 'Remarks' => $Remarks, 'UsageSituation' => $UsageSituation, 'Changer' => $_SESSION["Staff_ID"], 'UpdateDate' => date("Y-m-d H:i:s")
-  );
+    $info = array(
+      'School_CD' => $School_CD,
+      'MajorSubject_CD' => $MajorSubject_CD,
+      'MajorSubject_Name' => $MajorSubject_Name,      
+      'StudyPeriod' => $StudyPeriod,
+      'Remarks' => $Remarks,        
+      'ProcessingType' => $_POST["ProcessingType"]
+    );
 
-  //データ変更種類に種別  1=登録、2=更新、3=論理削除
-  $Processing = $_POST["DataChange"];
-  $Result == false;
-  
-  $Result = $dao_MajorSubject_M->DataChange($info, $Processing);
-  
+    $Result = $dao_MajorSubject_M->DataChange($info);
 
-  if ($Result == true) {
     Header('Location: ' . $_SERVER['PHP_SELF']);
-    exit(); //optional
-  } else {
+    exit(); 
   }
-}
+  //データ更新処理実行時  End--
 
+  //学校のプルダウン作成する為
+  $items = $dao_School_M->Get_School_M($School_Division);
 
-//学校のプルダウン作成する為
-$items = $dao_School_M->Get_School_M('', '');
-//0行目
-$PullDown = "<option value = 0 >選択してください</option>";
-foreach ($items as $item_val) {
+  $PullDown = "<option value = 0 >選択してください</option>";
+  foreach ($items as $item_val) {
+    $PullDown .= "<option value = " . $item_val['School_CD']." >".$item_val['School_Name'] . "</option>";    
+  }  
+  
 
-  $PullDown .= "<option value = " . $item_val['School_CD'];
-
-  if ($School_CD == $item_val['School_CD']) {
-    $PullDown .= " selected>";
-  } else {
-    $PullDown .= " >";
-  }
-
-  $PullDown .= $item_val['School_Name'] . "</option>";
-}
-
-//表示用Table作成用（メインカテゴリーコードで参照）
 $Data_Table = $dao_MajorSubject_M->GET_Majorsubject_m($School_CD);
+
+$Data_Count = count($Data_Table);
+
+//Table作成 Start
 $Table = "
-<table border='1'>
-  <tr>
-    <th>学校名</th><th>専攻コード</th><th>専攻名</th><th>在学期間</th><th>備考</th><th>利用フラグ</th>
-  </tr>
+<table class='DataInfoTable'>
+<tr>
+  <th>学校名</th>
+  <th>専攻CD</th>
+  <th>専攻名</th>  
+  <th>期間</th>  
+  <th>データ総数[".$Data_Count. "件]</th>
+</tr>
 ";
-//取得したデータ数文ループ
 foreach ($Data_Table as $val) {
-  $Table .= "<tr class='Table'>
-  <td style=display:none>" . $val['school_cd'] . "</td>
-  <td>" . $val['school_name'] . "</td>
-  <td>" . $val['majorsubject_cd'] . "</td>
-  <td>" . $val['majorsubject_name'] . "</td>
-  <td>" . $val['studyPeriod'] . "</td>
-  <td>" . $val['remarks'] . "</td>";
 
   if ($val['UsageSituation'] == 0) {
-    $Table .= " <td>×</td>";
+    $IconType = "<i class='far fa-thumbs-down'></i><i class='fas fa-arrow-right'></i><i class='far fa-thumbs-up'></i>";
   } else {
-    $Table .= " <td>〇</td>";
+    $IconType = "<i class='far fa-thumbs-up'></i><i class='fas fa-arrow-right'></i><i class='far fa-thumbs-down'></i>";
   }
-  $Table .= "</tr>";
-}
-$Table .= "</table>";
-//School_CDが1以上時のみ
-if ($School_CD > 0) {
-  //学校コードを渡し専攻コードのMax値取得
-  $Max_MajorSubject_CD = $dao_MajorSubject_M->Get_MaxCD($School_CD);
-} else {
-  $Max_MajorSubject_CD = "";
+
+  $Table .=
+    "
+    <tr>
+    <td>" . $val['School_Name'] . "</td>        
+    <td>" . $val['MajorSubject_CD'] ." </td>
+    <td>" . $val['MajorSubject_Name'] ." </td>    
+    <td>" . $val['StudyPeriodInfo'] ." </td>    
+    <td>    
+      <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#UpdateModal' 
+      data-schoolcd='" . $val['School_CD'] . "'
+      data-majorSubjectcd='" . $val['MajorSubject_CD'] . "'
+      data-majorSubjectname='" . $val['MajorSubject_Name'] . "'
+      data-studyperiod='" . $val['StudyPeriod'] . "'
+      data-remarks='" . $val['Remarks'] . "'             
+      data-usage='" . $val['UsageSituation'] . "' >
+      <i class='far fa-edit'></i>
+      </button> 
+   
+      <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#ChangeUsageSituationModal'
+      data-schoolcd='" . $val['School_CD'] . "'
+      data-majorSubjectname='" . $val['MajorSubject_Name'] . "'      
+      data-usage='" . $val['UsageSituation'] . "' >
+      " . $IconType . "              
+      </button>
+
+    </td>
+  </tr>
+  ";
 }
 
+$Table .= "</table>";
+//Table作成 End
 ?>
 
 <body>
-
-  <form action="frm_MajorSubject_M.php" method="post">
-    <p>学校CD：<select id='School_CD' name='School_CD'><?php echo $PullDown; ?></select></p>
-    <p>専攻CD：<input type='text' id='MajorSubject_CD' name='MajorSubject_CD' value='<?php echo $Max_MajorSubject_CD; ?>' readonly> </p>
-    <p>専攻名：<input type="text" id='MajorSubject_Name' name="MajorSubject_Name" value='<?php echo $MajorSubject_Name; ?>' autocomplete="off"></p>
-    <p>在学期間：<input type="text" id='StudyPeriod' class='StudyPeriod' name="StudyPeriod" value='<?php echo $StudyPeriod; ?>' placeholder="ヶ月" autocomplete="off"></p>
-    <p>備考：<input type="text" id='Remarks' name="Remarks" value='<?php echo $Remarks; ?>' autocomplete="off"></p>
-    <p>利用フラグ：<input type="checkbox" id="chk_UsageSituation" name="UsageSituation" value="1" checked="checked"></p>
-
-    <button class="btn_Insert" id="btn_Insert" name="DataChange" value="1">登録</button>
-    <button class="btn_Update" id="btn_Update" name="DataChange" value="2">更新</button>
-    <button class="btn_Delete" id="btn_Delete" name="DataChange" value="3">削除</button>
-  </form>
-  <button class="btn_Clear" id="btn_Clear" name="Clear" value="4">クリア</button>
-
+<div>
+    <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
+    <a>学校選択：<select name='School_CD' id='School_CD'><?php echo $PullDown; ?></select></a>
+  </div>
   <?php echo $Table; ?>
 
-  <?php echo $JS_Info ?>
+  <!-- 登録用Modal -->
+  <div class="modal fade" id="InsertModal" tabindex="-1" aria-labelledby="InsertModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
 
+        <div class="modal-header">
+          <h5 class="modal-title" id="InsertModalLabel">登録確認</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">         
+                 
+          <div class="form-group row">
+            <label for="Insert_School_CD" class="col-md-3 col-form-label">学校選択</label>
+            <select name='Insert_School_CD' id='Insert_School_CD' class="form-control col-md-3" ><?php echo $PullDown; ?></select>
+          </div>
+
+          <div class="form-group row">
+            <label for="Insert_MajorSubject_Name" class="col-md-3 col-form-label">専攻名</label>
+            <input type="text" name="Insert_MajorSubject_Name" id="Insert_MajorSubject_Name" value="" class="form-control col-md-3">
+          </div>
+
+          <div class="form-group row">
+            <label for="Insert_StudyPeriod" class="col-md-3 col-form-label">学習期間</label>
+            <input type="text" name="Insert_StudyPeriod" id="Insert_StudyPeriod" value="" class="form-control col-md-3">
+          </div>
+
+          <div class="form-group row">
+            <label for="Insert_Remarks" class="col-md-5 col-form-label">備考</label>
+            <input type="text" name="Insert_Remarks" id="Insert_Remarks" value="" class="form-control col-md-3">
+          </div>   
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+            <button type="button" class="btn btn-primary ModalInsertButton">登録</button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 更新用Modal -->
+  <div class="modal fade" id="UpdateModal" tabindex="-1" aria-labelledby="UpdateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="UpdateModalLabel">更新確認</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">          
+     
+        <div class="form-group row">
+            <label for="Update_School_Name" class="col-md-3 col-form-label">学校名</label>
+            <input type="text" name="Update_School_Name" id="Update_School_Name" value="" class="form-control col-md-3">
+        </div>
+
+        <div class="form-group row">
+            <label for="Update_School_Name" class="col-md-3 col-form-label">専攻CD</label>
+            <input type="text" name="Update_School_Name" id="Update_School_Name" value="" class="form-control col-md-3">
+        </div>        
+
+        <div class="form-group row">
+          <label for="Update_MajorSubject_Name" class="col-md-3 col-form-label">専攻名</label>
+          <input type="text" name="Update_MajorSubject_Name" id="Update_MajorSubject_Name" value="" class="form-control col-md-3">
+        </div>
+
+        <div class="form-group row">
+          <label for="Update_StudyPeriod" class="col-md-3 col-form-label">学習期間</label>
+          <input type="text" name="Update_StudyPeriod" id="Update_StudyPeriod" value="" class="form-control col-md-3">
+        </div>
+
+        <div class="form-group row">
+          <label for="Update_Remarks" class="col-md-5 col-form-label">備考</label>
+          <input type="text" name="Update_Remarks" id="Update_Remarks" value="" class="form-control col-md-3">
+        </div>   
+
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+            <button type="button" class="btn btn-primary ModalUpdateButton">更新</button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 利用状況更新用Modal -->
+  <div class="modal fade" id="ChangeUsageSituationModal" tabindex="-1" aria-labelledby="ChangeUsageSituationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="ChangeUsageSituationModalLabel">利用状況変更確認</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+
+          <p>学校名 = <span id="ChangeUsageSituation_School_Name"></span> | 専攻名 = <span id="ChangeUsageSituation_MajorSubject_Name"></span></p>
+
+          <span id="ChangeUsageSituation_MajorSubject_CD" hidden></span>
+          <span id="ChangeUsageSituation_MajorSubject_Name" hidden></span>
+          <span id="ChangeUsageSituation_UsageSituation" hidden></span>
+          <p><span id="ChangeUsageSituation_Message"></span></p>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+            <button type="button" class="btn btn-primary ModalChangeUsageSituationButton"><span id="ChangeUsageSituation_ButtonName"></span></button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+  <?php echo $JS_Info ?>
 </body>
 
 <script>
-  $(window).on('load', function(event) {
-    $("#btn_Insert").show();
-    $("#btn_Update").hide();
-    $("#btn_Delete").hide();
-  });
 
-  $('.Table').on('click', function() {
-    var School_CD = $(this).children('td')[0].innerText;
-    $("#School_CD").val(School_CD);
+  document.geStudyPeriodementById("School_CD").onchange = function() {
 
-    var Major_CD = $(this).children('td')[2].innerText;
-    $("#MajorSubject_CD").val(Major_CD);
-
-    var Major_Name = $(this).children('td')[3].innerText;
-    $("#MajorSubject_Name").val(Major_Name);
-
-    var StudyPeriod = $(this).children('td')[4].innerText;
-    $("#StudyPeriod").val(StudyPeriod);
-
-    var Remarks = $(this).children('td')[5].innerText;
-    $("#Remarks").val(Remarks);
-
-    var UsageSituation = $(this).children('td')[6].innerText;
-
-    if (UsageSituation == '〇') {
-      $("#chk_UsageSituation").prop('checked', true);
-    } else {
-      $("#chk_UsageSituation").prop('checked', false);
-    }
-
-    $("#btn_Insert").hide();
-    $("#btn_Update").show();
-    $("#btn_Delete").show();
-  });
-
-  document.getElementById("School_CD").onchange = function() {
-
-    //ポストするキーと値を格納
-    var DataArray = {
-      School_CD: $("#School_CD").val(),
-      MajorSubject_Name: $("#MajorSubject_Name").val(),
-      StudyPeriod: $("#StudyPeriod").val(),
-      Remarks: $("#Remarks").val()
-    };
-
-    //common.jsに実装
-    originalpost("frm_MajorSubject_M.php", DataArray);
+  //ポストするキーと値を格納
+  var DataArray = {
+    School_CD: $("#School_CD").val(),
+  };
+  //common.jsに実装
+  originalpost("frm_MajorSubject_M.php", DataArray);
 
   };
 
-  //登録ボタンクリック時
-  $('#btn_Insert').on('click', function() {
-    if (ValueCheck() == false) {
-      return false;
+  //登録用モーダル表示時
+  $('#InsertModal').on('show.bs.modal', function(e) {   
+  
+    $('#Insert_MajorSubject_Name').val('');       
+    $('#Insert_StudyPeriod').val('');
+    $('#Insert_Remarks').val('');   
+    
+  });
+
+  //更新用モーダル表示時
+  $('#UpdateModal').on('show.bs.modal', function(e) {
+    // イベント発生元
+    let evCon = $(e.relatedTarget);
+    $('#Update_School_Name').val(evCon.data('schoolname'));    
+    $('#Update_MajorSubject_CD').val(evCon.data('majorSubjectcd'));     
+    $('#Update_MajorSubject_Name').val(evCon.data('majorSubjectname'));       
+    $('#Update_Remarks').val(evCon.data('Remarks'));  
+    $('#Update_StudyPeriod').val(evCon.data('StudyPeriod'));
+     
+
+  });
+
+  //利用状況変更モーダル表示時
+  $('#ChangeUsageSituationModal').on('show.bs.modal', function(e) {
+    // イベント発生元
+    let evCon = $(e.relatedTarget);
+
+    var UsageSituation = evCon.data('usage');
+
+
+    if (UsageSituation == 0) {
+      $('#ChangeUsageSituation_Message').html('利用可能にしますか？');
+      $('#ChangeUsageSituation_ButtonName').html('利用可能にする');
+    } else {
+      $('#ChangeUsageSituation_Message').html('利用不可にしますか？');
+      $('#ChangeUsageSituation_ButtonName').html('利用不可にする');
     }
 
-    if (window.confirm('登録してもよろしいですか？')) {
-      $('#form_id').submit();
-    } else {
-      return false;
+    $('#ChangeUsageSituation_MajorSubject_CD').html(evCon.data('majorSubjectcd'));
+    $('#ChangeUsageSituation_MajorSubject_Name').html(evCon.data('majorSubjectname'));
+
+
+    $('#ChangeUsageSituation_School_CD').val(evCon.data('schoolcd'));
+    $('#ChangeUsageSituation_MajorSubject_CD').val(evCon.data('majorSubjectcd'));
+    $('#ChangeUsageSituation_MajorSubject_Name').val(evCon.data('majorSubjectname'));    
+    $('#ChangeUsageSituation_UsageSituation').val(evCon.data('usage'));
+
+  });
+
+  //登録ボタンクリック時
+  $('.ModalInsertButton').on('click', function() {
+
+    var SelectProcessingType = 1;
+
+    //ポストするキーと値を格納
+    var DataArray = {
+      ProcessingType: SelectProcessingType,  
+      School_CD: $("#Insert_School_CD").val(),
+      MajorSubject_Name: $("#Insert_MajorSubject_Name").val(),
+      StudyPeriod: $("#Insert_StudyPeriod").val(),   
+      Remarks: $("#Insert_Remarks").val(),      
+    };
+
+    if (!ValueCheck(DataArray)) {
+      return;
     }
+
+    if (!ConfirmationMessage(DataArray.MajorSubject_Name, SelectProcessingType)) {
+      return;
+    }
+
+    BeforePosting(DataArray);
+
   });
 
   //更新ボタンクリック時
-  $('#btn_Update').on('click', function() {
-    if (ValueCheck() == false) {
-      return false;
+  $('.ModalUpdateButton').on('click', function() {
+
+    var SelectProcessingType = 2;
+
+    //ポストするキーと値を格納
+    var DataArray = {
+      ProcessingType: SelectProcessingType,  
+      School_CD: $("#Update_School_CD").val(),
+      MajorSubject_CD: $("#Update_MajorSubject_CD").val(),
+      MajorSubject_Name: $("#Update_MajorSubject_Name").val(),
+      StudyPeriod: $("#Update_StudyPeriod").val(),   
+      Remarks: $("#Update_Remarks").val(),      
+    };
+
+    if (!ValueCheck(DataArray)) {
+      return;
     }
 
-    if (window.confirm('更新してもよろしいですか？')) {
-      $('#form_id').submit();
+    if (!ConfirmationMessage('学校名：' + $("#Update_School_Name").val() + '専攻名：' + $("#Update_MajorSubject_Name").val(), SelectProcessingType)) {
+      return;
+    }
+
+    BeforePosting(DataArray);
+  });
+
+  //利用状況変更ボタンクリック時
+  $('.ModalChangeUsageSituationButton').on('click', function() {
+
+    var UsageSituation = $("#ChangeUsageSituation_UsageSituation").val();
+
+    if (UsageSituation == 0) {
+      var SelectProcessingType = 3;
     } else {
-      return false;
+      var SelectProcessingType = 4;
     }
+
+    //ポストするキーと値を格納
+    var DataArray = {
+      ProcessingType: SelectProcessingType,
+      School_CD: $("#ChangeUsageSituation_School_CD").val(),
+      MajorSubject_CD: $("#ChangeUsageSituation_MajorSubject_CD").val()  
+
+    };
+
+    BeforePosting(DataArray);
   });
 
-  //削除ボタンクリック時
-  $('#btn_Delete').on('click', function() {
-    if (window.confirm('削除してもよろしいですか？')) {
-      $('#form_id').submit();
-    } else {
-      return false;
-    }
-  });
-
-  //クリアボタンクリック時
-  $('#btn_Clear').on('click', function() {
-
-    window.location.href = 'frm_MajorSubject_M.php'
-
-  });
+  function BeforePosting(DataArray) {
+    //common.jsに実装
+    originalpost("frm_School_M.php", DataArray);
+  }
 
 
-  function ValueCheck() {
-    var ErrorMsg = '';
-    if ($("#School_CD").val() == 0) {
-      ErrorMsg += '学校CDを選択してください。\n';
+  //登録、更新時の値チェック
+  function ValueCheck(DataArray) {
+
+    var ErrorMsg = '';  
+  
+    if (DataArray.School_CD == "0") {
+      ErrorMsg += '学校を選択してください。\n';
     }
 
-    if ($("#MajorSubject_Name").val() == "") {
-      ErrorMsg += '専攻名を入力してください。\n';
-    }
-
-    if ($("#StudyPeriod").val() == "") {
-      ErrorMsg += '在学期間を入力してください。\n';
+    if (DataArray.MajorSubject_Name == "") {
+      ErrorMsg += '学校名を入力してください。\n';
     }
 
     if (!ErrorMsg == "") {
       ErrorMsg = '以下は必須項目です。\n' + ErrorMsg;
-      window.alert(ErrorMsg); // 
+      window.alert(ErrorMsg);
       return false;
     } else {
       return true;

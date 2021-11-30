@@ -70,8 +70,7 @@ if (isset($_POST["ProcessingType"])) {
       'School_Division' => $School_Division,
       'School_Name' => $School_Name,      
       'TEL' => $TEL,
-      'URL' => $URL,  
-      'Authority' => $Authority,
+      'URL' => $URL,        
       'ProcessingType' => $_POST["ProcessingType"]
     );
 
@@ -128,9 +127,8 @@ foreach ($Data_Table as $val) {
     <td>" . $val['School_CD'] . "</td>        
     <td>" . $val['DivisionInfo'] ." </td>
     <td>" . $val['School_Name'] ." </td>
-    <td><a href='" . $val['URL'] . "' style='text-decoration:none;'>" . "icon表示予定" . "</a></td>
-    <td>
-
+    <td><button><a href='" . $val['URL'] . "' target='_blank' rel='noopener noreferrer' style='text-decoration:none';>HPへ</a></button></td>    
+    <td>    
       <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#UpdateModal' 
       data-schoolcd='" . $val['School_CD'] . "'
       data-schooldivision='" . $val['School_Division'] . "'
@@ -223,6 +221,11 @@ $Table .= "</table>";
 
         <div class="modal-body">          
      
+        <div class="form-group row">
+            <label for="Update_School_CD" class="col-md-3 col-form-label">学校CD</label>
+            <input type="text" name="Update_School_CD" id="Update_School_CD" value="" class="form-control col-md-3">
+        </div>
+
         <div class="form-group row">
             <label for="Update_School_Division" class="col-md-3 col-form-label">学校区分</label>
             <select name='Update_School_Division' id='Update_School_Division' class="form-control col-md-3" ><?php echo $PullDown; ?></select>
@@ -366,7 +369,7 @@ document.getElementById("School_Division").onchange = function() {
       School_Division: $("#Insert_School_Division").val(),
       School_Name: $("#Insert_School_Name").val(),
       TEL: $("#Insert_TEL").val(),   
-      URL: $("#Insert_School_Name").val(),      
+      URL: $("#Insert_URL").val(),      
     };
 
     if (!ValueCheck(DataArray)) {
@@ -389,10 +392,11 @@ document.getElementById("School_Division").onchange = function() {
     //ポストするキーと値を格納
     var DataArray = {
       ProcessingType: SelectProcessingType,  
+      School_CD: $("#Update_School_CD").val(),
       School_Division: $("#Update_School_Division").val(),
       School_Name: $("#Update_School_Name").val(),
       TEL: $("#Update_TEL").val(),   
-      URL: $("#Update_School_Name").val(),      
+      URL: $("#Update_URL").val(),      
     };
 
     if (!ValueCheck(DataArray)) {

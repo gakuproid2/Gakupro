@@ -72,21 +72,33 @@ class dao_School_M {
 
   function DataChange($info){
 
-    $CD = $info['CD'];
-    $Division = $info['Division'];
-    $Name = $info['Name'];
-    $TEL = $info['TEL'];
-    $URL = $info['URL'];
-    $UsageSituation = $info['UsageSituation'];
-    $Changer = $info['Changer'];
-    $UpdateDate = $info['UpdateDate'];
-
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
     //クラスの生成
-    $DB_Connection=new connect();
+    $DB_Connection = new connect();
+
+    //1 = 登録、2 = 更新、3 = 利用可能に更新、 4 = 利用不可に更新
+    $ProcessingType = $info['ProcessingType'];
+
+    if ($ProcessingType == 4) {
+      $UsageSituation = 0;
+    } else {
+      $UsageSituation = 1;
+    }
+
+    $School_CD = $info['School_CD'];
+    $School_Division = $info['School_Division'];
+    $School_Name = $info['School_Name'];
+    $TEL = $info['TEL'];
+    $URL = $info['URL'];    
+    $Changer = $_SESSION["Staff_ID"];
+    $UpdateDate = date("Y-m-d H:i:s");  
     
-    if($branch == 1) {
+    if ($ProcessingType == 1) {
+
+      //新規登録時はMaxID取得      
+      $School_CD = $this->Get_MaxCD();
+
       $SQL = "
       INSERT INTO
       gakupro.school_m (
@@ -99,9 +111,9 @@ class dao_School_M {
       ,Changer
       ,UpdateDate
       )VALUES(
-      '$CD'
-      ,'$Division'
-      ,'$Name'
+      '$School_CD'
+      ,'$School_Division'
+      ,'$School_Name'
       ,'$TEL'
       ,'$URL'
       ,'$UsageSituation'
@@ -109,36 +121,36 @@ class dao_School_M {
       ,'$UpdateDate'
     ); ";
 
-    } else if($branch == 2) {
+    } else if ($ProcessingType == 2) {
       $SQL = "
       UPDATE 
       gakupro.school_m 
       SET 
-      School_Division = '$Division'
-      ,School_Name = '$Name'
+      School_Division = '$School_Division'
+      ,School_Name = '$School_Name'
       ,TEL = '$TEL'
-      ,URL = '$URL'
-      ,UsageSituation = '$UsageSituation'
+      ,URL = '$URL'      
       ,Changer = '$Changer'
       ,UpdateDate = '$UpdateDate'
       WHERE
-      School_CD = $CD;
+      School_CD = $School_CD;
       ";
 
-    } else if($branch == 3) {
+    } else if ($ProcessingType == 3 or $ProcessingType == 4) {
       $SQL = "
-      DELETE FROM
-      gakupro.school_m
+      UPDATE 
+      gakupro.school_m 
+      SET 
+      UsageSituation = '$UsageSituation'  
+      ,Changer = '$Changer' 
+      ,UpdateDate = '$UpdateDate'
       WHERE
-      School_CD = $CD;
+      School_CD = $School_CD;
       ";
-
     }
         
     //クラスの中の関数の呼び出し
-    $items=$DB_Connection->plural($SQL);
-    
-    return $items;
+    return $DB_Connection->pluralTransaction($SQL);    
   }
 }
 ?>
