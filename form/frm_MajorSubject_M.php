@@ -19,6 +19,11 @@ require_once '../dao/dao_School_M.php';
 //クラスの生成
 $dao_School_M = new dao_School_M();
 
+//クラスファイルの読み込み
+require_once '../dao/dao_SubCategory_M.php';
+//クラスの生成
+$dao_SubCategory_M = new dao_SubCategory_M();
+
 $HeaderInfo = $common->HeaderCreation(11);
 
 $JS_Info = $common->Read_JSconnection();
@@ -92,12 +97,28 @@ if (isset($_POST["ProcessingType"])) {
   }
   //データ更新処理実行時  End--
 
+  //学校区分のプルダウン作成する為
+  $items = $dao_SubCategory_M->GET_SubCategory_m(3);
+
+  $School_Division_PullDown = "<option value = 0 >選択してください</option>";
+  foreach ($items as $item_val) {
+
+    $School_Division_PullDown .= "<option value = ". $item_val['SubCategory_CD'];
+
+    if ($School_Division == $item_val['SubCategory_CD']) {
+      $School_Division_PullDown .= " selected>";
+    } else {
+      $School_Division_PullDown .= " >";
+    }
+    $School_Division_PullDown  .= $item_val['SubCategory_Name'] . "</option>";
+  }  
+
   //学校のプルダウン作成する為
   $items = $dao_School_M->Get_School_M($School_Division);
-
-  $PullDown = "<option value = 0 >選択してください</option>";
+  
+  $SchoolPullDown = "<option value = 0 >選択してください</option>";
   foreach ($items as $item_val) {
-    $PullDown .= "<option value = " . $item_val['School_CD']." >".$item_val['School_Name'] . "</option>";    
+    $SchoolPullDown .= "<option value = ". $item_val['School_CD'] . " data-schooldivision=". $item_val['School_Division']. ">". $item_val['School_Name'] . "</option>";        
   }  
   
 
@@ -126,11 +147,11 @@ foreach ($Data_Table as $val) {
 
   $Table .=
     "
-    <tr>
+    <tr class='DataInfoTableRow'>
     <td>" . $val['School_Name'] . "</td>        
-    <td>" . $val['MajorSubject_CD'] ." </td>
-    <td>" . $val['MajorSubject_Name'] ." </td>    
-    <td>" . $val['StudyPeriodInfo'] ." </td>    
+    <td>" . $val['MajorSubject_CD'] ."</td>
+    <td>" . $val['MajorSubject_Name'] ."</td>    
+    <td>" . $val['StudyPeriodInfo'] ."</td>    
     <td>    
       <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#UpdateModal' 
       data-schoolcd='" . $val['School_CD'] . "'
@@ -161,7 +182,10 @@ $Table .= "</table>";
 <body>
 <div>
     <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
-    <a>学校選択：<select name='School_CD' id='School_CD'><?php echo $PullDown; ?></select></a>
+    <a>
+      学校区分：<select  class="School_Division" name='School_Division' id='School_Division'><?php echo $School_Division_PullDown; ?></select>
+      学校選択：<select  class="School_CD" name='School_CD' id='School_CD'><?php echo $SchoolPullDown; ?></select>
+    </a>
   </div>
   <?php echo $Table; ?>
 
@@ -179,7 +203,7 @@ $Table .= "</table>";
                  
           <div class="form-group row">
             <label for="Insert_School_CD" class="col-md-3 col-form-label">学校選択</label>
-            <select name='Insert_School_CD' id='Insert_School_CD' class="form-control col-md-3" ><?php echo $PullDown; ?></select>
+            <select name='Insert_School_CD' id='Insert_School_CD' class="form-control col-md-3" ><?php echo $SchoolPullDown; ?></select>
           </div>
 
           <div class="form-group row">
@@ -294,18 +318,56 @@ $Table .= "</table>";
 </body>
 
 <script>
+var $AllSchoolPullDown = $('.School_CD'); //学校一覧プルダウンの要素を変数に入れます。
+var AllSchoolPullDownOriginal = $AllSchoolPullDown.html(); //後のイベントで、不要なoption要素を削除するため、オリジナルをとっておく
 
-  document.geStudyPeriodementById("School_CD").onchange = function() {
+var $AllSchoolDataRow = $('.DataInfoTableRow'); //学校一覧プルダウンの要素を変数に入れます。
+var AllSchoolDataRowOriginal = $AllSchoolDataRow.html(); //後のイベントで、不要なoption要素を削除するため、オリジナルをとっておく
 
-  //ポストするキーと値を格納
-  var DataArray = {
-    School_CD: $("#School_CD").val(),
-  };
-  //common.jsに実装
-  originalpost("frm_MajorSubject_M.php", DataArray);
+//地方側のselect要素が変更になるとイベントが発生
+$('.School_Division').change(function() { 
+ //選択された学校区分の値を入れる
+ var SelectSchool_Division = $(this).val();
+ SearchPullDown(SelectSchool_Division);
+ SearchDataTable(SelectSchool_Division);
+});
 
-  };
+//プルダウン絞り込み
+function SearchPullDown(SelectSchool_Division) {
 
+   //削除された要素をもとに戻すため.html(AllSchoolPullDownOriginal)を入れておく
+ $AllSchoolPullDown.html(AllSchoolPullDownOriginal).find('option').each(function(){
+    var Data_SelectSchool_Division = $(this).data('schooldivision'); //data-valの値を取得
+    
+    if (SelectSchool_Division != 0 && SelectSchool_Division != Data_SelectSchool_Division) {
+      $(this).not(':first-child').remove();
+    }    
+  });
+}
+
+//table絞り込み
+function SearchDataTable(SelectSchool_Division) {
+
+//削除された要素をもとに戻すため.html(AllSchoolDataRowOriginal)を入れておく
+$AllSchoolDataRow.html(AllSchoolDataRowOriginal).find('table').each(function(){
+ var Data_SelectSchool_Division = $(this).data('schooldivision'); //data-valの値を取得
+ 
+  if (SelectSchool_Division != 0 && SelectSchool_Division != Data_SelectSchool_Division) {
+    $(this).not(':first-child').remove();
+  }    
+});
+
+}
+
+
+
+
+
+
+
+
+
+ 
   //登録用モーダル表示時
   $('#InsertModal').on('show.bs.modal', function(e) {   
   
