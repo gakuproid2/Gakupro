@@ -12,31 +12,32 @@ class dao_MajorSubject_M {
     //SQL文の発行
     $SQL = "
     SELECT
-    majorsub.school_cd AS School_CD
-    ,school.school_name AS School_Name
-    ,majorsub.majorsubject_cd AS MajorSubject_CD
-    ,majorsub.majorsubject_name AS MajorSubject_Name
-    ,majorsub.studyPeriod AS StudyPeriod
-    ,majorsub.studyPeriod + 'ヶ月' AS StudyPeriodInfo
-    ,majorsub.remarks AS Remarks
-    ,majorsub.UsageSituation AS UsageSituation
+    majorsubject_m.school_cd AS School_CD
+    ,school_m.school_name AS School_Name
+    ,school_m.school_division AS School_Division
+    ,majorsubject_m.majorsubject_cd AS MajorSubject_CD
+    ,majorsubject_m.majorsubject_name AS MajorSubject_Name
+    ,majorsubject_m.studyPeriod AS StudyPeriod
+    ,majorsubject_m.studyPeriod + 'ヶ月' AS StudyPeriodInfo
+    ,majorsubject_m.remarks AS Remarks
+    ,majorsubject_m.UsageSituation AS UsageSituation
     FROM
-    majorsubject_m AS majorsub
+    majorsubject_m AS majorsubject_m
     INNER JOIN
-    school_m AS school
+    school_m AS school_m
     ON
-    majorsub.School_CD = school.School_CD";
+    majorsubject_m.School_CD = school_m.School_CD";
 
     if ($School_CD > 0) {
       $SQL .="
         WHERE
-        majorsub.School_CD ='$School_CD'";
+        majorsubject_m.School_CD ='$School_CD'";
     }
 
     $SQL .="
     ORDER BY
-    majorsub.school_cd 
-    ,majorsub.majorsubject_cd
+    majorsubject_m.school_cd 
+    ,majorsubject_m.majorsubject_cd
     ";
 
     //クラスの中の関数の呼び出し
