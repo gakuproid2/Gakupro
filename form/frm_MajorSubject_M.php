@@ -35,7 +35,9 @@ $JS_Info = $common->Read_JSconnection();
   }
 </style>
 
-<?php echo $HeaderInfo; ?>
+<?php echo $HeaderInfo;?>
+
+
 
 <?php
 
@@ -128,7 +130,7 @@ $Data_Count = count($Data_Table);
 
 //Table作成 Start
 $Table = "
-<table class='DataInfoTable'>
+<table class='DataInfoTable' id='DataInfoTable'>
 <tr>
   <th>学校名</th>
   <th>専攻CD</th>
@@ -147,31 +149,31 @@ foreach ($Data_Table as $val) {
 
   $Table .=
     "
-    <tr class='DataInfoTableRow'>
-    <td>" . $val['School_Name'] . "</td>        
-    <td>" . $val['MajorSubject_CD'] ."</td>
-    <td>" . $val['MajorSubject_Name'] ."</td>    
-    <td>" . $val['StudyPeriodInfo'] ."</td>    
-    <td>    
-      <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#UpdateModal' 
-      data-schoolcd='" . $val['School_CD'] . "'
-      data-majorSubjectcd='" . $val['MajorSubject_CD'] . "'
-      data-majorSubjectname='" . $val['MajorSubject_Name'] . "'
-      data-studyperiod='" . $val['StudyPeriod'] . "'
-      data-remarks='" . $val['Remarks'] . "'             
-      data-usage='" . $val['UsageSituation'] . "' >
-      <i class='far fa-edit'></i>
-      </button> 
-   
-      <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#ChangeUsageSituationModal'
-      data-schoolcd='" . $val['School_CD'] . "'
-      data-majorSubjectname='" . $val['MajorSubject_Name'] . "'      
-      data-usage='" . $val['UsageSituation'] . "' >
-      " . $IconType . "              
-      </button>
+    <tr class='Row_School_Division" . $val['School_Division'] . "'>
+      <td>" . $val['School_Name'] . "</td>        
+      <td>" . $val['MajorSubject_CD'] ."</td>
+      <td>" . $val['MajorSubject_Name'] ."</td>    
+      <td>" . $val['StudyPeriodInfo'] ."</td>    
+      <td>    
+        <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#UpdateModal' 
+        data-schoolcd='" . $val['School_CD'] . "'
+        data-majorSubjectcd='" . $val['MajorSubject_CD'] . "'
+        data-majorSubjectname='" . $val['MajorSubject_Name'] . "'
+        data-studyperiod='" . $val['StudyPeriod'] . "'
+        data-remarks='" . $val['Remarks'] . "'             
+        data-usage='" . $val['UsageSituation'] . "' >
+        <i class='far fa-edit'></i>
+        </button> 
+    
+        <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#ChangeUsageSituationModal'
+        data-schoolcd='" . $val['School_CD'] . "'
+        data-majorSubjectname='" . $val['MajorSubject_Name'] . "'      
+        data-usage='" . $val['UsageSituation'] . "' >
+        " . $IconType . "              
+        </button>
 
-    </td>
-  </tr>
+      </td>
+    </tr>
   ";
 }
 
@@ -321,10 +323,7 @@ $Table .= "</table>";
 var $AllSchoolPullDown = $('.School_CD'); //学校一覧プルダウンの要素を変数に入れます。
 var AllSchoolPullDownOriginal = $AllSchoolPullDown.html(); //後のイベントで、不要なoption要素を削除するため、オリジナルをとっておく
 
-var $AllSchoolDataRow = $('.DataInfoTableRow'); //学校一覧プルダウンの要素を変数に入れます。
-var AllSchoolDataRowOriginal = $AllSchoolDataRow.html(); //後のイベントで、不要なoption要素を削除するため、オリジナルをとっておく
-
-//地方側のselect要素が変更になるとイベントが発生
+//学校区分が変更になるとイベントが発生
 $('.School_Division').change(function() { 
  //選択された学校区分の値を入れる
  var SelectSchool_Division = $(this).val();
@@ -347,24 +346,17 @@ function SearchPullDown(SelectSchool_Division) {
 
 //table絞り込み
 function SearchDataTable(SelectSchool_Division) {
-
-//削除された要素をもとに戻すため.html(AllSchoolDataRowOriginal)を入れておく
-$AllSchoolDataRow.html(AllSchoolDataRowOriginal).find('table').each(function(){
- var Data_SelectSchool_Division = $(this).data('schooldivision'); //data-valの値を取得
- 
-  if (SelectSchool_Division != 0 && SelectSchool_Division != Data_SelectSchool_Division) {
-    $(this).not(':first-child').remove();
-  }    
-});
+  
+  for (let i = 0; i < 5; i++) {
+    if(i==SelectSchool_Division){
+      
+    }else{
+      $('.Row_School_Division' + i).css({'display':'none'});           
+    }
+  
+  }
 
 }
-
-
-
-
-
-
-
 
 
  
