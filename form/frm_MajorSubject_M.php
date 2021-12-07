@@ -118,7 +118,7 @@ if (isset($_POST["ProcessingType"])) {
   //学校のプルダウン作成する為
   $items = $dao_School_M->Get_School_M($School_Division);
   
-  $SchoolPullDown = "<option value = 0 >選択してください</option>";
+  $SchoolPullDown = "<option value = 0 data-schooldivision=''>選択してください</option>";
   foreach ($items as $item_val) {
     $SchoolPullDown .= "<option value = ". $item_val['School_CD'] . " data-schooldivision=". $item_val['School_Division']. ">". $item_val['School_Name'] . "</option>";        
   }  
@@ -131,12 +131,12 @@ $Data_Count = count($Data_Table);
 //Table作成 Start
 $Table = "
 <table class='DataInfoTable' id='DataInfoTable'>
-<tr>
+<tr data-schooldivision='' data-schoolcd=''>
   <th>学校名</th>
   <th>専攻CD</th>
   <th>専攻名</th>  
   <th>期間</th>  
-  <th>データ総数[".$Data_Count. "件]</th>
+  <th id='TableDataCount'>データ総数[".$Data_Count. "件]</th>
 </tr>
 ";
 foreach ($Data_Table as $val) {
@@ -149,16 +149,17 @@ foreach ($Data_Table as $val) {
 
   $Table .=
     "
-    <tr class='Row_School_Division" . $val['School_Division'] . "'>
+    <tr data-schooldivision=" . $val['School_Division'] . " data-schoolcd=" . $val['School_CD'] . ">
       <td>" . $val['School_Name'] . "</td>        
       <td>" . $val['MajorSubject_CD'] ."</td>
       <td>" . $val['MajorSubject_Name'] ."</td>    
-      <td>" . $val['StudyPeriodInfo'] ."</td>    
+      <td>" . $val['StudyPeriod'] ."ヶ月</td>    
       <td>    
         <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#UpdateModal' 
-        data-schoolcd='" . $val['School_CD'] . "'
-        data-majorSubjectcd='" . $val['MajorSubject_CD'] . "'
-        data-majorSubjectname='" . $val['MajorSubject_Name'] . "'
+        data-schoolcd='" . $val['School_CD'] . "'        
+        data-schoolname='" . $val['School_Name'] . "' 
+        data-majorsubjectcd='" . $val['MajorSubject_CD'] . "'
+        data-majorsubjectname='" . $val['MajorSubject_Name'] . "'
         data-studyperiod='" . $val['StudyPeriod'] . "'
         data-remarks='" . $val['Remarks'] . "'             
         data-usage='" . $val['UsageSituation'] . "' >
@@ -167,7 +168,9 @@ foreach ($Data_Table as $val) {
     
         <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#ChangeUsageSituationModal'
         data-schoolcd='" . $val['School_CD'] . "'
-        data-majorSubjectname='" . $val['MajorSubject_Name'] . "'      
+        data-schoolname='" . $val['School_Name'] . "' 
+        data-majorsubjectcd='" . $val['MajorSubject_CD'] . "'   
+        data-majorsubjectname='" . $val['MajorSubject_Name'] . "'      
         data-usage='" . $val['UsageSituation'] . "' >
         " . $IconType . "              
         </button>
@@ -214,8 +217,8 @@ $Table .= "</table>";
           </div>
 
           <div class="form-group row">
-            <label for="Insert_StudyPeriod" class="col-md-3 col-form-label">学習期間</label>
-            <input type="text" name="Insert_StudyPeriod" id="Insert_StudyPeriod" value="" class="form-control col-md-3">
+            <label for="Insert_StudyPeriod" class="col-md-4 col-form-label">学習期間（ヶ月）</label>
+            <input type="text" name="Insert_StudyPeriod" id="Insert_StudyPeriod" value="" class="form-control col-md-1" placeholder="ヶ月">
           </div>
 
           <div class="form-group row">
@@ -247,14 +250,16 @@ $Table .= "</table>";
 
         <div class="modal-body">          
      
+        <span id="Update_School_CD" hidden></span>
+
         <div class="form-group row">
             <label for="Update_School_Name" class="col-md-3 col-form-label">学校名</label>
-            <input type="text" name="Update_School_Name" id="Update_School_Name" value="" class="form-control col-md-3">
+            <input type="text" name="Update_School_Name" id="Update_School_Name" value="" class="form-control col-md-3" readonly>
         </div>
 
         <div class="form-group row">
-            <label for="Update_School_Name" class="col-md-3 col-form-label">専攻CD</label>
-            <input type="text" name="Update_School_Name" id="Update_School_Name" value="" class="form-control col-md-3">
+            <label for="Update_MajorSubject_CD" class="col-md-3 col-form-label">専攻CD</label>
+            <input type="text" name="Update_MajorSubject_CD" id="Update_MajorSubject_CD" value="" class="form-control col-md-3" readonly>
         </div>        
 
         <div class="form-group row">
@@ -263,8 +268,8 @@ $Table .= "</table>";
         </div>
 
         <div class="form-group row">
-          <label for="Update_StudyPeriod" class="col-md-3 col-form-label">学習期間</label>
-          <input type="text" name="Update_StudyPeriod" id="Update_StudyPeriod" value="" class="form-control col-md-3">
+          <label for="Update_StudyPeriod" class="col-md-4 col-form-label">学習期間（ヶ月）</label>
+          <input type="text" name="Update_StudyPeriod" id="Update_StudyPeriod" value="" class="form-control col-md-3" placeholder="ヶ月">
         </div>
 
         <div class="form-group row">
@@ -298,6 +303,7 @@ $Table .= "</table>";
 
           <p>学校名 = <span id="ChangeUsageSituation_School_Name"></span> | 専攻名 = <span id="ChangeUsageSituation_MajorSubject_Name"></span></p>
 
+          <span id="ChangeUsageSituation_School_CD" hidden></span>
           <span id="ChangeUsageSituation_MajorSubject_CD" hidden></span>
           <span id="ChangeUsageSituation_MajorSubject_Name" hidden></span>
           <span id="ChangeUsageSituation_UsageSituation" hidden></span>
@@ -320,41 +326,64 @@ $Table .= "</table>";
 </body>
 
 <script>
-var $AllSchoolPullDown = $('.School_CD'); //学校一覧プルダウンの要素を変数に入れます。
-var AllSchoolPullDownOriginal = $AllSchoolPullDown.html(); //後のイベントで、不要なoption要素を削除するため、オリジナルをとっておく
 
 //学校区分が変更になるとイベントが発生
 $('.School_Division').change(function() { 
  //選択された学校区分の値を入れる
  var SelectSchool_Division = $(this).val();
- SearchPullDown(SelectSchool_Division);
- SearchDataTable(SelectSchool_Division);
+ NarrowDownPullDown(SelectSchool_Division);
+ NarrowDownDataTable(SelectSchool_Division);
+});
+
+//学校名が変更になるとイベントが発生
+$('.School_CD').change(function() { 
+ //選択された学校区分の値を入れる
+ var SelectSchool_CD = $(this).val();
+ 
 });
 
 //プルダウン絞り込み
-function SearchPullDown(SelectSchool_Division) {
+function NarrowDownPullDown(SelectSchool_Division) {
 
-   //削除された要素をもとに戻すため.html(AllSchoolPullDownOriginal)を入れておく
- $AllSchoolPullDown.html(AllSchoolPullDownOriginal).find('option').each(function(){
-    var Data_SelectSchool_Division = $(this).data('schooldivision'); //data-valの値を取得
-    
-    if (SelectSchool_Division != 0 && SelectSchool_Division != Data_SelectSchool_Division) {
-      $(this).not(':first-child').remove();
-    }    
-  });
+  
+  //select要素をidで取得
+  var list = document.getElementById('School_CD').options;
+
+  for(var i=0;i<list.length;i++){
+
+    TargetSchool_Division = (list[i].dataset["schooldivision"]);
+
+    if(SelectSchool_Division == 0 || TargetSchool_Division == SelectSchool_Division || TargetSchool_Division ==''){
+      list[i].style='display:option';        
+    }else{
+      list[i].style='display:none';          
+    }   
+
+  }
+
 }
 
 //table絞り込み
-function SearchDataTable(SelectSchool_Division) {
+function NarrowDownDataTable(SelectSchool_Division) {
   
-  for (let i = 0; i < 5; i++) {
-    if(i==SelectSchool_Division){
-      
-    }else{
-      $('.Row_School_Division' + i).css({'display':'none'});           
-    }
-  
+  // table要素を取得
+  var TargetTable = document.getElementById('DataInfoTable');      
+
+  var TableDataCount = 0;
+  for (i = 0, len = TargetTable.rows.length; i < len; i++) {
+
+    var TargetSchool_Division = TargetTable.rows[i].dataset["schooldivision"];
+
+      if(SelectSchool_Division == 0 || TargetSchool_Division == SelectSchool_Division || TargetSchool_Division ==''){
+        TargetTable.rows[i].style='display:table-row';  
+        TableDataCount += 1;        
+      }else{
+        TargetTable.rows[i].style='display:none';       
+      }    
+          
   }
+
+  document.getElementById("TableDataCount").innerHTML = "データ総数["+ (TableDataCount - 1) +"件]";
 
 }
 
@@ -373,13 +402,12 @@ function SearchDataTable(SelectSchool_Division) {
   $('#UpdateModal').on('show.bs.modal', function(e) {
     // イベント発生元
     let evCon = $(e.relatedTarget);
+    $('#Update_School_CD').val(evCon.data('schoolcd'));    
     $('#Update_School_Name').val(evCon.data('schoolname'));    
-    $('#Update_MajorSubject_CD').val(evCon.data('majorSubjectcd'));     
-    $('#Update_MajorSubject_Name').val(evCon.data('majorSubjectname'));       
-    $('#Update_Remarks').val(evCon.data('Remarks'));  
-    $('#Update_StudyPeriod').val(evCon.data('StudyPeriod'));
-     
-
+    $('#Update_MajorSubject_CD').val(evCon.data('majorsubjectcd'));     
+    $('#Update_MajorSubject_Name').val(evCon.data('majorsubjectname'));       
+    $('#Update_StudyPeriod').val(evCon.data('studyperiod'));
+    $('#Update_Remarks').val(evCon.data('remarks'));  
   });
 
   //利用状況変更モーダル表示時
@@ -398,13 +426,15 @@ function SearchDataTable(SelectSchool_Division) {
       $('#ChangeUsageSituation_ButtonName').html('利用不可にする');
     }
 
-    $('#ChangeUsageSituation_MajorSubject_CD').html(evCon.data('majorSubjectcd'));
-    $('#ChangeUsageSituation_MajorSubject_Name').html(evCon.data('majorSubjectname'));
+    
+    $('#ChangeUsageSituation_School_Name').html(evCon.data('schoolname'));    
+    $('#ChangeUsageSituation_MajorSubject_Name').html(evCon.data('majorsubjectname'));
 
 
     $('#ChangeUsageSituation_School_CD').val(evCon.data('schoolcd'));
-    $('#ChangeUsageSituation_MajorSubject_CD').val(evCon.data('majorSubjectcd'));
-    $('#ChangeUsageSituation_MajorSubject_Name').val(evCon.data('majorSubjectname'));    
+    $('#ChangeUsageSituation_School_Name').val(evCon.data('schoolname'));
+    $('#ChangeUsageSituation_MajorSubject_CD').val(evCon.data('majorsubjectcd'));
+    $('#ChangeUsageSituation_MajorSubject_Name').val(evCon.data('majorsubjectname'));    
     $('#ChangeUsageSituation_UsageSituation').val(evCon.data('usage'));
 
   });
@@ -485,7 +515,7 @@ function SearchDataTable(SelectSchool_Division) {
 
   function BeforePosting(DataArray) {
     //common.jsに実装
-    originalpost("frm_School_M.php", DataArray);
+    originalpost("frm_MajorSubject_M.php", DataArray);
   }
 
 
@@ -499,7 +529,7 @@ function SearchDataTable(SelectSchool_Division) {
     }
 
     if (DataArray.MajorSubject_Name == "") {
-      ErrorMsg += '学校名を入力してください。\n';
+      ErrorMsg += '専攻名を入力してください。\n';
     }
 
     if (!ErrorMsg == "") {

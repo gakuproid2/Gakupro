@@ -108,7 +108,7 @@
        //0行目
        $MajorSubject_PullDown = "<option value = 0 >専攻を選択して下さい</option>";
        foreach ($MajorSubject_Info as $val) {
-         $MajorSubject_PullDown .= "<option value = " . $val['majorsubject_cd']." >".$val['majorsubject_name'] . "</option>";          
+         $MajorSubject_PullDown .= "<option value = " . $val['MajorSubject_CD']." >".$val['MajorSubject_CD'] . "</option>";          
        }
     }
 

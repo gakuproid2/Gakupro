@@ -5,6 +5,10 @@
   font-family:"ヒラギノ丸ゴ Pro W4","ヒラギノ丸ゴ Pro","Hiragino Maru Gothic Pro","ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","HG丸ｺﾞｼｯｸM-PRO","HGMaruGothicMPRO";
 } 
 
+body{
+  width:100%; /*ページ全体の幅は100%と指定する*/	
+  text-align:center; /*ページ全体を中央揃えにする*/
+}
 
 button{  
   border: none;  /* 枠線を消す */
@@ -23,9 +27,10 @@ button{
 }
 
 /* マスタ画面のtable設定 Start */
+
 .DataInfoTable{  
   border-collapse:separate;
-  border-spacing: 0;
+  border-spacing: 0;  
 }
 
 .DataInfoTable th:first-child{
@@ -69,7 +74,7 @@ button{
 
 .DataInfoTable tr:last-child td:last-child {
   border-radius: 0 0 5px 0;
-} */
+} 
 
 /* マスタ画面のtable設定 End
 
