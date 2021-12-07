@@ -124,12 +124,12 @@ $Data_Count = count($Data_Table);
 
 //Table作成 Start
 $Table = "
-<table class='DataInfoTable'>
-<tr>
+<table class='DataInfoTable' id='DataInfoTable'>
+<tr data-authority=''>
   <th>スタッフID</th>
   <th>氏名</th>
   <th>権限</th>
-  <th>データ総数[".$Data_Count. "件]</th>
+  <th id='TableDataCount'>データ総数[".$Data_Count. "件]</th>
 </tr>
 ";
 foreach ($Data_Table as $val) {
@@ -142,7 +142,7 @@ foreach ($Data_Table as $val) {
 
   $Table .=
     "
-  <tr>
+  <tr data-authority='" . $val['Authority'] . "'>
     <td>" . $val['Staff_ID'] . "</td>
     <td>" . $val['Staff_Name'] . " </td>
     <td>" . $val['AuthorityInfo'] ." </td>
@@ -363,18 +363,36 @@ $Table .= "</table>";
 
 <script>
 
-document.getElementById("Authority").onchange = function() {
+  document.getElementById("Authority").onchange = function() {
 
-  //ポストするキーと値を格納
-  var DataArray = {
-    Authority: $("#Authority").val(),
-  };
-
-  //common.jsに実装
-  originalpost("frm_Staff_M.php", DataArray);
+  var Select_Authority = $(this).val();
+  NarrowDownDataTable(Select_Authority);
 
   };
 
+  //table絞り込み
+  function NarrowDownDataTable(Select_Authority) {
+  
+  // table要素を取得
+  var TargetTable = document.getElementById('DataInfoTable');      
+
+  var TableDataCount = 0;
+  for (i = 0, len = TargetTable.rows.length; i < len; i++) {
+
+    var TargetAuthority = TargetTable.rows[i].dataset["authority"];
+
+      if(Select_Authority == 0 || TargetAuthority == Select_Authority || TargetAuthority ==''){
+        TargetTable.rows[i].style='display:table-row';  
+        TableDataCount += 1;        
+      }else{
+        TargetTable.rows[i].style='display:none';       
+      }    
+          
+  }
+
+  document.getElementById("TableDataCount").innerHTML = "データ総数["+ (TableDataCount - 1) +"件]";
+
+  }
   //登録用モーダル表示時
   $('#InsertModal').on('show.bs.modal', function(e) {   
 

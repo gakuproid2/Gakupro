@@ -265,13 +265,13 @@ $Table .= "</table>";
 <script>
 
   document.getElementById("Authority").onchange = function() {
-    //選択された学校区分の値を入れる
+    
     var Select_Authority = $(this).val();
     NarrowDownDataTable(Select_Authority);
   };
 
   //table絞り込み
-function NarrowDownDataTable(Select_Authority) {
+  function NarrowDownDataTable(Select_Authority) {
   
   // table要素を取得
   var TargetTable = document.getElementById('DataInfoTable');      
@@ -292,7 +292,7 @@ function NarrowDownDataTable(Select_Authority) {
 
   document.getElementById("TableDataCount").innerHTML = "データ総数["+ (TableDataCount - 1) +"件]";
 
-}
+  }
 
   //登録用モーダル表示時
   $('#InsertModal').on('show.bs.modal', function(e) {

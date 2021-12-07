@@ -89,11 +89,11 @@ $Data_Count = count($Data_Table);
 //Table作成 Start--
 $Table = "
 <table class='DataInfoTable' id='DataInfoTable'>
-<tr>
+<tr  data-maincd='' >
   <th>大分類名</th>
   <th>中分類コード</th>
   <th>中分類名</th>
-  <th>データ総数[".$Data_Count. "件]</th>
+  <th id='TableDataCount'>データ総数[".$Data_Count. "件]</th>
 </tr>
 ";
 foreach ($Data_Table as $val) {
@@ -105,7 +105,7 @@ foreach ($Data_Table as $val) {
   }
 
   $Table .= "
-  <tr>
+  <tr data-maincd='" . $val['MainCategory_CD'] . "' >
     <td style=display:none>" . $val['MainCategory_CD'] . "</td>
     <td>" . $val['MainCategory_Name'] . "</td>
     <td>" . $val['SubCategory_CD'] . " </td>
@@ -259,15 +259,33 @@ $Table .= "</table>";
 <script>
   document.getElementById("MainCategory_CD").onchange = function() {
 
-    //ポストするキーと値を格納
-    var DataArray = {
-      MainCategory_CD: $("#MainCategory_CD").val(),
-    };
-
-    //common.jsに実装
-    originalpost("frm_SubCategory_M.php", DataArray);
-
+    var Select_MainCategory_CD = $(this).val();
+    NarrowDownDataTable(Select_MainCategory_CD);   
   };
+  
+  //table絞り込み
+  function NarrowDownDataTable(Select_MainCategory_CD) {
+  
+  // table要素を取得
+  var TargetTable = document.getElementById('DataInfoTable');      
+
+  var TableDataCount = 0;
+  for (i = 0, len = TargetTable.rows.length; i < len; i++) {
+
+    var Target_MainCategory_CD = TargetTable.rows[i].dataset["maincd"];
+
+      if(Select_MainCategory_CD == 0 || Target_MainCategory_CD == Select_MainCategory_CD || Target_MainCategory_CD ==''){
+        TargetTable.rows[i].style='display:table-row';  
+        TableDataCount += 1;        
+      }else{
+        TargetTable.rows[i].style='display:none';       
+      }    
+          
+  }
+
+  document.getElementById("TableDataCount").innerHTML = "データ総数["+ (TableDataCount - 1) +"件]";
+
+  }
 
   //登録用モーダル表示時
   $('#InsertModal').on('show.bs.modal', function(e) {

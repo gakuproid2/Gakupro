@@ -104,13 +104,13 @@ $Data_Count = count($Data_Table);
 
 //Table作成 Start
 $Table = "
-<table class='DataInfoTable'>
-<tr>
+<table class='DataInfoTable' id='DataInfoTable'>
+<tr data-schooldivision=''>
   <th>学校CD</th>
   <th>学校区分</th>
   <th>学校名</th>  
   <th>HP_URL</th>  
-  <th>データ総数[".$Data_Count. "件]</th>
+  <th id='TableDataCount'>データ総数[".$Data_Count. "件]</th>
 </tr>
 ";
 foreach ($Data_Table as $val) {
@@ -123,7 +123,7 @@ foreach ($Data_Table as $val) {
 
   $Table .=
     "
-    <tr>
+    <tr data-schooldivision='" . $val['School_Division'] . "'>
     <td>" . $val['School_CD'] . "</td>        
     <td>" . $val['DivisionInfo'] ." </td>
     <td>" . $val['School_Name'] ." </td>
@@ -297,17 +297,36 @@ $Table .= "</table>";
 
 <script>
 
-document.getElementById("School_Division").onchange = function() {
+  document.getElementById("School_Division").onchange = function() {
 
-  //ポストするキーと値を格納
-  var DataArray = {
-    School_Division: $("#School_Division").val(),
-  };
-
-  //common.jsに実装
-  originalpost("frm_School_M.php", DataArray);
+    var Select_School_Division = $(this).val();
+    NarrowDownDataTable(Select_School_Division);
 
   };
+
+  //table絞り込み
+  function NarrowDownDataTable(Select_School_Division) {
+  
+  // table要素を取得
+  var TargetTable = document.getElementById('DataInfoTable');      
+
+  var TableDataCount = 0;
+  for (i = 0, len = TargetTable.rows.length; i < len; i++) {
+
+    var TargetSchool_Division = TargetTable.rows[i].dataset["schooldivision"];
+
+      if(Select_School_Division == 0 || TargetSchool_Division == Select_School_Division || TargetSchool_Division ==''){
+        TargetTable.rows[i].style='display:table-row';  
+        TableDataCount += 1;        
+      }else{
+        TargetTable.rows[i].style='display:none';       
+      }    
+          
+  }
+
+  document.getElementById("TableDataCount").innerHTML = "データ総数["+ (TableDataCount - 1) +"件]";
+
+  }
 
   //登録用モーダル表示時
   $('#InsertModal').on('show.bs.modal', function(e) {   
