@@ -321,6 +321,11 @@ $Table .= "</table>";
             <input type="text" name="Insert_TEL" id="Insert_TEL" value="" class="form-control col-md-3" style="width: 50%;">          
           </div>
 
+          <div class="form-group row">         
+            <label for="Insert_MailAddress" class="col-md-3 col-form-label" style="width: 100%;">メールアドレス</label>              
+            <input type="text" name="Insert_MailAddress" id="Insert_MailAddress" value="" class="form-control col-md-3">          
+          </div>
+
 
           <div class="form-group row">
             <label for="Insert_School_CD" class="col-md-3 col-form-label" style="width: 100%;">学校選択</label>
@@ -413,6 +418,11 @@ $Table .= "</table>";
           <div class="form-group row">         
             <label for="Update_TEL" class="col-md-3 col-form-label" style="width: 100%;">TEL</label>              
             <input type="text" name="Update_TEL" id="Update_TEL" value="" class="form-control col-md-3" style="width: 50%;">          
+          </div>
+
+          <div class="form-group row">         
+            <label for="Update_MailAddress" class="col-md-3 col-form-label" style="width: 100%;">メールアドレス</label>              
+            <input type="text" name="Update_MailAddress" id="Update_MailAddress" value="" class="form-control col-md-3">          
           </div>
 
           <div class="form-group row">
@@ -620,17 +630,28 @@ function NarrowDownPullDown() {
     //ポストするキーと値を格納
     var DataArray = {
       ProcessingType: SelectProcessingType,  
-      Member_ID: $("#Insert_Member_ID").val(),
-      Member_NameYomi: $("#Insert_Member_NameYomi").val(),
+      Member_Name: $("#Insert_Member_LastName").val() + '　' + $("#Insert_Member_FirstName").val(),
+      Member_NameYomi: $("#Insert_Member_LastNameYomi").val() + '　' + $("#Insert_Member_FirstNameYomi").val(),
       Birthday: $("#Insert_Birthday").val(),   
-      Remarks: $("#Insert_Remarks").val(),      
+      TEL: $("#Insert_TEL").val(),   
+      MailAddress: $("#Insert_MailAddress").val(),   
+      School_CD: $("#Insert_School_CD").val(),   
+      MajorSubject_CD: $("#Insert_MajorSubject_CD").val(),   
+      AdmissionYearMonth: $("#Insert_AdmissionYearMonth").val(),   
+      GraduationYearMonth: $("#Insert_GraduationYearMonth").val(),   
+      Login_ID: $("#Insert_Login_ID").val(),   
+      Password: $("#Insert_Password").val(),   
+      EmergencyContactRelations: $("#Insert_EmergencyContactRelations").val(),   
+      EmergencyContactTEL: $("#Insert_EmergencyContactTEL").val(),   
+      Remarks: $("#Insert_Remarks").val(),   
+      RegistrationStatus: $("#Insert_RegistrationStatus").val()      
     };
 
     if (!ValueCheck(DataArray)) {
       return;
     }
 
-    if (!ConfirmationMessage(DataArray.Member_NameYomi, SelectProcessingType)) {
+    if (!ConfirmationMessage(DataArray.Member_Name, SelectProcessingType)) {
       return;
     }
 
@@ -676,12 +697,17 @@ function NarrowDownPullDown() {
 
     var ErrorMsg = '';  
   
-    if (DataArray.Member_ID == "0") {
-      ErrorMsg += '学校を選択してください。\n';
+    
+    if (DataArray.Member_Name == "") {
+      ErrorMsg += '氏名を入力してください。\n';
     }
 
     if (DataArray.Member_NameYomi == "") {
-      ErrorMsg += '専攻名を入力してください。\n';
+      ErrorMsg += '氏名（フリガナ）を入力してください。\n';
+    }
+
+    if (DataArray.School_ID == "0") {
+      ErrorMsg += '学校を選択してください。\n';
     }
 
     if (!ErrorMsg == "") {
