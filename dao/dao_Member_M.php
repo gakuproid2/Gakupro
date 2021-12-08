@@ -18,6 +18,7 @@
     ,Member_m.TEL
     ,Member_m.MailAddress
     ,Member_m.School_CD 
+    ,School_m.School_Division AS School_Division
     ,School_m.School_Name AS School_Name
     ,Member_m.MajorSubject_CD 
     ,majorsubject_m.MajorSubject_Name AS MajorSubject_Name     
@@ -41,7 +42,8 @@
     LEFT JOIN
     	(SELECT 
         School_CD
-        ,School_Name         
+        ,School_Name
+        ,School_Division        
         FROM
         School_m         
       )AS School_m
@@ -116,9 +118,9 @@
     return $Max_ID;
     }   
 
-    function DataChange($info,$branch){
+    function DataChange($info){
     
-      $Now = date("Y-m-d H:i:s");  
+      
       //クラスファイルの読み込み
       require_once '../dao/DB_Connection.php';
       //クラスの生成

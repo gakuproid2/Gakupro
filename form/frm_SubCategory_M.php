@@ -258,14 +258,15 @@ $Table .= "</table>";
 
 <script>
   document.getElementById("MainCategory_CD").onchange = function() {
-
-    var Select_MainCategory_CD = $(this).val();
-    NarrowDownDataTable(Select_MainCategory_CD);   
+    
+    NarrowDownDataTable();   
   };
   
   //table絞り込み
-  function NarrowDownDataTable(Select_MainCategory_CD) {
-  
+  function NarrowDownDataTable() {    
+
+  var Select_MainCategory_CD = document.getElementById('MainCategory_CD').value;   
+
   // table要素を取得
   var TargetTable = document.getElementById('DataInfoTable');      
 

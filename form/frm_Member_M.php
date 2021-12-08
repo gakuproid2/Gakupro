@@ -65,369 +65,664 @@ textarea{
   
 }
 
-
 </style>
-
 <?php echo $HeaderInfo; ?>
 
-<?php 
- 
-  //ポストされた確認する。
-  if (count($_POST) > 1) {     
+
+
+
+<?php
+
+//非post時は初期値を設定する。['']or[0]
+if (isset($_POST["Member_ID"])) {
+  $Member_ID = $_POST["Member_ID"];
+} else {
+  $Member_ID = 0;
+};
+if (isset($_POST["Member_Name"])) {
+  $Member_Name = $_POST["Member_Name"];
+} else {
+  $Member_Name = '';
+};
+if (isset($_POST["Member_NameYomi"])) {
+  $Member_NameYomi = $_POST["Member_NameYomi"];
+} else {
+  $Member_NameYomi = '';
+};
+if (isset($_POST["Birthday"])) {
+  $Birthday = $_POST["Birthday"];
+} else {
+  $Birthday = '1111-11-11';
+};
+if (isset($_POST["TEL"])) {
+  $TEL = $_POST["TEL"];
+} else {
+  $TEL = '';
+};
+if (isset($_POST["MailAddress"])) {
+  $MailAddress = $_POST["MailAddress"];
+} else {
+  $MailAddress = '';
+};
+if (isset($_POST["School_CD"])) {
+  $School_CD = $_POST["School_CD"];
+} else {
+  $School_CD = 0;
+};
+if (isset($_POST["MajorSubject_CD"])) {
+  $MajorSubject_CD = $_POST["MajorSubject_CD"];
+} else {
+  $MajorSubject_CD = 0;
+};
+if (isset($_POST["AdmissionYearMonth"])) {
+  $AdmissionYearMonth = $_POST["AdmissionYearMonth"];
+} else {
+  $AdmissionYearMonth = '';
+};
+if (isset($_POST["GraduationYearMonth"])) {
+  $GraduationYearMonth = $_POST["GraduationYearMonth"];
+} else {
+  $GraduationYearMonth = '';
+};
+if (isset($_POST["Login_ID"])) {
+  $Login_ID = $_POST["Login_ID"];
+} else {
+  $Login_ID = '';
+};
+if (isset($_POST["Password"])) {
+  $Password = $_POST["Password"];
+} else {
+  $Password = '';
+};
+if (isset($_POST["EmergencyContactRelations"])) {
+  $EmergencyContactRelations = $_POST["EmergencyContactRelations"];
+} else {
+  $EmergencyContactRelations = '';
+};
+if (isset($_POST["EmergencyContactTEL"])) {
+  $EmergencyContactTEL = $_POST["EmergencyContactTEL"];
+} else {
+  $EmergencyContactTEL = '';
+};
+if (isset($_POST["Remarks"])) {
+  $Remarks = $_POST["Remarks"];
+} else {
+  $Remarks = '';
+};
+if (isset($_POST["RegistrationStatus"])) {
+  $RegistrationStatus = $_POST["RegistrationStatus"];
+} else {
+  $RegistrationStatus = 0;
+};
+if (isset($_POST["EmergencyContactTEL"])) {
+  $EmergencyContactTEL = $_POST["EmergencyContactTEL"];
+} else {
+  $EmergencyContactTEL = '';
+};
+//非post時は初期値を設定する。['']or[0] End--
+
+//データ更新処理実行時  Start--
+if (isset($_POST["ProcessingType"])) {
 
     $info = array(
-      'Member_ID' => $_POST["Member_ID"],
-      'Member_Name' => $_POST["LastName"].'　'.$_POST["FirstName"],
-      'Member_NameYomi' => $_POST["LastNameYomi"].'　'.$_POST["FirstNameYomi"],
-      'Birthday' => $_POST["Birthday"],
-      'School_CD' => $_POST["School_CD"],
-      'MajorSubject_CD' => $_POST["MajorSubject_CD"],
-      'TEL' => $_POST["TEL"],
-      'MailAddress' => $_POST["MailAddress"],
-      'AdmissionYearMonth' => $_POST["AdmissionYearMonth"],
-      'GraduationYearMonth' => $_POST["GraduationYearMonth"],
-      'EmergencyContactRelations' => $_POST["EmergencyContactRelations"],
-      'EmergencyContactTEL' => $_POST["EmergencyContactTEL"],     
-      'Login_ID' => $_POST["Login_ID"],
-      'Password' => $_POST["Password"],
-      'Remarks' => $_POST["Remarks"],
-      'RegistrationStatus' => $_POST["RegistrationStatus"],      
-      'Operator' => $_SESSION["Staff_ID"]        
+      'Member_ID' => $Member_ID,
+      'Member_Name' => $Member_Name,
+      'Member_NameYomi' => $Member_NameYomi,      
+      'Birthday' => $Birthday,
+      'TEL' => $TEL,
+      'MailAddress' => $MailAddress,
+      'School_CD' => $School_CD,
+      'MajorSubject_CD' => $MajorSubject_CD,      
+      'AdmissionYearMonth' => $AdmissionYearMonth,
+      'GraduationYearMonth' => $GraduationYearMonth, 
+      'Login_ID' => $Login_ID,
+      'Password' => $Password,
+      'EmergencyContactRelations' => $EmergencyContactRelations,      
+      'EmergencyContactTEL' => $EmergencyContactTEL,
+      'Remarks' => $Remarks, 
+      'RegistrationStatus' => $RegistrationStatus,      
+      'ProcessingType' => $_POST["ProcessingType"]
     );
 
-    $Result = "";
-
-    //登録、削除、更新の分岐
-    if (isset($_POST['Insert'])) {
-      $Result = $dao_Member_M->DataChange($info, 1);
-    } else if (isset($_POST['Update'])) {
-      $Result = $dao_Member_M->DataChange($info, 2);   
-    }
+    $Result = $dao_Member_M->DataChange($info);
 
     Header('Location: ' . $_SERVER['PHP_SELF']);
-    exit(); //optional
+    exit(); 
   }
+  //データ更新処理実行時  End--
 
-  $Data_Table = $dao_Member_M->Get_Member_M();
+  //学校区分のプルダウン作成する為
+  $items = $dao_SubCategory_M->GET_SubCategory_m(3);
 
-  $Table = "";
-  foreach ($Data_Table as $val) {
-  
-    $EmergencyContactRelations='';
-    if (isset($val['EmergencyContactRelations'])) {
-      $EmergencyContactRelations ='('.$val['EmergencyContactRelations'].')';
-    };
-
-
-    $Table .=
-    "<tr class='Table'>
-      <td>" . $val['Member_ID'] . "</td>
-      <td>" . $val['Member_Name'] . " </td>      
-      <td>" . $val['Member_NameYomi'] . " </td>
-      <td>" . $val['Birthday'] . " </td>       
-      <td>" . $val['TEL'] . " </td>
-      <td>" . $val['MailAddress'] . " </td>      
-      <td style=display:none>" . $val['School_CD'] . "</td>      
-      <td>" . $val['School_Name'] . " </td>  
-      <td style=display:none>" . $val['MajorSubject_CD'] . "</td>      
-      <td>" . $val['MajorSubject_Name'] . "</td>  
-      <td>" . $val['AdmissionYearMonth'] . "</td>     
-      <td>" . $val['GraduationYearMonth'] . "</td>    
-      <td style=display:none>" . $val['Login_ID'] . "</td>     
-      <td style=display:none>" . $val['Password'] . "</td>   
-      <td>".$EmergencyContactRelations. $val['EmergencyContactTEL']."</td>           
-      <td style=display:none>" . $val['EmergencyContactRelations'] . "</td>     
-      <td style=display:none>" . $val['EmergencyContactTEL'] . "</td>         
-      <td style=display:none>" . $val['Remarks'] . "</td> 
-      <td style=display:none>" . $val['RegistrationStatus'] . "</td>     
-      <td>" . $val['RegistrationStatusName'] . " </td>   
-      <td style=display:none>" . $val['RegisteredPerson'] . "</td>  
-      <td style=display:none>" . $val['RegisteredDate'] . "</td>           
-      <td>" . $val['ChangerName'] . "</td>
-      <td>" . $val['UpdateDate'] . "</td>
-    "
-    ; 
-
-    
-
-    $Table .= "</tr>";
-  }
-
-   //登録状況のプルダウン作成する為
-   $Register_Info = $dao_SubCategory_M->GET_SubCategory_m(4);
-   //0行目
-   $Register_PullDown = "<option value = 0 >登録状況を選択して下さい</option>";
-   foreach ($Register_Info as $val) {     
-     $Register_PullDown .= "<option value = " . $val['SubCategory_CD']." >".$val['SubCategory_Name'] . "</option>";                
-   }
+  $School_Division_PullDown = "<option value = 0 >選択してください</option>";
+  foreach ($items as $item_val) {
+    $School_Division_PullDown .= "<option value = ". $item_val['SubCategory_CD'].">".$item_val['SubCategory_Name'] . "</option>";    
+  }  
 
   //学校のプルダウン作成する為
-  $School_Info = $dao_School_M->Get_School_M('','');
+  $items = $dao_School_M->Get_School_M(0);
+  
+  $SchoolPullDown = "<option value = 0 data-schooldivision=''>選択してください</option>";
+  foreach ($items as $item_val) {
+    $SchoolPullDown .= "<option value = ". $item_val['School_CD'] . " data-schooldivision=". $item_val['School_Division']. ">". $item_val['School_Name'] . "</option>";        
+  }  
+
+  //専攻のプルダウン作成する為
+  $items = $dao_MajorSubject_M->GET_Majorsubject_m(0);
+
+  $Majorsubject_PullDown = "<option value = 0 >選択してください</option>";
+  foreach ($items as $item_val) {
+    $Majorsubject_PullDown .= "<option data-schoolcd=". $item_val['School_CD']. " value = ". $item_val['MajorSubject_CD'].">".$item_val['MajorSubject_Name'] . "</option>";    
+  }  
+  
+  //登録状況のプルダウン作成する為
+  $Register_Info = $dao_SubCategory_M->GET_SubCategory_m(4);
   //0行目
-  $School_PullDown = "<option value = 0 >学校を選択して下さい</option>";
-  foreach ($School_Info as $val) {
-    $School_PullDown .= "<option value = " . $val['School_CD']." >".$val['School_Name'] . "</option>";          
+  $Register_PullDown = "<option value = 0 >登録状況を選択して下さい</option>";
+  foreach ($Register_Info as $val) {     
+    $Register_PullDown .= "<option value = " . $val['SubCategory_CD']." >".$val['SubCategory_Name'] . "</option>";                
   }
 
-   //専攻コースのプルダウン作成する為
-   $MajorSubject_Info = $dao_MajorSubject_M->GET_Majorsubject_m(0);
-   //0行目
-   $MajorSubject_PullDown = "<option value = 0 >専攻を選択して下さい</option>";
-   foreach ($MajorSubject_Info as $val) {
-     $MajorSubject_PullDown .= "<option value = ". $val['majorsubject_cd']." >".$val['majorsubject_name'] . "</option>";          
-   }
+$Data_Table = $dao_Member_M->Get_Member_M();
 
+$Data_Count = count($Data_Table);
+
+//Table作成 Start
+$Table = "
+<table class='DataInfoTable' id='DataInfoTable'>
+<tr data-schooldivision='' data-schoolcd='' data-majorSubjectcd=''>
+  <th>氏名</th>
+  <th>学校名</th>
+  <th>専攻名</th>  
+  <th>在学期間</th>  
+  <th id='TableDataCount'>データ総数[".$Data_Count. "件]</th>
+</tr>
+";
+foreach ($Data_Table as $val) { 
+
+  $Table .=
+    "
+    <tr data-schooldivision=" . $val['School_Division'] ." data-schoolcd=" . $val['School_CD'] ." data-majorSubjectcd=" . $val['MajorSubject_CD'] .">
+      <td><div style='font-size: 75%;'>" . $val['Member_NameYomi'] . "<br></div>" . $val['Member_Name'] ."</td>        
+      <td>" . $val['School_Name'] ."</td>
+      <td>" . $val['MajorSubject_Name'] ."</td>    
+      <td>" . $val['AdmissionYearMonth'] ."<br>" . $val['GraduationYearMonth'] ."</td>
+      <td>    
+        <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#UpdateModal' 
+        data-membername='" . $val['Member_Name'] . "'        
+        data-membernameyomi='" . $val['Member_NameYomi'] . "' 
+        data-birthday='" . $val['Birthday'] . "'
+        data-tel='" . $val['TEL'] . "'
+        data-mailaddress='" . $val['MailAddress'] . "'
+        data-schoolcd='" . $val['School_CD'] . "' 
+        data-majorSubjectcd='" . $val['MajorSubject_CD'] . "' 
+        data-admissionyearmonth='" . $val['AdmissionYearMonth'] . "' 
+        data-graduationyearmonth='" . $val['GraduationYearMonth'] . "' 
+        data-loginid='" . $val['Login_ID'] . "' 
+        data-password='" . $val['Password'] . "' 
+        data-emergencycontactrelations='" . $val['EmergencyContactRelations'] . "' 
+        data-emergencycontacttel='" . $val['EmergencyContactTEL'] . "' 
+        data-remarks='" . $val['Remarks'] . "' 
+        data-registrationstatus='" . $val['RegistrationStatus'] . "'>                  
+        <i class='far fa-edit'></i>
+        </button> 
+      </td>
+    </tr>
+  ";
+}
+
+$Table .= "</table>";
+//Table作成 End
 ?>
+
 <body>
+<div>
+    <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
+    <a>
+      学校区分：<select  class="School_Division" name='School_Division' id='School_Division'><?php echo $School_Division_PullDown; ?></select>
+      学校選択：<select  class="Member_ID" name='Member_ID' id='Member_ID'><?php echo $SchoolPullDown; ?></select>
+    </a>
+  </div>
+  <?php echo $Table; ?>
 
-  <form action="frm_Member_M.php" method="post">
-  
-  <input type="hidden" id="Member_ID" name="Member_ID" >
-  
-    <p class="Label">氏名</p>
-    <p>
-      姓:<input type="text" id="LastName" name="LastName" autocomplete="off">
-      名:<input type="text" id="FirstName" name="FirstName" autocomplete="off">
-    </p>
+  <!-- 登録用Modal -->
+  <div class="modal fade" id="InsertModal" tabindex="-1" aria-labelledby="InsertModalLabel" aria-hidden="true">  
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
 
-    <p class="Label">氏名(フリガナ)</p>
-    <p>      
-      姓:<input type="text" id="LastName_Yomi" name="LastNameYomi" autocomplete="off">
-      名:<input type="text" id="FirstName_Yomi" name="FirstNameYomi" autocomplete="off">
-    </p>         
-    
-    <p class="Label">生年月日</p>
-    <p><input type="date" id="Birthday" name="Birthday" value="2005-04-01"><input type="text" id="Age" class="Age" readonly>歳</p> 
+        <div class="modal-header">
+          <h5 class="modal-title" id="InsertModalLabel">登録確認</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
 
-    <p class="Label">TEL</p>
-    <p><input type="tel" id="TEL" name="TEL" autocomplete="off"></p>  
+        <div class="modal-body">         
+                 
 
-    <p class="Label">メールアドレス</p>
-    <p><input type="email" id="MailAddress" name="MailAddress" autocomplete="off"></p>  
-    
-    <p class="Label">学校/専攻</p>
-    <p>
-      <select id='School_CD' name='School_CD'><?php echo $School_PullDown;?></select>    
-      <select id='MajorSubject_CD' name='MajorSubject_CD'><?php echo $MajorSubject_PullDown; ?></select>
-    </p>
+          <div class="form-group row">         
+            <label for="Insert_Member_LastName" class="col-md-3 col-form-label" style="width: 100%;">メンバー氏名</label>              
+            <input type="text" name="Insert_Member_LastName" id="Insert_Member_LastName" value="" class="form-control col-md-3" style="width: 35%;" placeholder="姓">
+          　<input type="text" name="Insert_Member_FirstName" id="Insert_Member_FirstName" value="" class="form-control col-md-3" style="width: 35%;"placeholder="名">
+          </div>
 
-    <p class="Label">在学期間</p>
-    <p>
-    <input type="month" class="YearMonth" id="AdmissionYearMonth" name="AdmissionYearMonth" value="2020-04">～
-    <input type="month" class="YearMonth" id="GraduationYearMonth" name="GraduationYearMonth" value="2023-03">
-    </p>
+          <div class="form-group row">
+            <label for="Insert_Member_LastNameYomi" class="col-md-3 col-form-label" style="width: 100%;">メンバー氏名（フリガナ）</label>            
+            <input type="text" name="Insert_Member_LastNameYomi" id="Insert_Member_LastNameYomi" value="" class="form-control col-md-3" style="width: 35%;" placeholder="セイ">
+          　<input type="text" name="Insert_Member_FirstNameYomi" id="Insert_Member_FirstNameYomi" value="" class="form-control col-md-3" style="width: 35%;" placeholder="メイ">
+          </div>
 
-    <p class="Label">緊急連絡先情報</p>
-    <p>
-    <input type="text" id="EmergencyContactRelations" name="EmergencyContactRelations">
-    <input type="text" id="EmergencyContactTEL" name="EmergencyContactTEL" style="margin-left: 20px;">
-    </p>
+          <div class="form-group row">
+            <label for="Insert_Birthday" class="col-md-4 col-form-label"style="width: 100%;">生年月日</label>            
+            <input type="date" name="Insert_Birthday" id="Insert_Birthday"  min="1950-01-01" max="2021-12-31" value="" class="form-control col-md-1" style="width: 50%;">
+          　<input type="text" name="Insert_Age" id="Insert_Age" value="" class="form-control col-md-3" style="width: 20%;" readonly><label class="col-md-4 col-form-label"style="width: 10%;">歳</label>
+          </div>
 
-    <p class="Label">備考</p>
-    <p>
-    <textarea id="Remarks" name="Remarks" autocomplete="off"></textarea>
-    </p>
+          <div class="form-group row">         
+            <label for="Insert_TEL" class="col-md-3 col-form-label" style="width: 100%;">TEL</label>              
+            <input type="text" name="Insert_TEL" id="Insert_TEL" value="" class="form-control col-md-3" style="width: 50%;">          
+          </div>
 
-    <p class="Label">登録状況</p>
-    <p>
-      <select id='RegistrationStatus' name='RegistrationStatus'><?php echo $Register_PullDown; ?></select>          
-    </p>
+
+          <div class="form-group row">
+            <label for="Insert_School_CD" class="col-md-3 col-form-label" style="width: 100%;">学校選択</label>
+            <select name='Insert_School_CD' id='Insert_School_CD' class="form-control col-md-3" ><?php echo $SchoolPullDown; ?></select>
+          </div>
+
+          <div class="form-group row">
+            <label for="Insert_MajorSubject_CD" class="col-md-3 col-form-label">専攻選択</label>
+            <select name='Insert_MajorSubject_CD' id='Insert_MajorSubject_CD' class="form-control col-md-3" ><?php echo $Majorsubject_PullDown; ?></select>
+          </div>
+
+          <div class="form-group row">
+            <label for="Insert_AdmissionYearMonth" class="col-md-4 col-form-label" style="width: 50%;">入学年月</label>
+            <label for="Insert_GraduationYearMonth" class="col-md-4 col-form-label" style="width: 50%;">卒業予定年月</label>
+            <input type="month" name="Insert_AdmissionYearMonth" id="Insert_AdmissionYearMonth" min="2010-01-01"  class="form-control col-md-1" style="width: 50%;">
+            <input type="month" name="Insert_GraduationYearMonth" id="Insert_GraduationYearMonth" min="2010-01-01" class="form-control col-md-1" style="width: 50%;">
+          </div>
+
+          <div class="form-group row">         
+            <label for="Insert_Login_ID" class="col-md-3 col-form-label" style="width: 100%;">ログインID</label>              
+            <input type="text" name="Insert_Login_ID" id="Insert_Login_ID" value="" class="form-control col-md-3" style="width: 50%;">          
+          </div>
+
+          <div class="form-group row">         
+            <label for="Insert_Password" class="col-md-3 col-form-label" style="width: 100%;">パスワード</label>              
+            <input type="text" name="Insert_Password" id="Insert_Password" value="" class="form-control col-md-3" style="width: 50%;">          
+          </div>
+
+          <div class="form-group row">         
+            <label for="Insert_EmergencyContactRelations" class="col-md-3 col-form-label" style="width: 100%;">緊急連絡先情報</label>              
+            <input type="text" name="Insert_EmergencyContactRelations" id="Insert_EmergencyContactRelations" value="" class="form-control col-md-3" style="width: 30%;" placeholder="続柄"> 
+            <input type="text" name="Insert_EmergencyContactTEL" id="Insert_EmergencyContactTEL" value="" class="form-control col-md-3" style="width: 70%;" placeholder="電話番号">
+          </div>
+
+          <div class="form-group row">
+            <label for="Insert_RegistrationStatus" class="col-md-3 col-form-label" style="width: 100%;">登録状況</label>
+            <select name='Insert_RegistrationStatus' id='Insert_RegistrationStatus' class="form-control col-md-3" ><?php echo $Register_PullDown; ?></select>
+          </div>
+          
+          
+          <div class="form-group row">
+            <label for="Insert_Remarks" class="col-md-5 col-form-label">備考</label>            
+            <textarea class="form-control col-md-3" id="Insert_Remarks" name="Insert_Remarks" autocomplete="off"></textarea>
+          </div>   
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+            <button type="button" class="btn btn-primary ModalInsertButton">登録</button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 更新用Modal -->
+ 
+  <div class="modal fade" id="UpdateModal" tabindex="-1" aria-labelledby="UpdateModalLabel" aria-hidden="true">  
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="UpdateModalLabel">登録確認</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">         
+                 
+
+        <div class="form-group row">         
+            <label for="Update_Member_LastName" class="col-md-3 col-form-label" style="width: 100%;">メンバー氏名</label>              
+            <input type="text" name="Update_Member_LastName" id="Update_Member_LastName" value="" class="form-control col-md-3" style="width: 35%;" placeholder="姓">
+          　<input type="text" name="Update_Member_FirstName" id="Update_Member_FirstName" value="" class="form-control col-md-3" style="width: 35%;"placeholder="名">
+        </div>
+
+         <div class="form-group row">
+            <label for="Update_Member_LastNameYomi" class="col-md-3 col-form-label" style="width: 100%;">メンバー氏名（フリガナ）</label>            
+            <input type="text" name="Update_Member_LastNameYomi" id="Update_Member_LastNameYomi" value="" class="form-control col-md-3" style="width: 35%;" placeholder="セイ">
+          　<input type="text" name="Update_Member_FirstNameYomi" id="Update_Member_FirstNameYomi" value="" class="form-control col-md-3" style="width: 35%;" placeholder="メイ">
+          </div>
+
+          <div class="form-group row">
+            <label for="Update_Birthday" class="col-md-4 col-form-label"style="width: 100%;">生年月日</label>            
+            <input type="date" name="Update_Birthday" id="Update_Birthday"  min="1950-01-01" max="2021-12-31" value="" class="form-control col-md-1" style="width: 50%;">
+          　<input type="text" name="Update_Age" id="Update_Age" value="" class="form-control col-md-3" style="width: 20%;" readonly><label class="col-md-4 col-form-label"style="width: 10%;">歳</label>
+          </div>
+
+          <div class="form-group row">         
+            <label for="Update_TEL" class="col-md-3 col-form-label" style="width: 100%;">TEL</label>              
+            <input type="text" name="Update_TEL" id="Update_TEL" value="" class="form-control col-md-3" style="width: 50%;">          
+          </div>
+
+          <div class="form-group row">
+            <label for="Update_School_CD" class="col-md-3 col-form-label" style="width: 100%;">学校選択</label>
+            <select name='Update_School_CD' id='Update_School_CD' class="form-control col-md-3" ><?php echo $SchoolPullDown; ?></select>
+          </div>
+
+          <div class="form-group row">
+            <label for="Update_MajorSubject_CD" class="col-md-3 col-form-label">専攻選択</label>
+            <select name='Update_MajorSubject_CD' id='Update_MajorSubject_CD' class="form-control col-md-3" ><?php echo $Majorsubject_PullDown; ?></select>
+          </div>
+
+          <div class="form-group row">
+            <label for="Update_AdmissionYearMonth" class="col-md-4 col-form-label" style="width: 50%;">入学年月</label>
+            <label for="Update_GraduationYearMonth" class="col-md-4 col-form-label" style="width: 50%;">卒業予定年月</label>
+            <input type="month" name="Update_AdmissionYearMonth" id="Update_AdmissionYearMonth" min="2010-01-01"  class="form-control col-md-1" style="width: 50%;">
+            <input type="month" name="Update_GraduationYearMonth" id="Update_GraduationYearMonth" min="2010-01-01" class="form-control col-md-1" style="width: 50%;">
+          </div>
+
+          <div class="form-group row">         
+            <label for="Update_Login_ID" class="col-md-3 col-form-label" style="width: 100%;">ログインID</label>              
+            <input type="text" name="Update_Login_ID" id="Update_Login_ID" value="" class="form-control col-md-3" style="width: 50%;">          
+          </div>
+
+          <div class="form-group row">         
+            <label for="Update_Password" class="col-md-3 col-form-label" style="width: 100%;">パスワード</label>              
+            <input type="text" name="Update_Password" id="Update_Password" value="" class="form-control col-md-3" style="width: 50%;">          
+          </div>
+
+          <div class="form-group row">         
+            <label for="Update_EmergencyContactRelations" class="col-md-3 col-form-label" style="width: 100%;">緊急連絡先情報</label>              
+            <input type="text" name="Update_EmergencyContactRelations" id="Update_EmergencyContactRelations" value="" class="form-control col-md-3" style="width: 30%;" placeholder="続柄"> 
+            <input type="text" name="Update_EmergencyContactTEL" id="Update_EmergencyContactTEL" value="" class="form-control col-md-3" style="width: 70%;" placeholder="電話番号">
+          </div>
+
+          <div class="form-group row">
+            <label for="Update_RegistrationStatus" class="col-md-3 col-form-label" style="width: 100%;">登録状況</label>
+            <select name='Update_RegistrationStatus' id='Update_RegistrationStatus' class="form-control col-md-3" ><?php echo $Register_PullDown; ?></select>
+          </div>
+          
+          
+          <div class="form-group row">
+            <label for="Update_Remarks" class="col-md-5 col-form-label">備考</label>            
+            <textarea class="form-control col-md-3" id="Update_Remarks" name="Update_Remarks" autocomplete="off"></textarea>
+          </div>   
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+            <button type="button" class="btn btn-primary ModalUpdateButton">登録</button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
 
  
 
-
-    <button class="btn_Insert" id="btn_Insert" name="Insert" value="1">登録</button>
-    <button class="btn_Update" id="btn_Update" name="Update" value="2">更新</button>    
-    <button class="btn_Clear" id="btn_Clear" name="Clear" value="4">クリア</button>
-  </form>
-
-  <table border='1'>
-    <tr>
-    <th>メンバーID</th>
-    <th>氏名</th>
-    <th>フリガナ</th>
-    <th>生年月日</th>
-    <th>TEL</th>
-    <th>メールアドレス</th>
-    <th>学校</th>
-    <th>専攻</th>
-    <th>入学年月</th>
-    <th>卒業年月</th>
-    <th>緊急連絡先情報</th>
-    <th>登録状況</th>    
-    <th>最終更新者</th>
-    <th>最終更新日</th>    
-    </tr>
-    <?php echo $Table; ?>
-  </table>
-
-
-  <?php echo $JS_Info?>
+  <?php echo $JS_Info ?>
 </body>
 
 <script>
 
-  //画面起動時の処理
-  $(window).on('load', function(event) {
-    $("#btn_Insert").show();
-    $("#btn_Update").hide();
+//学校区分が変更になるとイベントが発生
+$('.School_Division').change(function() { 
+ NarrowDownPullDown();
+ NarrowDownDataTable();
+});
+
+//学校名が変更になるとイベントが発生
+$('.Member_ID').change(function() { 
+  NarrowDownDataTable();
+});
+
+//プルダウン絞り込み
+function NarrowDownPullDown() {
+
+  var SelectSchool_Division = document.getElementById('School_Division').value;
+  
+  //select要素をidで取得
+  var list = document.getElementById('Member_ID').options;
+
+  for(var i=0;i<list.length;i++){
+
+    TargetSchool_Division = (list[i].dataset["schooldivision"]);
+
+    if(SelectSchool_Division == 0 || TargetSchool_Division == SelectSchool_Division || TargetSchool_Division ==''){
+      list[i].style='display:option';        
+    }else{
+      list[i].style='display:none';          
+    }   
+
+  }
+
+}
+
+  //table絞り込み
+  function NarrowDownDataTable() {
     
-    if (document.getElementById('Birthday').value != "" )  {
-      AgeCalculation();
+    // table要素を取得
+    var TargetTable = document.getElementById('DataInfoTable');    
+    var TableDataCount = 0;
+
+    var SelectSchool_Division = document.getElementById('School_Division').value;
+
+    var SelectMember_ID= document.getElementById('Member_ID').value;         
+
+    if (SelectMember_ID !=0){
+
+      for(i = 0, len = TargetTable.rows.length; i < len; i++) {
+
+        var TargetSchool_Division = TargetTable.rows[i].dataset["schooldivision"];
+        var TargetMember_ID = TargetTable.rows[i].dataset["schoolcd"];
+
+        if(TargetMember_ID == SelectMember_ID || TargetSchool_Division ==''){
+        TargetTable.rows[i].style='display:table-row';  
+        TableDataCount += 1;        
+        }else{
+        TargetTable.rows[i].style='display:none';       
+        }    
+
+      }
+      
+    }else{
+
+      for(i = 0, len = TargetTable.rows.length; i < len; i++) {
+
+        var TargetSchool_Division = TargetTable.rows[i].dataset["schooldivision"];
+        var TargetMember_ID = TargetTable.rows[i].dataset["schoolcd"];
+
+        if(SelectSchool_Division == 0 || TargetSchool_Division == SelectSchool_Division || TargetSchool_Division ==''){
+        TargetTable.rows[i].style='display:table-row';  
+        TableDataCount += 1;        
+        }else{
+        TargetTable.rows[i].style='display:none';       
+        }    
+      
+      }
+
     }
+    document.getElementById("TableDataCount").innerHTML = "データ総数["+ (TableDataCount - 1) +"件]";
+  }
+     
+  //登録用モーダル表示時
+  $('#InsertModal').on('show.bs.modal', function(e) {   
+  
+    $('#Insert_Member_LastName').val('');
+    $('#Insert_Member_FirstName').val('');
+    $('#Insert_Member_LastNameYomi').val('');
+    $('#Insert_Member_FirstNameYomi').val('');
+
+    $('#Insert_Birthday').val('');
+    $('#Insert_TEL').val('');
+    $('#Insert_MailAddress').val('');
+    $('#Insert_School_CD').val('');
+    $('#Insert_MajorSubject_CD').val('');
+    $('#Insert_AdmissionYearMonth').val('');
+    $('#Insert_GraduationYearMonth').val('');
+    $('#Insert_Login_ID').val('');
+    $('#Insert_Password').val('');
+    $('#Insert_EmergencyContactRelations').val('');
+    $('#Insert_EmergencyContactTEL').val('');
+    $('#Insert_Remarks').val('');
+    
   });
 
-  //テーブルクリック時
-  $('.Table').on('click', function() {
+  //更新用モーダル表示時
+  $('#UpdateModal').on('show.bs.modal', function(e) {
+    // イベント発生元
+    let evCon = $(e.relatedTarget);
 
-    //MemberID
-    var Member_ID = $(this).children('td')[0].innerText;
-    $("#Member_ID").val(Member_ID);
+    var test = evCon.data('membername');
 
-    //名前    取得した名前を姓と名で分けてテキストに格納する
-    var Name = $(this).children('td')[1].innerText;
-    var NameSplit = Name.split('　');
-    $("#LastName").val(NameSplit[0]);
-    $("#FirstName").val(NameSplit[1]);
+    var FullNameSplit = (evCon.data('membername')).split('　');
+    $('#Update_Member_LastName').val(FullNameSplit[0]);
+    $('#Update_Member_FirstName').val(FullNameSplit[1]);
 
-    //ﾌﾘｶﾞﾅ
-    var Name_Yomi = $(this).children('td')[2].innerText;
-    var Name_YomiSplit = Name_Yomi.split('　');
-    $("#LastName_Yomi").val(Name_YomiSplit[0]);
-    $("#FirstName_Yomi").val(Name_YomiSplit[1]);
-
-    //誕生日
-    var Birthday = $(this).children('td')[3].innerText;
-    $("#Birthday").val(Birthday);
-
-    //TEL
-    var TEL = $(this).children('td')[4].innerText;
-    $("#TEL").val(TEL);
-
-    //MailAddress
-    var MailAddress = $(this).children('td')[5].innerText;
-    $("#MailAddress").val(MailAddress);
-
-    //学校
-    var School_CD = $(this).children('td')[6].innerText;
-    $("#School_CD").val(School_CD);
-
-    //専攻
-    var MajorSubject_CD = $(this).children('td')[8].innerText;
-    $("#MajorSubject_CD").val(MajorSubject_CD);
-
-    //入学年月
-    var AdmissionYearMonth = $(this).children('td')[10].innerText;
-    $("#AdmissionYearMonth").val(AdmissionYearMonth);
-
-    //卒業年月
-    var GraduationYearMonth = $(this).children('td')[11].innerText;
-    $("#GraduationYearMonth").val(GraduationYearMonth);
-
-    //緊急連絡先相手続柄
-    var EmergencyContactRelations = $(this).children('td')[15].innerText;
-    $("#EmergencyContactRelations").val(EmergencyContactRelations);
-
-    //緊急連絡先番号
-    var EmergencyContactTEL = $(this).children('td')[16].innerText;
-    $("#EmergencyContactTEL").val(EmergencyContactTEL);
-
-    //備考
-    var Remarks = $(this).children('td')[17].innerText;
-    $("#Remarks").val(Remarks);
-
-    //登録状況
-    var RegistrationStatus = $(this).children('td')[18].innerText;
-    $("#RegistrationStatus").val(RegistrationStatus);
+    var FullNameyomiYomiSplit = (evCon.data('membernameyomi')).split('　');    
+    $('#Update_Member_LastNameYomi').val(FullNameyomiYomiSplit[0]);
+    $('#Update_Member_FirstNameYomi').val(FullNameyomiYomiSplit[1]);
+ 
+    $('#Update_Birthday').val(evCon.data('birthday')); 
+    AgeCalculation(document.getElementById("Update_Birthday").value,2);  
     
-
-    $("#btn_Insert").hide();
-    document.getElementById("btn_Insert").disabled = true;
-    $("#btn_Update").show();
-
-    if (document.getElementById('Birthday').value != "" )  {
-      AgeCalculation();
-    }
-    
-
+    $('#Update_TEL').val(evCon.data('tel')); 
+    $('#Update_MailAddress').val(evCon.data('mailaddress')); 
+    $('#Update_School_CD').val(evCon.data('schoolcd')); 
+    $('#Update_MajorSubject_CD').val(evCon.data('majorSubjectcd')); 
+    $('#Update_AdmissionYearMonth').val(evCon.data('admissionyearmonth')); 
+    $('#Update_GraduationYearMonth').val(evCon.data('graduationyearmonth')); 
+    $('#Update_Login_ID').val(evCon.data('loginid')); 
+    $('#Update_Password').val(evCon.data('password')); 
+    $('#Update_EmergencyContactRelations').val(evCon.data('emergencycontactrelations')); 
+    $('#Update_EmergencyContactTEL').val(evCon.data('emergencycontacttel')); 
+    $('#Update_RegistrationStatus').val(evCon.data('registrationstatus')); 
+    $('#Update_Remarks').val(evCon.data('remarks')); 
   });
-
 
   //登録ボタンクリック時
-  $('#btn_Insert').on('click', function() {
+  $('.ModalInsertButton').on('click', function() {
 
-   
-    if (ValueCheck() == false) {
-      return false;
+    var SelectProcessingType = 1;
+
+    //ポストするキーと値を格納
+    var DataArray = {
+      ProcessingType: SelectProcessingType,  
+      Member_ID: $("#Insert_Member_ID").val(),
+      Member_NameYomi: $("#Insert_Member_NameYomi").val(),
+      Birthday: $("#Insert_Birthday").val(),   
+      Remarks: $("#Insert_Remarks").val(),      
+    };
+
+    if (!ValueCheck(DataArray)) {
+      return;
     }
 
-    if (window.confirm('登録してもよろしいですか？')) {
-      $('#form_id').submit();
-    } else {
-      return false;
+    if (!ConfirmationMessage(DataArray.Member_NameYomi, SelectProcessingType)) {
+      return;
     }
+
+    BeforePosting(DataArray);
 
   });
 
   //更新ボタンクリック時
-  $('#btn_Update').on('click', function() {
+  $('.ModalUpdateButton').on('click', function() {
 
-    if (ValueCheck() == false) {
-      return false;
+    var SelectProcessingType = 2;
+
+    //ポストするキーと値を格納
+    var DataArray = {
+      ProcessingType: SelectProcessingType,  
+      Member_ID: $("#Update_Member_ID").val(),
+      Member_Name: $("#Update_Member_Name").val(),
+      Member_NameYomi: $("#Update_Member_NameYomi").val(),
+      Birthday: $("#Update_Birthday").val(),   
+      Remarks: $("#Update_Remarks").val(),      
+    };
+
+    if (!ValueCheck(DataArray)) {
+      return;
     }
 
-    if (window.confirm('更新してもよろしいですか？')) {
-      $('#form_id').submit();
-    } else {
-      return false;
+    if (!ConfirmationMessage('学校名：' + $("#Update_School_Name").val() + '専攻名：' + $("#Update_Member_NameYomi").val(), SelectProcessingType)) {
+      return;
     }
+
+    BeforePosting(DataArray);
   });
+
   
+  function BeforePosting(DataArray) {
+    //common.jsに実装
+    originalpost("frm_Member_M.php", DataArray);
+  }
+
 
   //登録、更新時の値チェック
-  function ValueCheck() {
+  function ValueCheck(DataArray) {
 
-    var ErrorMsg = '';
-    if ($("#Screen_Name").val() == "") {
-      ErrorMsg += '画面名を入力してください。\n';
+    var ErrorMsg = '';  
+  
+    if (DataArray.Member_ID == "0") {
+      ErrorMsg += '学校を選択してください。\n';
     }
 
-    if ($("#Screen_Path").val() == "") {
-      ErrorMsg += '画面パスを入力してください。\n';
-    }
-
-    if ($("#Authority").val() == "0") {
-      ErrorMsg += '権限を選択してください。\n';
+    if (DataArray.Member_NameYomi == "") {
+      ErrorMsg += '専攻名を入力してください。\n';
     }
 
     if (!ErrorMsg == "") {
       ErrorMsg = '以下は必須項目です。\n' + ErrorMsg;
-      window.alert(ErrorMsg); 
+      window.alert(ErrorMsg);
       return false;
     } else {
       return true;
     }
+  }
 
-  }  
 
-  
-  $('#Birthday').change(function(e){    
+  $('#Insert_Birthday').change(function(e){    
     
-    AgeCalculation();    
+    var Birthday =  document.getElementById("Insert_Birthday").value;
+    AgeCalculation(Birthday,1);    
+
+  });
+
+  $('#Update_Birthday').change(function(e){    
+    
+    var Birthday =  document.getElementById("Update_Birthday").value;
+    AgeCalculation(Birthday,2);    
 
   });
 
   //年齢計算処理
-  function AgeCalculation() {
-    var Birthday =  document.getElementById("Birthday").value;  
+  function AgeCalculation(Birthday,Branch) {    
     
     Birthday = Birthday.replace(/[/-]/g, "");
 
     var today = new Date();
 	  targetdate = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
 	  
-    document.getElementById("Age").value = (Math.floor((targetdate - Birthday) / 10000));  
+    if(Branch==1){
+      document.getElementById("Insert_Age").value = (Math.floor((targetdate - Birthday) / 10000));  
+    }else{
+      document.getElementById("Update_Age").value = (Math.floor((targetdate - Birthday) / 10000));  
+    }    
   }
+
 </script>
 
 </html>

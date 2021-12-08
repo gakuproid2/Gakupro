@@ -264,15 +264,15 @@ $Table .= "</table>";
 
 <script>
 
-  document.getElementById("Authority").onchange = function() {
-    
-    var Select_Authority = $(this).val();
-    NarrowDownDataTable(Select_Authority);
+  document.getElementById("Authority").onchange = function() {      
+    NarrowDownDataTable();
   };
 
   //table絞り込み
-  function NarrowDownDataTable(Select_Authority) {
-  
+  function NarrowDownDataTable() {  
+
+  var Select_Authority = document.getElementById('Authority').value;
+
   // table要素を取得
   var TargetTable = document.getElementById('DataInfoTable');      
 
@@ -281,15 +281,14 @@ $Table .= "</table>";
 
     var TargetAuthority = TargetTable.rows[i].dataset["authority"];
 
-      if(Select_Authority == 0 || TargetAuthority >= Select_Authority || TargetAuthority ==''){
+      if(Select_Authority == 0 || TargetAuthority <= Select_Authority || TargetAuthority ==''){
         TargetTable.rows[i].style='display:table-row';  
         TableDataCount += 1;        
       }else{
         TargetTable.rows[i].style='display:none';       
-      }    
-          
+      }              
   }
-
+  
   document.getElementById("TableDataCount").innerHTML = "データ総数["+ (TableDataCount - 1) +"件]";
 
   }

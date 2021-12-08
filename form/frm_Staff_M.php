@@ -197,14 +197,12 @@ $Table .= "</table>";
         </div>
 
         <div class="modal-body">         
-
         
           <div class="form-group row">         
             <label for="Insert_Staff_LastName" class="col-md-3 col-form-label" style="width: 100%;">スタッフ氏名</label>              
             <input type="text" name="Insert_Staff_LastName" id="Insert_Staff_LastName" value="" class="form-control col-md-3" style="width: 35%;" placeholder="姓">
           　<input type="text" name="Insert_Staff_FirstName" id="Insert_Staff_FirstName" value="" class="form-control col-md-3" style="width: 35%;"placeholder="名">
           </div>
-
 
           <div class="form-group row">
             <label for="Insert_Staff_LastNameYomi" class="col-md-3 col-form-label" style="width: 100%;">スタッフ氏名（フリガナ）</label>            
@@ -213,7 +211,7 @@ $Table .= "</table>";
           </div>
 
           <div class="form-group row">
-            <label for="Insert_NickName" class="col-md-3 col-form-label">ニックネーム</label>
+            <label for="Insert_NickName" class="col-md-4 col-form-label" style="width: 100%;">ニックネーム</label>
             <input type="text" name="Insert_NickName" id="Insert_NickName" value="" class="form-control col-md-3">
           </div>
 
@@ -285,7 +283,7 @@ $Table .= "</table>";
           </div>
 
           <div class="form-group row">
-            <label for="Update_NickName" class="col-md-3 col-form-label">ニックネーム</label>
+          <label for="Update_NickName" class="col-md-4 col-form-label" style="width: 100%;">ニックネーム</label>
             <input type="text" name="Update_NickName" id="Update_NickName" value="" class="form-control col-md-3">
           </div>
 
@@ -363,16 +361,15 @@ $Table .= "</table>";
 
 <script>
 
-  document.getElementById("Authority").onchange = function() {
-
-  var Select_Authority = $(this).val();
-  NarrowDownDataTable(Select_Authority);
-
+  document.getElementById("Authority").onchange = function() {  
+  NarrowDownDataTable();
   };
 
   //table絞り込み
-  function NarrowDownDataTable(Select_Authority) {
+  function NarrowDownDataTable() {
   
+  var Select_Authority = document.getElementById('Authority').value;
+
   // table要素を取得
   var TargetTable = document.getElementById('DataInfoTable');      
 

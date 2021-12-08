@@ -5,11 +5,6 @@
   font-family:"ヒラギノ丸ゴ Pro W4","ヒラギノ丸ゴ Pro","Hiragino Maru Gothic Pro","ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","HG丸ｺﾞｼｯｸM-PRO","HGMaruGothicMPRO";
 } 
 
-body{
-  width:100%; /*ページ全体の幅は100%と指定する*/	
-  text-align:center; /*ページ全体を中央揃えにする*/
-}
-
 button{  
   border: none;  /* 枠線を消す */
   outline: none; /* クリックしたときに表示される枠線を消す */
