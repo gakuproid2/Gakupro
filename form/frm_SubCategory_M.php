@@ -68,7 +68,7 @@ if (isset($_POST["ProcessingType"])) {
 //メインカテゴリーのプルダウン作成する為
 $items = $dao_MainCategory_M->GET_MainCategory_m();
 //0行目
-$PullDown = "<option value = 0 >選択してください</option>";
+$PullDown = "<option value = 0 >大分類選択</option>";
 foreach ($items as $item_val) {
 
   $PullDown .= "<option value = " . $item_val['MainCategory_CD'];
@@ -142,7 +142,7 @@ $Table .= "</table>";
 <body>
   <div>
     <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
-    <a>大分類：<select name='MainCategory_CD' id='MainCategory_CD'><?php echo $PullDown; ?></select></a>
+    <select name='MainCategory_CD' id='MainCategory_CD'><?php echo $PullDown; ?></select>
   </div>
   <?php echo $Table; ?>
 

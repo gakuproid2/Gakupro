@@ -119,14 +119,13 @@
     }   
 
     function DataChange($info){
-    
-      
+          
       //クラスファイルの読み込み
       require_once '../dao/DB_Connection.php';
       //クラスの生成
       $DB_Connection=new connect();
-
-      $Member_ID = $this->Get_MaxID();
+      
+      $Member_ID = $info['Member_ID'];
       $Member_Name = $info['Member_Name'];
       $Member_NameYomi = $info['Member_NameYomi'];
       $Birthday = $info['Birthday'];     
@@ -141,20 +140,20 @@
       $EmergencyContactRelations = $info['EmergencyContactRelations'];  
       $EmergencyContactTEL = $info['EmergencyContactTEL'];  
       $Remarks = $info['Remarks'];  
-      $RegistrationStatus = $info['RegistrationStatus'];  
-     
-      
-      //操作者(社員ID)
-      $Operator = $info['Operator'];  
+      $RegistrationStatus = $info['RegistrationStatus'];           
 
-      $RegisteredPerson = $Operator;  
+      $Now = date("Y-m-d H:i:s");  
+      $RegisteredPerson = $_SESSION["Staff_ID"];
       $RegisteredDate = $Now;
-      $Changer = $Operator;  
+      $Changer = $_SESSION["Staff_ID"];
       $UpdateDate = $Now;
 
 
-    if($branch == 1) {
+      if ($ProcessingType == 1) {
 
+      //新規登録時はMaxID取得      
+      $Member_ID =$this->Get_MaxID();
+      
       $SQL = "
       INSERT INTO 
       gakupro.Member_M (
@@ -240,7 +239,7 @@
     //仮登録処理
     function TemporaryRegistration($info){
       
-      $Now = date("Y-m-d H:i:s");  
+      
       //クラスファイルの読み込み
       require_once '../dao/DB_Connection.php';
       //クラスの生成
@@ -258,6 +257,7 @@
       $GraduationYearMonth = $info['GraduationYearMonth'];  
 
       //仮登録時はステータスは1(1=仮登録)固定
+      $Now = date("Y-m-d H:i:s");  
       $RegistrationStatus = 1;  
       $RegisteredPerson = 99;  
       $RegisteredDate = $Now;

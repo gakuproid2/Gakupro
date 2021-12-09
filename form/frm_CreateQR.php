@@ -180,7 +180,7 @@ if (!empty($_POST["Request"])) {
 
       // 挿入する文字列のフォント(今回はWindowsに入ってたメイリオを使う)   
       /////Macで作成できるか確認必須///// 
-      $font = "../Fonts/meiryo.ttc";
+      $font = "../Fonts/YuGothR.ttc";
 
       //日付挿入--開始--
       // 挿入する文字列

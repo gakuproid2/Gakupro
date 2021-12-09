@@ -102,7 +102,7 @@ if (isset($_POST["ProcessingType"])) {
   //学校区分のプルダウン作成する為
   $items = $dao_SubCategory_M->GET_SubCategory_m(3);
 
-  $School_Division_PullDown = "<option value = 0 >選択してください</option>";
+  $School_Division_PullDown = "<option value = 0 >学校区分選択</option>";
   foreach ($items as $item_val) {
 
     $School_Division_PullDown .= "<option value = ". $item_val['SubCategory_CD'];
@@ -118,7 +118,7 @@ if (isset($_POST["ProcessingType"])) {
   //学校のプルダウン作成する為
   $items = $dao_School_M->Get_School_M($School_Division);
   
-  $SchoolPullDown = "<option value = 0 data-schooldivision=''>選択してください</option>";
+  $SchoolPullDown = "<option value = 0 data-schooldivision=''>学校選択</option>";
   foreach ($items as $item_val) {
     $SchoolPullDown .= "<option value = ". $item_val['School_CD'] . " data-schooldivision=". $item_val['School_Division']. ">". $item_val['School_Name'] . "</option>";        
   }  
@@ -186,11 +186,9 @@ $Table .= "</table>";
 
 <body>
 <div>
-    <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
-    <a>
-      学校区分：<select  class="School_Division" name='School_Division' id='School_Division'><?php echo $School_Division_PullDown; ?></select>
-      学校選択：<select  class="School_CD" name='School_CD' id='School_CD'><?php echo $SchoolPullDown; ?></select>
-    </a>
+    <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>    
+    <select  class="School_Division" name='School_Division' id='School_Division'><?php echo $School_Division_PullDown; ?></select>
+    <select  class="School_CD" name='School_CD' id='School_CD' style="display:none"><?php echo $SchoolPullDown; ?></select>    
   </div>
   <?php echo $Table; ?>
 
@@ -343,6 +341,13 @@ function NarrowDownPullDown() {
 
   var SelectSchool_Division = document.getElementById('School_Division').value;
   
+  if (SelectSchool_Division==0){
+    document.getElementById('School_CD').style='display:none';     
+    return;
+  }else{
+    document.getElementById('School_CD').style='display:select';      
+  }
+
   //select要素をidで取得
   var list = document.getElementById('School_CD').options;
 
@@ -403,9 +408,7 @@ function NarrowDownPullDown() {
       
       }
 
-    }
-
-   
+    }  
 
     document.getElementById("TableDataCount").innerHTML = "データ総数["+ (TableDataCount - 1) +"件]";
 

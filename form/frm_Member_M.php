@@ -41,35 +41,7 @@
   $JS_Info = $common->Read_JSConnection();
 ?>
 
-<style>
-
-.Label {
-  margin: 0%;
-  padding: 0%;
-}
-
-.Age {
-  width: 30px;
-  margin-left: 40px;
-  margin-right: 10px; 
-}
-
-.YearMonth {
-  width: 130px;  
-}
-
-textarea{
-  resize: none;
-  height: 100px;
-  width: 200px;
-  
-}
-
-</style>
 <?php echo $HeaderInfo; ?>
-
-
-
 
 <?php
 
@@ -194,25 +166,25 @@ if (isset($_POST["ProcessingType"])) {
   //学校区分のプルダウン作成する為
   $items = $dao_SubCategory_M->GET_SubCategory_m(3);
 
-  $School_Division_PullDown = "<option value = 0 >選択してください</option>";
+  $School_Division_PullDown = "<option data-schooldivision='' value = 0 >学校区分選択</option>";
   foreach ($items as $item_val) {
-    $School_Division_PullDown .= "<option value = ". $item_val['SubCategory_CD'].">".$item_val['SubCategory_Name'] . "</option>";    
+    $School_Division_PullDown .= "<option data-schooldivision=". $item_val['SubCategory_CD']. " value = ". $item_val['SubCategory_CD'].">".$item_val['SubCategory_Name'] . "</option>";    
   }  
 
   //学校のプルダウン作成する為
   $items = $dao_School_M->Get_School_M(0);
   
-  $SchoolPullDown = "<option value = 0 data-schooldivision=''>選択してください</option>";
+  $School_PullDown = "<option value = 0 data-schoolcd='' data-schooldivision=''>学校選択</option>";
   foreach ($items as $item_val) {
-    $SchoolPullDown .= "<option value = ". $item_val['School_CD'] . " data-schooldivision=". $item_val['School_Division']. ">". $item_val['School_Name'] . "</option>";        
+    $School_PullDown .= "<option data-schoolcd=". $item_val['School_CD']. " data-schooldivision=". $item_val['School_Division']. " value = ". $item_val['School_CD'] . ">". $item_val['School_Name'] . "</option>";        
   }  
 
   //専攻のプルダウン作成する為
   $items = $dao_MajorSubject_M->GET_Majorsubject_m(0);
 
-  $Majorsubject_PullDown = "<option value = 0 >選択してください</option>";
+  $Majorsubject_PullDown = "<option data-schoolcd='' data-majorsubjectcd='' value = 0 >専攻選択</option>";
   foreach ($items as $item_val) {
-    $Majorsubject_PullDown .= "<option data-schoolcd=". $item_val['School_CD']. " value = ". $item_val['MajorSubject_CD'].">".$item_val['MajorSubject_Name'] . "</option>";    
+    $Majorsubject_PullDown .= "<option data-schoolcd=". $item_val['School_CD']. " data-majorsubjectcd=". $item_val['MajorSubject_CD']. " value = ". $item_val['MajorSubject_CD'].">".$item_val['MajorSubject_Name'] . "</option>";    
   }  
   
   //登録状況のプルダウン作成する為
@@ -249,7 +221,8 @@ foreach ($Data_Table as $val) {
       <td>" . $val['AdmissionYearMonth'] ."<br>" . $val['GraduationYearMonth'] ."</td>
       <td>    
         <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#UpdateModal' 
-        data-membername='" . $val['Member_Name'] . "'        
+        data-memberid='" . $val['Member_ID'] . "'
+        data-membername='" . $val['Member_Name'] . "'    
         data-membernameyomi='" . $val['Member_NameYomi'] . "' 
         data-birthday='" . $val['Birthday'] . "'
         data-tel='" . $val['TEL'] . "'
@@ -276,12 +249,13 @@ $Table .= "</table>";
 ?>
 
 <body>
-<div>
+  <div>
     <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
-    <a>
-      学校区分：<select  class="School_Division" name='School_Division' id='School_Division'><?php echo $School_Division_PullDown; ?></select>
-      学校選択：<select  class="Member_ID" name='Member_ID' id='Member_ID'><?php echo $SchoolPullDown; ?></select>
-    </a>
+    
+      <select  class="School_Division" name='School_Division' id='School_Division'><?php echo $School_Division_PullDown; ?></select>
+      <select  class="School_CD" name='School_CD' id='School_CD' style="display:none"><?php echo $School_PullDown; ?></select>
+      <select  class="MajorSubject_CD" name='MajorSubject_CD' id='MajorSubject_CD' style="display:none"><?php echo $Majorsubject_PullDown; ?></select>
+    
   </div>
   <?php echo $Table; ?>
 
@@ -329,7 +303,7 @@ $Table .= "</table>";
 
           <div class="form-group row">
             <label for="Insert_School_CD" class="col-md-3 col-form-label" style="width: 100%;">学校選択</label>
-            <select name='Insert_School_CD' id='Insert_School_CD' class="form-control col-md-3" ><?php echo $SchoolPullDown; ?></select>
+            <select name='Insert_School_CD' id='Insert_School_CD' class="form-control col-md-3" ><?php echo $School_PullDown; ?></select>
           </div>
 
           <div class="form-group row">
@@ -396,6 +370,10 @@ $Table .= "</table>";
 
         <div class="modal-body">         
                  
+        <div class="form-group row">
+            <label for="Update_Member_ID" class="col-md-3 col-form-label">メンバーID</label>
+            <input type="text" name="Update_Member_ID" id="Update_Member_ID" value="" class="form-control col-md-3" readonly>
+        </div>
 
         <div class="form-group row">         
             <label for="Update_Member_LastName" class="col-md-3 col-form-label" style="width: 100%;">メンバー氏名</label>              
@@ -427,7 +405,7 @@ $Table .= "</table>";
 
           <div class="form-group row">
             <label for="Update_School_CD" class="col-md-3 col-form-label" style="width: 100%;">学校選択</label>
-            <select name='Update_School_CD' id='Update_School_CD' class="form-control col-md-3" ><?php echo $SchoolPullDown; ?></select>
+            <select name='Update_School_CD' id='Update_School_CD' class="form-control col-md-3" ><?php echo $School_PullDown; ?></select>
           </div>
 
           <div class="form-group row">
@@ -489,22 +467,35 @@ $Table .= "</table>";
 
 //学校区分が変更になるとイベントが発生
 $('.School_Division').change(function() { 
- NarrowDownPullDown();
+ NarrowDownSchoolPullDown();
  NarrowDownDataTable();
 });
 
-//学校名が変更になるとイベントが発生
-$('.Member_ID').change(function() { 
-  NarrowDownDataTable();
+//学校が変更になるとイベントが発生
+$('.School_CD').change(function() { 
+ NarrowDownMajorsubjectPullDown();
+ 
 });
 
-//プルダウン絞り込み
-function NarrowDownPullDown() {
+
+//学校プルダウン絞り込み
+function NarrowDownSchoolPullDown() {
 
   var SelectSchool_Division = document.getElementById('School_Division').value;
   
+  
+  document.getElementById('MajorSubject_CD').style='display:none'; 
+
+  if (SelectSchool_Division==0){
+    document.getElementById('School_CD').style='display:none';     
+    return;
+  }else{
+    document.getElementById('School_CD').style='display:select';      
+  }
+
+
   //select要素をidで取得
-  var list = document.getElementById('Member_ID').options;
+  var list = document.getElementById('School_CD').options;
 
   for(var i=0;i<list.length;i++){
 
@@ -519,6 +510,37 @@ function NarrowDownPullDown() {
   }
 
 }
+
+//専攻プルダウン絞り込み
+function NarrowDownMajorsubjectPullDown() {
+
+var SelectSchool_CD = document.getElementById('School_CD').value;
+
+if (SelectSchool_CD==0){  
+  document.getElementById('MajorSubject_CD').style='display:none'; 
+  return;
+}else{
+  document.getElementById('MajorSubject_CD').style='display:select';      
+}
+
+
+//select要素をidで取得
+var list = document.getElementById('MajorSubject_CD').options;
+
+for(var i=0;i<list.length;i++){
+
+  TargetSchool_CD = (list[i].dataset["schoolcd"]);
+
+  if(SelectSchool_CD == 0 || TargetSchool_CD == SelectSchool_CD || TargetSchool_CD ==''){
+    list[i].style='display:option';        
+  }else{
+    list[i].style='display:none';          
+  }   
+
+}
+
+}
+
 
   //table絞り込み
   function NarrowDownDataTable() {
@@ -596,6 +618,8 @@ function NarrowDownPullDown() {
     let evCon = $(e.relatedTarget);
 
     var test = evCon.data('membername');
+
+    $('#Update_Member_ID').val(evCon.data('memberid')); 
 
     var FullNameSplit = (evCon.data('membername')).split('　');
     $('#Update_Member_LastName').val(FullNameSplit[0]);

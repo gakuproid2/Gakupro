@@ -84,7 +84,7 @@ if (isset($_POST["ProcessingType"])) {
   //学校区分のプルダウン作成する為
   $items = $dao_SubCategory_M->GET_SubCategory_m(3);
 
-  $PullDown = "<option value = 0 >選択してください</option>";
+  $PullDown = "<option value = 0 >学校区分選択</option>";
   foreach ($items as $item_val) {
 
     $PullDown .= "<option value = " . $item_val['SubCategory_CD'];
@@ -158,7 +158,7 @@ $Table .= "</table>";
 <body>
 <div>
     <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
-    <a>学校区分：<select name='School_Division' id='School_Division' placeholder='Source Type'><?php echo $PullDown; ?></select></a>
+    <select name='School_Division' id='School_Division' placeholder='Source Type'><?php echo $PullDown; ?></select>
   </div>
   <?php echo $Table; ?>
 
@@ -223,7 +223,7 @@ $Table .= "</table>";
      
         <div class="form-group row">
             <label for="Update_School_CD" class="col-md-3 col-form-label">学校CD</label>
-            <input type="text" name="Update_School_CD" id="Update_School_CD" value="" class="form-control col-md-3">
+            <input type="text" name="Update_School_CD" id="Update_School_CD" value="" class="form-control col-md-3" readonly>
         </div>
 
         <div class="form-group row">

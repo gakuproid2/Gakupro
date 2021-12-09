@@ -72,7 +72,7 @@ if (isset($_POST["ProcessingType"])) {
   //権限のプルダウン作成する為
   $items = $dao_SubCategory_M->GET_SubCategory_m(2);
 
-  $PullDown = "<option value = 0 >選択してください</option>";
+  $PullDown = "<option value = 0 >権限選択</option>";
   foreach ($items as $item_val) {
 
     $PullDown .= "<option value = " . $item_val['SubCategory_CD'];
@@ -144,7 +144,7 @@ $Table .= "</table>";
 <body>
 <div>
     <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
-    <a>閲覧可能権限：<select name='Authority' id='Authority'><?php echo $PullDown; ?></select></a>
+    <select name='Authority' id='Authority'><?php echo $PullDown; ?></select>
   </div>
   <?php echo $Table; ?>
 
