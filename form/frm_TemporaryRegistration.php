@@ -1,25 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
 
-<style>
-
-.Label {
-  margin: 0%;
-  padding: 0%;
-}
-
-.Age {
-  width: 30px;
-  margin-left: 40px;
-  margin-right: 10px; 
-}
-
-.YearMonth {
-  width: 120px;  
-}
-
-</style>
-
 <?php
   
   //クラスファイルの読み込み
@@ -28,6 +9,11 @@
   $common = new common();
 
   $JS_Info = $common->Read_JSconnection();
+
+  //クラスファイルの読み込み
+  require_once '../dao/dao_SubCategory_M.php';
+  //クラスの生成
+  $dao_SubCategory_M = new dao_SubCategory_M();
 
   //クラスファイルの読み込み
   require_once '../dao/dao_MailAddressAuthenticate_T.php';
@@ -47,171 +33,318 @@
   //クラスファイルの読み込み
   require_once '../dao/dao_Member_M.php';
   //クラスの生成
-  $dao_Member_M = new dao_Member_M();
-  
+  $dao_Member_M = new dao_Member_M(); 
+ 
+  $CSS_Info = $common->Read_CssConnection();
+  $JS_Info = $common->Read_JSConnection();
 ?>
+<?php echo $CSS_Info ?>
 
-<?php  
+<?php
 
-    if (count($_POST) > 0) {
+$Key_Code = 0;
+$DataInfo='';
+//データ更新処理実行時  Start--
+if (isset($_POST["Key_Code"])) {
 
-     
+  $Key_Code = $_POST["Key_Code"];
 
-      //登録処理
-      if (isset($_POST['Insert'])) {
+  //$Key_Codeで名前とメールアドレスをメールアドレス認証テーブルより取得
+  $GetMailAddressAuthenticateInfo = $dao_MailAddressAuthenticate_T ->GetMailAddressAuthenticateInfo($Key_Code);
 
-        $info = array(
-          'Member_Name' => $_POST["LastName"].'　'.$_POST["FirstName"],
-          'Member_NameYomi' => $_POST["LastNameYomi"].'　'.$_POST["FirstNameYomi"],
-          'Birthday' => $_POST["Birthday"],
-          'School_CD' => $_POST["School_CD"],
-          'MajorSubject_CD' => $_POST["MajorSubject_CD"],
-          'TEL' => $_POST["TEL"],
-          'MailAddress' => $_POST["MailAddress"],
-          'AdmissionYearMonth' => $_POST["AdmissionYearMonth"],
-          'GraduationYearMonth' => $_POST["GraduationYearMonth"]
-        );
+  foreach ($GetMailAddressAuthenticateInfo as $val) {                
+    $MailAddress = $val['MailAddress'];
+    $FullName = $val['Name'];        
+    $LastName =  mb_strstr($FullName, '　', true);
+    $FirstName =  str_replace($LastName.'　', "", $FullName);            
+  }    
 
-        //登録処理成功時は[Member_ID]が返却される、失敗時はfalse
-        $Result = $dao_Member_M->TemporaryRegistration($info);  
-                
-        if($Result == false) {
-      
-        } else{
-          Header('Location: ' . 'frm_TemporaryRegistrationResult.php?Member_ID='.$Result);
-          exit(); 
-        }       
-      }
+  $DataInfo="data-lastname='". $LastName ."' data-firstname='". $FirstName ."' data-mailaddress='" . $MailAddress. "'";
+}
+  //データ更新処理実行時  End--
 
-      $Key_Code = $_POST["Key_Code"];
+  //学校区分のプルダウン作成する為
+  $items = $dao_SubCategory_M->GET_SubCategory_m(3);
 
-      //$Key_Codeで名前とメールアドレスをメールアドレス認証テーブルより取得
-      $GetMailAddressAuthenticateInfo = $dao_MailAddressAuthenticate_T ->GetMailAddressAuthenticateInfo($Key_Code);
+  $School_Division_PullDown = "<option data-schooldivision='' value = 0 >学校区分選択</option>";
+  foreach ($items as $item_val) {
+    $School_Division_PullDown .= "<option data-schooldivision=". $item_val['SubCategory_CD']. " value = ". $item_val['SubCategory_CD'].">".$item_val['SubCategory_Name'] . "</option>";    
+  }  
 
-      foreach ($GetMailAddressAuthenticateInfo as $val) {                
-        $MailAddress = $val['MailAddress'];
-        $FullName = $val['Name'];        
-        $LastName =  mb_strstr($FullName, '　', true);
-        $FirstName =  str_replace($LastName.'　', "", $FullName);            
-      }     
+  //学校のプルダウン作成する為
+  $items = $dao_School_M->Get_School_M(0);
+  
+  $School_PullDown = "<option value = 0 data-schoolcd='' data-schooldivision=''>学校選択</option>";
+  foreach ($items as $item_val) {
+    $School_PullDown .= "<option data-schoolcd=". $item_val['School_CD']. " data-schooldivision=". $item_val['School_Division']. " value = ". $item_val['School_CD'] . ">". $item_val['School_Name'] . "</option>";        
+  }  
 
-      //学校のプルダウン作成する為
-      $School_Info = $dao_School_M->Get_School_M('','');
-      //0行目
-      $School_PullDown = "<option value = 0 >学校を選択して下さい</option>";
-      foreach ($School_Info as $val) {
-        $School_PullDown .= "<option value = " . $val['School_CD']." >".$val['School_Name'] . "</option>";          
-      }
+  //専攻のプルダウン作成する為
+  $items = $dao_MajorSubject_M->GET_Majorsubject_m(0);
 
-       //専攻コースのプルダウン作成する為
-       $MajorSubject_Info = $dao_MajorSubject_M->GET_Majorsubject_m(0);
-       //0行目
-       $MajorSubject_PullDown = "<option value = 0 >専攻を選択して下さい</option>";
-       foreach ($MajorSubject_Info as $val) {
-         $MajorSubject_PullDown .= "<option value = " . $val['MajorSubject_CD']." >".$val['MajorSubject_CD'] . "</option>";          
-       }
-    }
-
-
+  $Majorsubject_PullDown = "<option data-schoolcd='' data-majorsubjectcd='' value = 0 >専攻選択</option>";
+  foreach ($items as $item_val) {
+    $Majorsubject_PullDown .= "<option data-schoolcd=". $item_val['School_CD']. " data-majorsubjectcd=". $item_val['MajorSubject_CD']. " value = ". $item_val['MajorSubject_CD'].">".$item_val['MajorSubject_Name'] . "</option>";    
+  }  
 ?>
 
 <body>
+<a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal' <?php echo $DataInfo; ?> ><i class='fas fa-plus-circle'></i>登録する</a>
+ <!-- 登録用Modal -->
+ <div class="modal fade" id="InsertModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="InsertModalLabel" aria-hidden="true"> 
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
 
-  <form action="frm_TemporaryRegistration.php" method="POST">
-    <p class="Label">氏名</p>
-    <p>
-      姓:<input type="text" id="LastName" name="LastName" autocomplete="off" value='<?php echo $LastName; ?>'>
-      名:<input type="text" id="FirstName" name="FirstName" autocomplete="off" value='<?php echo $FirstName; ?>'>
-    </p>
+        <div class="modal-header">
+          <h5 class="modal-title" id="InsertModalLabel">登録確認</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
 
-    <p class="Label">氏名(フリガナ)</p>
-    <p>      
-      姓:<input type="text" id="LastName_Yomi" name="LastNameYomi" autocomplete="off">
-      名:<input type="text" id="FirstName_Yomi" name="FirstNameYomi" autocomplete="off">
-    </p>         
-    
-    <p class="Label">生年月日</p>
-    <p><input type="date" id="Birthday" name="Birthday" value="2005-04-01"><input type="text" id="Age" class="Age" readonly>歳</p>
+        <div class="modal-body">         
+                 
 
-    <p class="Label">学校/専攻</p>
-    <p>
-      <select id='School_CD' name='School_CD'><?php echo $School_PullDown; ?></select>    
-      <select id='MajorSubject_CD' name='MajorSubject_CD'><?php echo $MajorSubject_PullDown; ?></select>
-    </p>
+          <div class="form-group row">         
+            <label for="Insert_Member_LastName" class="col-md-3 col-form-label" style="width: 100%;">氏名</label>              
+            <input type="text" name="Insert_Member_LastName" id="Insert_Member_LastName" value="" class="form-control col-md-3" style="width: 35%;" placeholder="姓">
+          　<input type="text" name="Insert_Member_FirstName" id="Insert_Member_FirstName" value="" class="form-control col-md-3" style="width: 35%;"placeholder="名">
+          </div>
 
-    <p class="Label">在学期間</p>
-    <p>
-    <input type="month" class="YearMonth" id="AdmissionYearMonth" name="AdmissionYearMonth" value="2020-04">～
-    <input type="month" class="YearMonth" id="GraduationYearMonth" name="GraduationYearMonth" value="2023-03">
-    </p>
+          <div class="form-group row">
+            <label for="Insert_Member_LastNameYomi" class="col-md-3 col-form-label" style="width: 100%;">氏名（フリガナ）</label>            
+            <input type="text" name="Insert_Member_LastNameYomi" id="Insert_Member_LastNameYomi" value="" class="form-control col-md-3" style="width: 35%;" placeholder="セイ">
+          　<input type="text" name="Insert_Member_FirstNameYomi" id="Insert_Member_FirstNameYomi" value="" class="form-control col-md-3" style="width: 35%;" placeholder="メイ">
+          </div>
 
-    <p class="Label">TEL</p>
-    <p><input type="tel" id="TEL" name="TEL" autocomplete="off"></p>  
+          <div class="form-group row">
+            <label for="Insert_Birthday" class="col-md-4 col-form-label"style="width: 100%;">生年月日</label>            
+            <input type="date" name="Insert_Birthday" id="Insert_Birthday"  min="1950-01-01" max="2021-12-31" value="" class="form-control col-md-1" style="width: 50%;">
+          　<input type="text" name="Insert_Age" id="Insert_Age" value="" class="form-control col-md-3" style="width: 20%;" readonly><label class="col-md-4 col-form-label"style="width: 10%;">歳</label>
+          </div>
 
-    <p class="Label">メールアドレス</p>
-    <p><input type="email" id="MailAddress" name="MailAddress" autocomplete="off" value='<?php echo $MailAddress; ?>'></p>  
+          <div class="form-group row">         
+            <label for="Insert_TEL" class="col-md-3 col-form-label" style="width: 100%;">TEL</label>              
+            <input type="text" name="Insert_TEL" id="Insert_TEL" value="" class="form-control col-md-3" style="width: 50%;">          
+          </div>
 
-    <button class="btn_Insert" id="btn_Insert" name="Insert" value="1">登録</button>
-    <button class="btn_Clear" id="btn_Clear" name="Clear" value="2">クリア</button>    
-  </form>
+          <div class="form-group row">         
+            <label for="Insert_MailAddress" class="col-md-3 col-form-label" style="width: 100%;">メールアドレス</label>              
+            <input type="text" name="Insert_MailAddress" id="Insert_MailAddress" value="" class="form-control col-md-3">          
+          </div>
 
 
-  <?php echo $JS_Info?>
+          <div class="form-group row">
+            <label for="Insert_School_CD" class="col-md-3 col-form-label" style="width: 100%;">学校選択</label>
+            <select name='Insert_School_CD' id='Insert_School_CD' class="form-control col-md-3" ><?php echo $School_PullDown; ?></select>
+          </div>
+
+          <div class="form-group row">
+            <label for="Insert_MajorSubject_CD" class="col-md-3 col-form-label">専攻選択</label>
+            <select name='Insert_MajorSubject_CD' id='Insert_MajorSubject_CD' class="form-control col-md-3" ><?php echo $Majorsubject_PullDown; ?></select>
+          </div>
+
+          <div class="form-group row">
+            <label for="Insert_AdmissionYearMonth" class="col-md-4 col-form-label" style="width: 50%;">入学年月</label>
+            <label for="Insert_GraduationYearMonth" class="col-md-4 col-form-label" style="width: 50%;">卒業予定年月</label>
+            <input type="month" name="Insert_AdmissionYearMonth" id="Insert_AdmissionYearMonth" min="2010-01-01"  class="form-control col-md-1" style="width: 50%;">
+            <input type="month" name="Insert_GraduationYearMonth" id="Insert_GraduationYearMonth" min="2010-01-01" class="form-control col-md-1" style="width: 50%;">
+          </div>  
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+            <button type="button" class="btn btn-primary ModalInsertButton">登録</button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <?php echo $JS_Info ?>
 </body>
 
+<script>
 
-<script>  
+//学校区分が変更になるとイベントが発生
+$('.School_Division').change(function() { 
+ NarrowDownSchoolPullDown(); 
+});
 
-  //登録ボタンクリック時
-  $('#btn_Insert').on('click', function() {
+//学校が変更になるとイベントが発生
+$('.School_CD').change(function() { 
+ NarrowDownMajorsubjectPullDown();
+ 
+});
 
-    if (ValueCheck() == false) {
-      return false;
-    }
 
-    if (window.confirm('登録してもよろしいですか？')) {
-      $('#form_id').submit();
-    } else {
-      return false;
-    }
-  });
+//学校プルダウン絞り込み
+function NarrowDownSchoolPullDown() {
+
+  var SelectSchool_Division = document.getElementById('School_Division').value; 
   
-  //クリアボタンクリック時
-  $('#btn_Clear').on('click', function() {
+  document.getElementById('MajorSubject_CD').style='display:none'; 
+
+  if (SelectSchool_Division==0){
+    document.getElementById('School_CD').style='display:none';     
+    return;
+  }else{
+    document.getElementById('School_CD').style='display:select';      
+  }
+
+
+  //select要素をidで取得
+  var list = document.getElementById('School_CD').options;
+
+  for(var i=0;i<list.length;i++){
+
+    TargetSchool_Division = (list[i].dataset["schooldivision"]);
+
+    if(SelectSchool_Division == 0 || TargetSchool_Division == SelectSchool_Division || TargetSchool_Division ==''){
+      list[i].style='display:option';        
+    }else{
+      list[i].style='display:none';          
+    }   
+
+  }
+
+}
+
+//専攻プルダウン絞り込み
+function NarrowDownMajorsubjectPullDown() {
+
+var SelectSchool_CD = document.getElementById('School_CD').value;
+
+if (SelectSchool_CD==0){  
+  document.getElementById('MajorSubject_CD').style='display:none'; 
+  return;
+}else{
+  document.getElementById('MajorSubject_CD').style='display:select';      
+}
+
+
+//select要素をidで取得
+var list = document.getElementById('MajorSubject_CD').options;
+
+for(var i=0;i<list.length;i++){
+
+  TargetSchool_CD = (list[i].dataset["schoolcd"]);
+
+  if(SelectSchool_CD == 0 || TargetSchool_CD == SelectSchool_CD || TargetSchool_CD ==''){
+    list[i].style='display:option';        
+  }else{
+    list[i].style='display:none';          
+  }   
+
+}
+
+}
+  //登録用モーダル表示時
+  $('#InsertModal').on('show.bs.modal', function(e) {   
+  
+    // イベント発生元
+    let evCon = $(e.relatedTarget);  
+
+    $('#Insert_Member_LastName').val(evCon.data('lastname'));
+    $('#Insert_Member_FirstName').val(evCon.data('firstname'));
+    $('#Insert_Member_LastNameYomi').val('');
+    $('#Insert_Member_FirstNameYomi').val('');
+
+    $('#Insert_Birthday').val('');
+    $('#Insert_TEL').val('');
+    $('#Insert_MailAddress').val(evCon.data('mailaddress'));    
+    $('#Insert_School_CD').val('');
+    $('#Insert_MajorSubject_CD').val('');
+    $('#Insert_AdmissionYearMonth').val('');
+    $('#Insert_GraduationYearMonth').val('');
     
   });
 
-  function ValueCheck() {
+  //登録ボタンクリック時
+  $('.ModalInsertButton').on('click', function() {
 
-    var ErrorMsg = '';
-    if ($("#MailAddress").val() == "") {
-      ErrorMsg += 'メールアドレスを入力してください。\n';
+    var SelectProcessingType = 99;
+
+    //ポストするキーと値を格納
+    var DataArray = {
+      ProcessingType: SelectProcessingType,  
+      Member_Name: $("#Insert_Member_LastName").val() + '　' + $("#Insert_Member_FirstName").val(),
+      Member_NameYomi: $("#Insert_Member_LastNameYomi").val() + '　' + $("#Insert_Member_FirstNameYomi").val(),
+      Birthday: $("#Insert_Birthday").val(),   
+      TEL: $("#Insert_TEL").val(),   
+      MailAddress: $("#Insert_MailAddress").val(),   
+      School_CD: $("#Insert_School_CD").val(),   
+      MajorSubject_CD: $("#Insert_MajorSubject_CD").val(),   
+      AdmissionYearMonth: $("#Insert_AdmissionYearMonth").val(),   
+      GraduationYearMonth: $("#Insert_GraduationYearMonth").val(),        
+      RegistrationStatus: $("#Insert_RegistrationStatus").val()      
+    };
+
+    if (!ValueCheck(DataArray)) {
+      return;
+    }
+
+    if (!ConfirmationMessage(DataArray.Member_Name, SelectProcessingType)) {
+      return;
+    }
+
+    BeforePosting(DataArray);
+
+  });
+  
+  function BeforePosting(DataArray) {
+    //common.jsに実装
+    originalpost("frm_TemporaryRegistrationResult.php", DataArray);
+  }
+
+
+  //登録時の値チェック
+  function ValueCheck(DataArray) {
+
+    var ErrorMsg = '';  
+  
+    
+    if (DataArray.Member_Name == "") {
+      ErrorMsg += '氏名を入力してください。\n';
+    }
+
+    if (DataArray.Member_NameYomi == "") {
+      ErrorMsg += '氏名（フリガナ）を入力してください。\n';
+    }
+
+    if (DataArray.School_ID == "0") {
+      ErrorMsg += '学校を選択してください。\n';
     }
 
     if (!ErrorMsg == "") {
       ErrorMsg = '以下は必須項目です。\n' + ErrorMsg;
-      window.alert(ErrorMsg); // 
+      window.alert(ErrorMsg);
       return false;
     } else {
       return true;
     }
   }
 
-  //年齢計算処理
-  $('#Birthday').change(function(e){    
+
+  $('#Insert_Birthday').change(function(e){    
     
-    var Birthday =  document.getElementById("Birthday").value;  
+    var Birthday =  document.getElementById("Insert_Birthday").value;
+    AgeCalculation(Birthday);    
+
+  });
+
+  //年齢計算処理
+  function AgeCalculation(Birthday) {    
     
     Birthday = Birthday.replace(/[/-]/g, "");
 
     var today = new Date();
 	  targetdate = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
 	  
-    document.getElementById("Age").value = (Math.floor((targetdate - Birthday) / 10000));    
+   
+    document.getElementById("Insert_Age").value = (Math.floor((targetdate - Birthday) / 10000));  
+   
+  }
 
-  });
- 
 </script>
-
 
 </html>

@@ -5,20 +5,17 @@ class dao_MailAddressAuthenticate_T
 
     function DataInsert($Info)
     {
-
-        $Key_Code = $Info['Key_Code'];
-
-
-        $Password = $Info['Password'];
-        $MailAddress = $Info['MailAddress'];
-        $FullName = $Info['FullName'];
-
-
-        $CreateDateTime = date("Y-m-d H:i:s");
         //クラスファイルの読み込み
         require_once '../dao/DB_Connection.php';
         //クラスの生成
         $DB_Connection = new connect();
+
+        $Key_Code = $Info['Key_Code'];
+
+        $Password = $Info['Password'];
+        $MailAddress = $Info['MailAddress'];
+        $FullName = $Info['FullName'];
+        $CreateDateTime = date("Y-m-d H:i:s");    
 
         $SQL = "
             INSERT INTO

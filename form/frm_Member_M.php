@@ -250,7 +250,7 @@ $Table .= "</table>";
 
 <body>
   <div>
-    <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
+    <a href="" class="btn btn--red btn--radius btn--cubic" data-backdrop="static" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
     
       <select  class="School_Division" name='School_Division' id='School_Division'><?php echo $School_Division_PullDown; ?></select>
       <select  class="School_CD" name='School_CD' id='School_CD' style="display:none"><?php echo $School_PullDown; ?></select>
@@ -260,7 +260,8 @@ $Table .= "</table>";
   <?php echo $Table; ?>
 
   <!-- 登録用Modal -->
-  <div class="modal fade" id="InsertModal" tabindex="-1" aria-labelledby="InsertModalLabel" aria-hidden="true">  
+  <div class="modal fade" id="InsertModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="InsertModalLabel" aria-hidden="true">  
+  
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
 
@@ -359,7 +360,7 @@ $Table .= "</table>";
 
   <!-- 更新用Modal -->
  
-  <div class="modal fade" id="UpdateModal" tabindex="-1" aria-labelledby="UpdateModalLabel" aria-hidden="true">  
+  <div class="modal fade" id="UpdateModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="UpdateModalLabel" aria-hidden="true">  
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
 
@@ -616,8 +617,6 @@ for(var i=0;i<list.length;i++){
   $('#UpdateModal').on('show.bs.modal', function(e) {
     // イベント発生元
     let evCon = $(e.relatedTarget);
-
-    var test = evCon.data('membername');
 
     $('#Update_Member_ID').val(evCon.data('memberid')); 
 
