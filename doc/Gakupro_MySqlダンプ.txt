@@ -1,10 +1,3 @@
-
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
 --
 -- データベース: `gakupro`
 --
@@ -12,22 +5,68 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 -- テーブルがあれば削除--
+drop table if exists `company_m`;
 drop table if exists `imageget_t`;
-drop table if exists `temporarymember_m`;
-drop table if exists `temporarymember_t`;
 drop table if exists `mailaddressauthenticate_t`;
-drop table if exists `MainCategory_m`;
+drop table if exists `maincategory_m`;
 drop table if exists `majorsubject_m`;
-drop table if exists `Member_m`;
-drop table if exists `Menber_m`;
+drop table if exists `member_m`;
+drop table if exists `recruitment_m`;
 drop table if exists `school_m`;
 drop table if exists `screen_m`;
 drop table if exists `staff_m`;
-drop table if exists `SubCategory_m`;
+drop table if exists `subcategory_m`;
+
+
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- テーブルの構造 `imageget_t`--
+-- データベース: `gakupro`
+--
 
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `company_m`
+--
+
+CREATE TABLE `company_m` (
+  `Company_ID` int(11) NOT NULL COMMENT '会社ID',
+  `Company_Name` varchar(50) NOT NULL COMMENT '会社名',
+  `TEL1` varchar(20) DEFAULT NULL COMMENT '電話番号1',
+  `TEL2` varchar(20) DEFAULT NULL COMMENT '電話番号2',
+  `Address` varchar(50) DEFAULT NULL COMMENT '住所',
+  `URL` varchar(50) DEFAULT NULL COMMENT 'HP_URL',
+  `Login_ID` varchar(8) DEFAULT NULL COMMENT 'ログインID',
+  `Password` varchar(8) DEFAULT NULL COMMENT 'ログインパスワード',
+  `RegisteredPerson` int(11) DEFAULT NULL COMMENT '登録者',
+  `RegisteredDate` datetime DEFAULT NULL COMMENT '登録日',
+  `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
+  `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会社マスタ';
+
+--
+-- テーブルのデータのダンプ `company_m`
+--
+
+INSERT INTO `company_m` (`Company_ID`, `Company_Name`, `TEL1`, `TEL2`, `Address`, `URL`, `Login_ID`, `Password`, `RegisteredPerson`, `RegisteredDate`, `Changer`, `UpdateDate`) VALUES
+(1, '学生応援プロジェクト', '090-6868-2937', '098-937-6856', '沖縄県沖縄市城前町24-7', NULL, '1', '1', 99, NULL, NULL, NULL),
+(2, 'ダミー会社', '098-937-9999', '090-1111-4444', '沖縄県宜野湾市〇〇町3244', NULL, '1', '1', 99, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `imageget_t`
+--
 
 CREATE TABLE `imageget_t` (
   `Key_Code` varchar(15) NOT NULL COMMENT '画像保存用フォルダのキーコード',
@@ -44,11 +83,33 @@ INSERT INTO `imageget_t` (`Key_Code`, `Password`) VALUES
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `MainCategory_m`
+-- テーブルの構造 `mailaddressauthenticate_t`
 --
 
+CREATE TABLE `mailaddressauthenticate_t` (
+  `ID` int(11) NOT NULL,
+  `Key_Code` varchar(15) NOT NULL COMMENT 'パスワード認証用キーコード(yyyymmddXXX)',
+  `Password` int(4) NOT NULL COMMENT 'メールアドレス認証用パスワード',
+  `MailAddress` varchar(50) NOT NULL COMMENT 'メールアドレス',
+  `Name` varchar(30) DEFAULT '' COMMENT '認証用メンバー名',
+  `CreateDateTime` datetime DEFAULT NULL COMMENT 'データ作成日時',
+  `AuthenticationsCount` int(4) NOT NULL COMMENT '認証回数(初期値=0)'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='メールアドレス認証用テーブル';
 
-CREATE TABLE `MainCategory_m` (
+--
+-- テーブルのデータのダンプ `mailaddressauthenticate_t`
+--
+
+INSERT INTO `mailaddressauthenticate_t` (`ID`, `Key_Code`, `Password`, `MailAddress`, `Name`, `CreateDateTime`, `AuthenticationsCount`) VALUES
+(0, '23001231001', 9999, 'test@mailcom', '島　一郎', '2300-12-31 01:01:01', 0);
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `maincategory_m`
+--
+
+CREATE TABLE `maincategory_m` (
   `MainCategory_CD` int(11) NOT NULL COMMENT '大分類コード',
   `MainCategory_Name` varchar(30) NOT NULL COMMENT '大分類名',
   `UsageSituation` int(11) NOT NULL COMMENT '利用状況',
@@ -57,22 +118,20 @@ CREATE TABLE `MainCategory_m` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='大分類マスタ';
 
 --
--- テーブルのデータのダンプ `MainCategory_m`
+-- テーブルのデータのダンプ `maincategory_m`
 --
 
-INSERT INTO `MainCategory_m` (`MainCategory_CD`, `MainCategory_Name`, `UsageSituation`, `Changer`, `UpdateDate`) VALUES
+INSERT INTO `maincategory_m` (`MainCategory_CD`, `MainCategory_Name`, `UsageSituation`, `Changer`, `UpdateDate`) VALUES
 (1, '性別', 1, 1, '2021-08-06 22:28:53'),
 (2, '権限', 1, 1, '2021-09-04 01:12:50'),
 (3, '学校区分', 1, 1, '2021-09-04 01:15:21'),
-(4, 'メンバー登録状況', 1, 1, '2021-09-04 01:15:21')
-;
+(4, 'メンバー登録状況', 1, 1, '2021-09-04 01:15:21');
 
 -- --------------------------------------------------------
 
 --
 -- テーブルの構造 `majorsubject_m`
 --
-
 
 CREATE TABLE `majorsubject_m` (
   `School_CD` int(11) NOT NULL COMMENT '学校コード',
@@ -101,25 +160,24 @@ INSERT INTO `majorsubject_m` (`School_CD`, `MajorSubject_CD`, `MajorSubject_Name
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `Member_m`
+-- テーブルの構造 `member_m`
 --
 
-
-CREATE TABLE `Member_m` (
+CREATE TABLE `member_m` (
   `Member_ID` int(11) NOT NULL COMMENT '学生メンバーID',
   `Member_Name` varchar(30) NOT NULL COMMENT '氏名',
   `Member_NameYomi` varchar(30) DEFAULT NULL COMMENT '氏名(フリガナ)',
   `Birthday` date DEFAULT NULL COMMENT '誕生日',
   `TEL` varchar(15) DEFAULT NULL COMMENT 'TEL',
   `MailAddress` varchar(50) DEFAULT NULL COMMENT 'メールアドレス',
-   `School_CD` int(11) NOT NULL COMMENT '学校コード',
+  `School_CD` int(11) NOT NULL COMMENT '学校コード',
   `MajorSubject_CD` int(11) NOT NULL COMMENT '専攻コード',
   `AdmissionYearMonth` varchar(7) DEFAULT NULL COMMENT '入学年月(yyyy/mm)',
   `GraduationYearMonth` varchar(7) DEFAULT NULL COMMENT '予定卒業年月(yyyy/mm)',
   `Login_ID` varchar(30) DEFAULT NULL COMMENT 'ログインID',
   `Password` varchar(8) DEFAULT NULL COMMENT 'ログインパスワード',
   `EmergencyContactRelations` varchar(15) DEFAULT NULL COMMENT '緊急連絡先相手との続柄',
-  `EmergencyContactTEL` varchar(15) DEFAULT NULL COMMENT '緊急連絡先番号',   
+  `EmergencyContactTEL` varchar(15) DEFAULT NULL COMMENT '緊急連絡先番号',
   `Remarks` varchar(100) DEFAULT NULL COMMENT '備考',
   `RegistrationStatus` int(11) DEFAULT NULL COMMENT '登録状況(1=仮登録、2=本登録、3=卒業)',
   `RegisteredPerson` int(11) DEFAULT NULL COMMENT '登録者',
@@ -128,16 +186,44 @@ CREATE TABLE `Member_m` (
   `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='メンバーマスタ';
 
+--
+-- テーブルのデータのダンプ `member_m`
+--
 
-INSERT INTO `member_m` (`Member_ID`, `Member_Name`, `Member_NameYomi`, `Birthday`, `School_CD`, `MajorSubject_CD`, `TEL`, `MailAddress`, `AdmissionYearMonth`, `GraduationYearMonth`, `Login_ID`, `Password`, `EmergencyContactRelations`, `EmergencyContactTEL`, `Remarks`, `RegistrationStatus`, `RegisteredPerson`, `RegisteredDate`, `Changer`, `UpdateDate`) VALUES
-(1, '島　イチロウ', 'シマ　イチロウ', '2005-03-30', 1, 3, '090-6868-2937', 'test@mailcom', '2020-04', '2023-03', NULL, NULL, NULL, NULL, NULL, 1, 99, '2021-11-15 11:04:38', 99, '2021-11-15 11:04:38');
+INSERT INTO `member_m` (`Member_ID`, `Member_Name`, `Member_NameYomi`, `Birthday`, `TEL`, `MailAddress`, `School_CD`, `MajorSubject_CD`, `AdmissionYearMonth`, `GraduationYearMonth`, `Login_ID`, `Password`, `EmergencyContactRelations`, `EmergencyContactTEL`, `Remarks`, `RegistrationStatus`, `RegisteredPerson`, `RegisteredDate`, `Changer`, `UpdateDate`) VALUES
+(1, '島　イチロウ', 'シマ　イチロウ', '2005-03-30', '090-6868-2937', 'test@mailcom', 1, 3, '2020-04', '2023-03', NULL, NULL, NULL, NULL, NULL, 1, 99, '2021-11-15 11:04:38', 99, '2021-11-15 11:04:38');
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `recruitment_m`
+--
+
+CREATE TABLE `recruitment_m` (
+  `Company_ID` int(11) NOT NULL COMMENT '会社ID',
+  `Recruitment_ID` int(11) NOT NULL COMMENT '会社求人募集ID',
+  `Recruitment_Name` varchar(50) NOT NULL COMMENT '求人名',
+  `TEL1` varchar(20) DEFAULT NULL COMMENT '問い合わせ電話番号1',
+  `TEL2` varchar(20) DEFAULT NULL COMMENT '問い合わせ電話番号2',
+  `WorkPlaceAddress` varchar(50) DEFAULT NULL COMMENT '就業場所住所',
+  `URL` varchar(50) DEFAULT NULL COMMENT 'HP_URL',
+  `SalaryForm` varchar(50) DEFAULT NULL COMMENT '1:時給 2:日給 3:月給 4:その他',
+  `SalaryUnitPrice` int(11) DEFAULT NULL COMMENT '給与単価',
+  `WorkStartTime` varchar(5) DEFAULT NULL COMMENT '基本就業開始時間',
+  `WorkEndTime` varchar(5) DEFAULT NULL COMMENT '基本就業終了時間',
+  `Login_ID` varchar(8) DEFAULT NULL COMMENT 'ログインID',
+  `Password` varchar(8) DEFAULT NULL COMMENT 'ログインパスワード',
+  `RegisteredPerson` int(11) DEFAULT NULL COMMENT '登録者',
+  `RegisteredDate` datetime DEFAULT NULL COMMENT '登録日',
+  `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
+  `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='求人募集マスタ';
 
 -- --------------------------------------------------------
 
 --
 -- テーブルの構造 `school_m`
 --
-
 
 CREATE TABLE `school_m` (
   `School_CD` int(11) NOT NULL COMMENT '学校コード',
@@ -155,16 +241,15 @@ CREATE TABLE `school_m` (
 --
 
 INSERT INTO `school_m` (`School_CD`, `School_Division`, `School_Name`, `TEL`, `URL`, `UsageSituation`, `Changer`, `UpdateDate`) VALUES
-(1, 1, 'テスト高校', '090-1234-5678', 'nishihara', 1, 1, '2021-08-16 21:47:47'),
-(2, 2, 'テスト大学', '090-1234-5678', 'urasoe', 1, 2, '2021-08-16 21:47:47'),
-(3, 3, '専門学校テスト', '098-1234-2699', 'tessss', 1, 1, '2021-08-16 21:47:47');
+(1, 1, '沖縄県立西原高等学校', '090-1234-5678', 'http://www.nishihara-h.open.ed.jp/', 1, 1, '2021-08-16 21:47:47'),
+(2, 2, '琉球大学', '090-1234-5678', 'https://www.u-ryukyu.ac.jp/', 1, 2, '2021-08-16 21:47:47'),
+(3, 3, 'サイ・テク・カレッジ', '098-1234-2699', 'https://www.sci-tec.ac.jp/index.php', 1, 1, '2021-08-16 21:47:47');
 
 -- --------------------------------------------------------
 
 --
 -- テーブルの構造 `screen_m`
 --
-
 
 CREATE TABLE `screen_m` (
   `Screen_ID` int(11) NOT NULL COMMENT '画面ID',
@@ -220,10 +305,10 @@ CREATE TABLE `staff_m` (
   `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='スタッフマスタ';
 
-
 --
 -- テーブルのデータのダンプ `staff_m`
 --
+
 INSERT INTO `staff_m` (`Staff_ID`, `Staff_Name`, `Staff_NameYomi`, `NickName`, `Login_ID`, `Password`, `TEL`, `MailAddress`, `Authority`, `UsageSituation`, `Changer`, `UpdateDate`) VALUES
 (1, '島袋　信彦', 'シマブクロ　ノブヒコ', 'のーぶー', '1', '1', '090-6868-2937', 'gakuproid1@gmail.com', 1, 1, 1, '2021-11-15 11:04:38'),
 (2, '崎原　悠磨', 'サキハラ　ユウマ', 'とーくー', '2', '2', '090-1111-6666', 'gakuproid2@gmail.com', 1, 1, 1, '2021-11-15 11:04:38');
@@ -231,10 +316,10 @@ INSERT INTO `staff_m` (`Staff_ID`, `Staff_Name`, `Staff_NameYomi`, `NickName`, `
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `SubCategory_m`
+-- テーブルの構造 `subcategory_m`
 --
 
-CREATE TABLE `SubCategory_m` (
+CREATE TABLE `subcategory_m` (
   `MainCategory_CD` int(11) NOT NULL COMMENT '大分類コード',
   `SubCategory_CD` int(11) NOT NULL COMMENT '中分類コード',
   `SubCategory_Name` varchar(30) NOT NULL COMMENT '中分類名',
@@ -244,10 +329,10 @@ CREATE TABLE `SubCategory_m` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='中分類マスタ';
 
 --
--- テーブルのデータのダンプ `SubCategory_m`
+-- テーブルのデータのダンプ `subcategory_m`
 --
 
-INSERT INTO `SubCategory_m` (`MainCategory_CD`, `SubCategory_CD`, `SubCategory_Name`, `UsageSituation`, `Changer`, `UpdateDate`) VALUES
+INSERT INTO `subcategory_m` (`MainCategory_CD`, `SubCategory_CD`, `SubCategory_Name`, `UsageSituation`, `Changer`, `UpdateDate`) VALUES
 (1, 1, '男性', 1, 1, '2021-08-06 22:30:15'),
 (1, 2, '女性', 1, 1, '2021-08-06 22:30:22'),
 (2, 1, '管理者', 1, 1, '2021-09-04 01:15:38'),
@@ -260,27 +345,15 @@ INSERT INTO `SubCategory_m` (`MainCategory_CD`, `SubCategory_CD`, `SubCategory_N
 (4, 2, '本登録', 1, 1, '2021-09-04 01:16:18'),
 (4, 3, '卒業', 1, 1, '2021-09-04 01:16:27');
 
--- --------------------------------------------------------
-
---
--- テーブルの構造 `mailaddressauthenticate_t`
---
-
-
-CREATE TABLE `mailaddressauthenticate_t` (
-  `ID` int(11) NOT NULL COMMENT 'ID(連番)',
-  `Key_Code` varchar(15) NOT NULL COMMENT 'パスワード認証用キーコード(yyyymmddXXX)',
-  `Password` int(4) NOT NULL COMMENT 'メールアドレス認証用パスワード',
-  `MailAddress` varchar(50) NOT NULL COMMENT 'メールアドレス',
-  `Name` varchar(30) DEFAULT '' COMMENT '認証用メンバー名',
-  `CreateDateTime` datetime DEFAULT NULL COMMENT 'データ作成日時',
-  `AuthenticationsCount` int(4) NOT NULL COMMENT '認証回数(初期値=0)'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='メールアドレス認証用テーブル';
-
-insert into mailaddressauthenticate_t(`Key_Code`,`Password`,`MailAddress`,`Name`,`CreateDateTime`,`AuthenticationsCount`) values ('23001231001',9999,'test@mailcom','島　一郎','2300/12/31 1:01:01',0);
 --
 -- ダンプしたテーブルのインデックス
 --
+
+--
+-- テーブルのインデックス `company_m`
+--
+ALTER TABLE `company_m`
+  ADD PRIMARY KEY (`Company_ID`);
 
 --
 -- テーブルのインデックス `imageget_t`
@@ -289,9 +362,15 @@ ALTER TABLE `imageget_t`
   ADD PRIMARY KEY (`Key_Code`);
 
 --
--- テーブルのインデックス `MainCategory_m`
+-- テーブルのインデックス `mailaddressauthenticate_t`
 --
-ALTER TABLE `MainCategory_m`
+ALTER TABLE `mailaddressauthenticate_t`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- テーブルのインデックス `maincategory_m`
+--
+ALTER TABLE `maincategory_m`
   ADD PRIMARY KEY (`MainCategory_CD`);
 
 --
@@ -301,10 +380,16 @@ ALTER TABLE `majorsubject_m`
   ADD PRIMARY KEY (`School_CD`,`MajorSubject_CD`);
 
 --
--- テーブルのインデックス `Member_m`
+-- テーブルのインデックス `member_m`
 --
-ALTER TABLE `Member_m`
+ALTER TABLE `member_m`
   ADD PRIMARY KEY (`Member_ID`);
+
+--
+-- テーブルのインデックス `recruitment_m`
+--
+ALTER TABLE `recruitment_m`
+  ADD PRIMARY KEY (`Company_ID`,`Recruitment_ID`);
 
 --
 -- テーブルのインデックス `school_m`
@@ -325,18 +410,12 @@ ALTER TABLE `staff_m`
   ADD PRIMARY KEY (`Staff_ID`);
 
 --
--- テーブルのインデックス `SubCategory_m`
+-- テーブルのインデックス `subcategory_m`
 --
-ALTER TABLE `SubCategory_m`
+ALTER TABLE `subcategory_m`
   ADD PRIMARY KEY (`MainCategory_CD`,`SubCategory_CD`);
 
 --
--- テーブルのインデックス `mailaddressauthenticate_t`
---
-ALTER TABLE `mailaddressauthenticate_t`
-  ADD PRIMARY KEY (`ID`);
-  
-  --
 -- ダンプしたテーブルの AUTO_INCREMENT
 --
 
@@ -344,9 +423,9 @@ ALTER TABLE `mailaddressauthenticate_t`
 -- テーブルの AUTO_INCREMENT `mailaddressauthenticate_t`
 --
 ALTER TABLE `mailaddressauthenticate_t`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
-  
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
-
-
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
