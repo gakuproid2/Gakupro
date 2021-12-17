@@ -468,125 +468,167 @@ $Table .= "</table>";
 
 //学校区分が変更になるとイベントが発生
 $('.School_Division').change(function() { 
- NarrowDownSchoolPullDown();
+  NarrowDownPullDown();
  NarrowDownDataTable();
 });
 
 //学校が変更になるとイベントが発生
 $('.School_CD').change(function() { 
- NarrowDownMajorsubjectPullDown();
- 
+  NarrowDownPullDown();
+ NarrowDownDataTable();
 });
 
+//学校が変更になるとイベントが発生
+$('.MajorSubject_CD').change(function() {  
+ NarrowDownDataTable();
+});
 
 //学校プルダウン絞り込み
-function NarrowDownSchoolPullDown() {
+function NarrowDownPullDown() {
+
 
   var SelectSchool_Division = document.getElementById('School_Division').value;
-  
-  
-  document.getElementById('MajorSubject_CD').style='display:none'; 
 
-  if (SelectSchool_Division==0){
-    document.getElementById('School_CD').style='display:none';     
-    return;
-  }else{
-    document.getElementById('School_CD').style='display:select';      
-  }
+  var SelectSchool_CD = document.getElementById('School_CD').value;
 
+  var SelectMajorSubject_CD = document.getElementById('MajorSubject_CD').value;
+        
 
-  //select要素をidで取得
-  var list = document.getElementById('School_CD').options;
+  if (SelectMajorSubject_CD !=0){
 
-  for(var i=0;i<list.length;i++){
+    
 
-    TargetSchool_Division = (list[i].dataset["schooldivision"]);
+    
+  }else if (SelectSchool_CD !=0){
 
-    if(SelectSchool_Division == 0 || TargetSchool_Division == SelectSchool_Division || TargetSchool_Division ==''){
-      list[i].style='display:option';        
+    
+    var MajorSubject_CD_list = document.getElementById('MajorSubject_CD').options;
+
+    if (SelectSchool_CD==0){
+      document.getElementById('MajorSubject_CD').style='display:none';     
+      return;
     }else{
-      list[i].style='display:none';          
-    }   
+      document.getElementById('MajorSubject_CD').style='display:select';      
+    }
 
+    for(var i=0;i<MajorSubject_CD_list.length;i++){
+    TargetSchool_CD = (MajorSubject_CD_list[i].dataset["schoolcd"]);
+
+      if(SelectSchool_Division == 0 || TargetSchool_CD == SelectSchool_Division || TargetSchool_CD ==''){
+        MajorSubject_CD_list[i].style='display:option';        
+      }else{
+        MajorSubject_CD_list[i].style='display:none';          
+      }   
+    }
+
+
+  }else if (SelectSchool_Division !=0){
+
+    document.getElementById('MajorSubject_CD').value=0;
+    document.getElementById('MajorSubject_CD').style='display:none';
+
+    var School_CD_list = document.getElementById('School_CD').options;
+
+    if (SelectSchool_Division==0){
+      document.getElementById('School_CD').style='display:none';     
+      return;
+    }else{
+      document.getElementById('School_CD').style='display:select';      
+    }
+
+    for(var i=0;i<School_CD_list.length;i++){
+    TargetSchool_Division = (School_CD_list[i].dataset["schooldivision"]);
+
+      if(SelectSchool_Division == 0 || TargetSchool_Division == SelectSchool_Division || TargetSchool_Division ==''){
+        School_CD_list[i].style='display:option';        
+      }else{
+        School_CD_list[i].style='display:none';          
+      }   
+    }
+  }else if (SelectSchool_Division ==0){
+
+  document.getElementById('School_CD').value=0;
+  document.getElementById('School_CD').style='display:none';
+
+  document.getElementById('MajorSubject_CD').value=0;
+  document.getElementById('MajorSubject_CD').style='display:none';
+
+  var School_CD_list = document.getElementById('School_CD').options;
+
+  for(var i=0;i<School_CD_list.length;i++){ 
+      School_CD_list[i].style='display:option';        
   }
-
-}
-
-//専攻プルダウン絞り込み
-function NarrowDownMajorsubjectPullDown() {
-
-var SelectSchool_CD = document.getElementById('School_CD').value;
-
-if (SelectSchool_CD==0){  
-  document.getElementById('MajorSubject_CD').style='display:none'; 
-  return;
-}else{
-  document.getElementById('MajorSubject_CD').style='display:select';      
 }
 
 
-//select要素をidで取得
-var list = document.getElementById('MajorSubject_CD').options;
-
-for(var i=0;i<list.length;i++){
-
-  TargetSchool_CD = (list[i].dataset["schoolcd"]);
-
-  if(SelectSchool_CD == 0 || TargetSchool_CD == SelectSchool_CD || TargetSchool_CD ==''){
-    list[i].style='display:option';        
-  }else{
-    list[i].style='display:none';          
-  }   
-
 }
-
-}
-
 
   //table絞り込み
   function NarrowDownDataTable() {
     
     // table要素を取得
-    var TargetTable = document.getElementById('DataInfoTable');    
+    var TargetTable = document.getElementById('DataInfoTable');        
     var TableDataCount = 0;
 
     var SelectSchool_Division = document.getElementById('School_Division').value;
 
-    var SelectMember_ID= document.getElementById('Member_ID').value;         
+    var SelectSchool_CD = document.getElementById('School_CD').value;
 
-    if (SelectMember_ID !=0){
+    var SelectMajorSubject_CD = document.getElementById('MajorSubject_CD').value;
+          
+
+    if (SelectMajorSubject_CD !=0){
 
       for(i = 0, len = TargetTable.rows.length; i < len; i++) {
 
-        var TargetSchool_Division = TargetTable.rows[i].dataset["schooldivision"];
-        var TargetMember_ID = TargetTable.rows[i].dataset["schoolcd"];
+        var TargetMajorSubject_CD = TargetTable.rows[i].dataset["majorsubjectcd"];        
 
-        if(TargetMember_ID == SelectMember_ID || TargetSchool_Division ==''){
-        TargetTable.rows[i].style='display:table-row';  
-        TableDataCount += 1;        
+        if(TargetMajorSubject_CD == SelectMajorSubject_CD || TargetMajorSubject_CD==''){
+          TargetTable.rows[i].style='display:table-row';  
+          TableDataCount += 1;        
         }else{
-        TargetTable.rows[i].style='display:none';       
+          TargetTable.rows[i].style='display:none';       
         }    
 
       }
       
-    }else{
+    }else if (SelectSchool_CD !=0){
 
       for(i = 0, len = TargetTable.rows.length; i < len; i++) {
 
-        var TargetSchool_Division = TargetTable.rows[i].dataset["schooldivision"];
-        var TargetMember_ID = TargetTable.rows[i].dataset["schoolcd"];
+        var TargetSchool_CD = TargetTable.rows[i].dataset["schoolcd"];        
 
-        if(SelectSchool_Division == 0 || TargetSchool_Division == SelectSchool_Division || TargetSchool_Division ==''){
+        if(TargetSchool_CD == SelectSchool_CD || TargetSchool_CD ==''){
         TargetTable.rows[i].style='display:table-row';  
         TableDataCount += 1;        
         }else{
         TargetTable.rows[i].style='display:none';       
         }    
       
+      }
+
+    }else if (SelectSchool_Division !=0){
+
+      for(i = 0, len = TargetTable.rows.length; i < len; i++) {
+
+        var TargetSchool_Division = TargetTable.rows[i].dataset["schooldivision"];        
+
+        if(TargetSchool_Division == SelectSchool_Division || TargetSchool_Division ==''){
+        TargetTable.rows[i].style='display:table-row';  
+        TableDataCount += 1;        
+        }else{
+        TargetTable.rows[i].style='display:none';       
+        }    
+
       }
 
     }
+
+
+
+
+
+
     document.getElementById("TableDataCount").innerHTML = "データ総数["+ (TableDataCount - 1) +"件]";
   }
      
