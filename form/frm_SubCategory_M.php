@@ -68,17 +68,17 @@ if (isset($_POST["ProcessingType"])) {
 //メインカテゴリーのプルダウン作成する為
 $items = $dao_MainCategory_M->GET_MainCategory_m();
 //0行目
-$PullDown = "<option value = 0 >大分類選択</option>";
+$List = "<option value = 0 >大分類選択</option>";
 foreach ($items as $item_val) {
 
-  $PullDown .= "<option value = " . $item_val['MainCategory_CD'];
+  $List .= "<option value = " . $item_val['MainCategory_CD'];
 
   if ($MainCategory_CD == $item_val['MainCategory_CD']) {
-    $PullDown .= " selected>";
+    $List .= " selected>";
   } else {
-    $PullDown .= " >";
+    $List .= " >";
   }
-  $PullDown  .= $item_val['MainCategory_Name'] . "</option>";
+  $List  .= $item_val['MainCategory_Name'] . "</option>";
 }
 
 //表示用Table作成用（メインカテゴリーコードで参照）
@@ -142,7 +142,7 @@ $Table .= "</table>";
 <body>
   <div>
     <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
-    <select name='MainCategory_CD' id='MainCategory_CD'><?php echo $PullDown; ?></select>
+    <select name='MainCategory_CD' id='MainCategory_CD'><?php echo $List; ?></select>
   </div>
   <?php echo $Table; ?>
 
@@ -160,7 +160,7 @@ $Table .= "</table>";
 
           <div class="form-group row">
             <label for="Insert_MainCategory_CD" class="col-md-3 col-form-label">大分類</label>
-            <select name='Insert_MainCategory_CD' id='Insert_MainCategory_CD' class="form-control col-md-3"><?php echo $PullDown; ?></select>
+            <select name='Insert_MainCategory_CD' id='Insert_MainCategory_CD' class="form-control col-md-3"><?php echo $List; ?></select>
           </div>
 
           <div class="form-group row">

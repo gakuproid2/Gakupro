@@ -72,17 +72,17 @@ if (isset($_POST["ProcessingType"])) {
   //権限のプルダウン作成する為
   $items = $dao_SubCategory_M->GET_SubCategory_m(2);
 
-  $PullDown = "<option value = 0 >権限選択</option>";
+  $List = "<option value = 0 >権限選択</option>";
   foreach ($items as $item_val) {
 
-    $PullDown .= "<option value = " . $item_val['SubCategory_CD'];
+    $List .= "<option value = " . $item_val['SubCategory_CD'];
 
     if ($Authority >= $item_val['SubCategory_CD']) {
-      $PullDown .= " selected>";
+      $List .= " selected>";
     } else {
-      $PullDown .= " >";
+      $List .= " >";
     }
-    $PullDown  .= $item_val['SubCategory_Name'] . "以上</option>";
+    $List  .= $item_val['SubCategory_Name'] . "以上</option>";
   }
   
 
@@ -144,7 +144,7 @@ $Table .= "</table>";
 <body>
 <div>
     <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
-    <select name='Authority' id='Authority'><?php echo $PullDown; ?></select>
+    <select name='Authority' id='Authority'><?php echo $List; ?></select>
   </div>
   <?php echo $Table; ?>
 
@@ -172,7 +172,7 @@ $Table .= "</table>";
 
           <div class="form-group row">
             <label for="Insert_Authority" class="col-md-3 col-form-label">利用可能権限</label>
-            <select name='Insert_Authority' id='Insert_Authority' class="form-control col-md-3"><?php echo $PullDown; ?></select>
+            <select name='Insert_Authority' id='Insert_Authority' class="form-control col-md-3"><?php echo $List; ?></select>
           </div>
 
           <div class="modal-footer">
@@ -212,7 +212,7 @@ $Table .= "</table>";
 
           <div class="form-group row">
             <label for="Update_Authority" class="col-md-3 col-form-label">利用可能権限</label>
-            <select name='Update_Authority' id='Update_Authority' class="form-control col-md-3"><?php echo $PullDown; ?></select>
+            <select name='Update_Authority' id='Update_Authority' class="form-control col-md-3"><?php echo $List; ?></select>
           </div>
 
           <div class="modal-footer">

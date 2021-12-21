@@ -102,25 +102,25 @@ if (isset($_POST["ProcessingType"])) {
   //学校区分のプルダウン作成する為
   $items = $dao_SubCategory_M->GET_SubCategory_m(3);
 
-  $School_Division_PullDown = "<option value = 0 >学校区分選択</option>";
+  $School_Division_List = "<option value = 0 >学校区分選択</option>";
   foreach ($items as $item_val) {
 
-    $School_Division_PullDown .= "<option value = ". $item_val['SubCategory_CD'];
+    $School_Division_List .= "<option value = ". $item_val['SubCategory_CD'];
 
     if ($School_Division == $item_val['SubCategory_CD']) {
-      $School_Division_PullDown .= " selected>";
+      $School_Division_List .= " selected>";
     } else {
-      $School_Division_PullDown .= " >";
+      $School_Division_List .= " >";
     }
-    $School_Division_PullDown  .= $item_val['SubCategory_Name'] . "</option>";
+    $School_Division_List  .= $item_val['SubCategory_Name'] . "</option>";
   }  
 
   //学校のプルダウン作成する為
   $items = $dao_School_M->Get_School_M($School_Division);
   
-  $SchoolPullDown = "<option value = 0 data-schooldivision=''>学校選択</option>";
+  $SchoolList = "<option value = 0 data-schooldivision=''>学校選択</option>";
   foreach ($items as $item_val) {
-    $SchoolPullDown .= "<option value = ". $item_val['School_CD'] . " data-schooldivision=". $item_val['School_Division']. ">". $item_val['School_Name'] . "</option>";        
+    $SchoolList .= "<option value = ". $item_val['School_CD'] . " data-schooldivision=". $item_val['School_Division']. ">". $item_val['School_Name'] . "</option>";        
   }  
   
 
@@ -187,8 +187,8 @@ $Table .= "</table>";
 <body>
 <div>
     <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>    
-    <select  class="School_Division" name='School_Division' id='School_Division'><?php echo $School_Division_PullDown; ?></select>
-    <select  class="School_CD" name='School_CD' id='School_CD' style="display:none"><?php echo $SchoolPullDown; ?></select>    
+    <select  class="School_Division" name='School_Division' id='School_Division'><?php echo $School_Division_List; ?></select>
+    <select  class="School_CD" name='School_CD' id='School_CD' style="display:none"><?php echo $SchoolList; ?></select>    
   </div>
   <?php echo $Table; ?>
 
@@ -206,7 +206,7 @@ $Table .= "</table>";
                  
           <div class="form-group row">
             <label for="Insert_School_CD" class="col-md-3 col-form-label">学校選択</label>
-            <select name='Insert_School_CD' id='Insert_School_CD' class="form-control col-md-3" ><?php echo $SchoolPullDown; ?></select>
+            <select name='Insert_School_CD' id='Insert_School_CD' class="form-control col-md-3" ><?php echo $SchoolList; ?></select>
           </div>
 
           <div class="form-group row">
@@ -327,7 +327,7 @@ $Table .= "</table>";
 
 //学校区分が変更になるとイベントが発生
 $('.School_Division').change(function() { 
- NarrowDownPullDown();
+ NarrowDownList();
  NarrowDownDataTable();
 });
 
@@ -337,7 +337,7 @@ $('.School_CD').change(function() {
 });
 
 //プルダウン絞り込み
-function NarrowDownPullDown() {
+function NarrowDownList() {
 
   var SelectSchool_Division = document.getElementById('School_Division').value;
   

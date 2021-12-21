@@ -72,17 +72,17 @@ textarea{
   //学校のプルダウン作成する為
   $School_Info = $dao_School_M->Get_School_M('','');
   //0行目
-  $School_PullDown = "<option value = 0 >学校を選択して下さい</option>";
+  $School_List = "<option value = 0 >学校を選択して下さい</option>";
   foreach ($School_Info as $val) {
-    $School_PullDown .= "<option value = " . $val['School_CD']." >".$val['School_Name'] . "</option>";          
+    $School_List .= "<option value = " . $val['School_CD']." >".$val['School_Name'] . "</option>";          
   }
 
    //専攻コースのプルダウン作成する為
    $MajorSubject_Info = $dao_MajorSubject_M->GET_Majorsubject_m(0);
    //0行目
-   $MajorSubject_PullDown = "<option value = 0 >専攻を選択して下さい</option>";
+   $MajorSubject_List = "<option value = 0 >専攻を選択して下さい</option>";
    foreach ($MajorSubject_Info as $val) {
-     $MajorSubject_PullDown .= "<option value = ". $val['majorsubject_cd']." >".$val['majorsubject_name'] . "</option>";          
+     $MajorSubject_List .= "<option value = ". $val['majorsubject_cd']." >".$val['majorsubject_name'] . "</option>";          
    }
 
 ?>
@@ -115,8 +115,8 @@ textarea{
     
     <p class="Label">学校/専攻</p>
     <p>
-      <select id='School_CD' name='School_CD'><?php echo $School_PullDown;?></select>    
-      <select id='MajorSubject_CD' name='MajorSubject_CD'><?php echo $MajorSubject_PullDown; ?></select>
+      <select id='School_CD' name='School_CD'><?php echo $School_List;?></select>    
+      <select id='MajorSubject_CD' name='MajorSubject_CD'><?php echo $MajorSubject_List; ?></select>
     </p>
 
     <p class="Label">在学期間</p>

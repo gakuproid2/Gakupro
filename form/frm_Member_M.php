@@ -166,33 +166,33 @@ if (isset($_POST["ProcessingType"])) {
   //学校区分のプルダウン作成する為
   $items = $dao_SubCategory_M->GET_SubCategory_m(3);
 
-  $School_Division_PullDown = "<option data-schooldivision='' value = 0 >学校区分選択</option>";
+  $School_Division_List = "<option data-schooldivision='' value = 0 >学校区分選択</option>";
   foreach ($items as $item_val) {
-    $School_Division_PullDown .= "<option data-schooldivision=". $item_val['SubCategory_CD']. " value = ". $item_val['SubCategory_CD'].">".$item_val['SubCategory_Name'] . "</option>";    
+    $School_Division_List .= "<option data-schooldivision=". $item_val['SubCategory_CD']. " value = ". $item_val['SubCategory_CD'].">".$item_val['SubCategory_Name'] . "</option>";    
   }  
 
   //学校のプルダウン作成する為
   $items = $dao_School_M->Get_School_M(0);
   
-  $School_PullDown = "<option value = 0 data-schoolcd='' data-schooldivision=''>学校選択</option>";
+  $School_List = "<option value = 0 data-schoolcd='' data-schooldivision=''>学校選択</option>";
   foreach ($items as $item_val) {
-    $School_PullDown .= "<option data-schoolcd=". $item_val['School_CD']. " data-schooldivision=". $item_val['School_Division']. " value = ". $item_val['School_CD'] . ">". $item_val['School_Name'] . "</option>";        
+    $School_List .= "<option data-schoolcd=". $item_val['School_CD']. " data-schooldivision=". $item_val['School_Division']. " value = ". $item_val['School_CD'] . ">". $item_val['School_Name'] . "</option>";        
   }  
 
   //専攻のプルダウン作成する為
   $items = $dao_MajorSubject_M->GET_Majorsubject_m(0);
 
-  $Majorsubject_PullDown = "<option data-schoolcd='' data-majorsubjectcd='' value = 0 >専攻選択</option>";
+  $Majorsubject_List = "<option data-schoolcd='' data-majorsubjectcd='' value = 0 >専攻選択</option>";
   foreach ($items as $item_val) {
-    $Majorsubject_PullDown .= "<option data-schoolcd=". $item_val['School_CD']. " data-majorsubjectcd=". $item_val['MajorSubject_CD']. " value = ". $item_val['MajorSubject_CD'].">".$item_val['MajorSubject_Name'] . "</option>";    
+    $Majorsubject_List .= "<option data-schoolcd=". $item_val['School_CD']. " data-majorsubjectcd=". $item_val['MajorSubject_CD']. " value = ". $item_val['MajorSubject_CD'].">".$item_val['MajorSubject_Name'] . "</option>";    
   }  
   
   //登録状況のプルダウン作成する為
   $Register_Info = $dao_SubCategory_M->GET_SubCategory_m(4);
   //0行目
-  $Register_PullDown = "<option value = 0 >登録状況を選択して下さい</option>";
+  $Register_List = "<option value = 0 >登録状況を選択して下さい</option>";
   foreach ($Register_Info as $val) {     
-    $Register_PullDown .= "<option value = " . $val['SubCategory_CD']." >".$val['SubCategory_Name'] . "</option>";                
+    $Register_List .= "<option value = " . $val['SubCategory_CD']." >".$val['SubCategory_Name'] . "</option>";                
   }
 
 $Data_Table = $dao_Member_M->Get_Member_M();
@@ -252,9 +252,9 @@ $Table .= "</table>";
   <div>
     <a href="" class="btn btn--red btn--radius btn--cubic" data-backdrop="static" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
     
-      <select  class="School_Division" name='School_Division' id='School_Division'><?php echo $School_Division_PullDown; ?></select>
-      <select  class="School_CD" name='School_CD' id='School_CD' style="display:none"><?php echo $School_PullDown; ?></select>
-      <select  class="MajorSubject_CD" name='MajorSubject_CD' id='MajorSubject_CD' style="display:none"><?php echo $Majorsubject_PullDown; ?></select>
+      <select  class="School_Division_List" name='School_Division_List' id='School_Division_List'><?php echo $School_Division_List; ?></select>
+      <select  class="School_List" name='School_List' id='School_List' style="display:none"><?php echo $School_List; ?></select>
+      <select  class="MajorSubject_List" name='MajorSubject_List' id='MajorSubject_List' style="display:none"><?php echo $Majorsubject_List; ?></select>      
     
   </div>
   <?php echo $Table; ?>
@@ -303,13 +303,13 @@ $Table .= "</table>";
 
 
           <div class="form-group row">
-            <label for="Insert_School_CD" class="col-md-3 col-form-label" style="width: 100%;">学校選択</label>
-            <select name='Insert_School_CD' id='Insert_School_CD' class="form-control col-md-3" ><?php echo $School_PullDown; ?></select>
+            <label for="Insert_School_List" class="col-md-3 col-form-label" style="width: 100%;">学校選択</label>
+            <select name='Insert_School_List' id='Insert_School_List' class="form-control col-md-3" ><?php echo $School_List; ?></select>
           </div>
 
           <div class="form-group row">
-            <label for="Insert_MajorSubject_CD" class="col-md-3 col-form-label">専攻選択</label>
-            <select name='Insert_MajorSubject_CD' id='Insert_MajorSubject_CD' class="form-control col-md-3" ><?php echo $Majorsubject_PullDown; ?></select>
+            <label for="Insert_MajorSubject_List" class="col-md-3 col-form-label">専攻選択</label>
+            <select name='Insert_MajorSubject_List' id='Insert_MajorSubject_List' class="form-control col-md-3" ><?php echo $Majorsubject_List; ?></select>
           </div>
 
           <div class="form-group row">
@@ -337,7 +337,7 @@ $Table .= "</table>";
 
           <div class="form-group row">
             <label for="Insert_RegistrationStatus" class="col-md-3 col-form-label" style="width: 100%;">登録状況</label>
-            <select name='Insert_RegistrationStatus' id='Insert_RegistrationStatus' class="form-control col-md-3" ><?php echo $Register_PullDown; ?></select>
+            <select name='Insert_RegistrationStatus' id='Insert_RegistrationStatus' class="form-control col-md-3" ><?php echo $Register_List; ?></select>
           </div>
           
           
@@ -405,13 +405,13 @@ $Table .= "</table>";
           </div>
 
           <div class="form-group row">
-            <label for="Update_School_CD" class="col-md-3 col-form-label" style="width: 100%;">学校選択</label>
-            <select name='Update_School_CD' id='Update_School_CD' class="form-control col-md-3" ><?php echo $School_PullDown; ?></select>
+            <label for="Update_School_List" class="col-md-3 col-form-label" style="width: 100%;">学校選択</label>
+            <select name='Update_School_List' id='Update_School_List' class="form-control col-md-3" ><?php echo $School_List; ?></select>
           </div>
 
           <div class="form-group row">
-            <label for="Update_MajorSubject_CD" class="col-md-3 col-form-label">専攻選択</label>
-            <select name='Update_MajorSubject_CD' id='Update_MajorSubject_CD' class="form-control col-md-3" ><?php echo $Majorsubject_PullDown; ?></select>
+            <label for="Update_MajorSubject_List" class="col-md-3 col-form-label">専攻選択</label>
+            <select name='Update_MajorSubject_List' id='Update_MajorSubject_List' class="form-control col-md-3" ><?php echo $Majorsubject_List; ?></select>
           </div>
 
           <div class="form-group row">
@@ -439,7 +439,7 @@ $Table .= "</table>";
 
           <div class="form-group row">
             <label for="Update_RegistrationStatus" class="col-md-3 col-form-label" style="width: 100%;">登録状況</label>
-            <select name='Update_RegistrationStatus' id='Update_RegistrationStatus' class="form-control col-md-3" ><?php echo $Register_PullDown; ?></select>
+            <select name='Update_RegistrationStatus' id='Update_RegistrationStatus' class="form-control col-md-3" ><?php echo $Register_List; ?></select>
           </div>
           
           
@@ -465,171 +465,189 @@ $Table .= "</table>";
 </body>
 
 <script>
+const OriginalList_School_Division = document.getElementById('School_Division_List');
+const OriginalList_School = document.getElementById('School_List');
+const OriginalList_MajorSubject = document.getElementById('MajorSubject_List');
+
+const OriginalTable_Member = document.getElementById('DataInfoTable');
+
+var ListAfterChange;
+var TableAfterChange;
+
+
+
 
 //学校区分が変更になるとイベントが発生
-$('.School_Division').change(function() { 
-  NarrowDownPullDown();
- NarrowDownDataTable();
-});
+$('.School_Division_List').change(function() { 
 
-//学校が変更になるとイベントが発生
-$('.School_CD').change(function() { 
-  NarrowDownPullDown();
- NarrowDownDataTable();
-});
+  var SelectSchool_Division = document.getElementById('School_Division_List').value;
 
-//学校が変更になるとイベントが発生
-$('.MajorSubject_CD').change(function() {  
- NarrowDownDataTable();
-});
+  var OriginalTable = OriginalTable_Member;
 
-//学校プルダウン絞り込み
-function NarrowDownPullDown() {
-
-
-  var SelectSchool_Division = document.getElementById('School_Division').value;
-
-  var SelectSchool_CD = document.getElementById('School_CD').value;
-
-  var SelectMajorSubject_CD = document.getElementById('MajorSubject_CD').value;
-        
-
-  if (SelectMajorSubject_CD !=0){
-
+  if (SelectSchool_Division == 0){
     
+    ListAfterChange = StateChangeList(OriginalList_School,0);
+    document.getElementById('School_List').innerHTML = ListAfterChange.innerHTML;
 
+    ListAfterChange = StateChangeList(OriginalList_MajorSubject,0);
+    document.getElementById('MajorSubject_List').innerHTML = ListAfterChange.innerHTML;
+
+    }else if(SelectSchool_Division != 0){
+
+    ListAfterChange = StateChangeList(OriginalList_School,1);
+    document.getElementById('School_List').innerHTML = ListAfterChange.innerHTML;
+
+    ListAfterChange = StateChangeList(OriginalList_MajorSubject,0);
+    document.getElementById('MajorSubject_List').innerHTML = ListAfterChange.innerHTML;
     
-  }else if (SelectSchool_CD !=0){
-
-    
-    var MajorSubject_CD_list = document.getElementById('MajorSubject_CD').options;
-
-    if (SelectSchool_CD==0){
-      document.getElementById('MajorSubject_CD').style='display:none';     
-      return;
-    }else{
-      document.getElementById('MajorSubject_CD').style='display:select';      
-    }
-
-    for(var i=0;i<MajorSubject_CD_list.length;i++){
-    TargetSchool_CD = (MajorSubject_CD_list[i].dataset["schoolcd"]);
-
-      if(SelectSchool_Division == 0 || TargetSchool_CD == SelectSchool_Division || TargetSchool_CD ==''){
-        MajorSubject_CD_list[i].style='display:option';        
-      }else{
-        MajorSubject_CD_list[i].style='display:none';          
-      }   
-    }
-
-
-  }else if (SelectSchool_Division !=0){
-
-    document.getElementById('MajorSubject_CD').value=0;
-    document.getElementById('MajorSubject_CD').style='display:none';
-
-    var School_CD_list = document.getElementById('School_CD').options;
-
-    if (SelectSchool_Division==0){
-      document.getElementById('School_CD').style='display:none';     
-      return;
-    }else{
-      document.getElementById('School_CD').style='display:select';      
-    }
-
-    for(var i=0;i<School_CD_list.length;i++){
-    TargetSchool_Division = (School_CD_list[i].dataset["schooldivision"]);
-
-      if(SelectSchool_Division == 0 || TargetSchool_Division == SelectSchool_Division || TargetSchool_Division ==''){
-        School_CD_list[i].style='display:option';        
-      }else{
-        School_CD_list[i].style='display:none';          
-      }   
-    }
-  }else if (SelectSchool_Division ==0){
-
-  document.getElementById('School_CD').value=0;
-  document.getElementById('School_CD').style='display:none';
-
-  document.getElementById('MajorSubject_CD').value=0;
-  document.getElementById('MajorSubject_CD').style='display:none';
-
-  var School_CD_list = document.getElementById('School_CD').options;
-
-  for(var i=0;i<School_CD_list.length;i++){ 
-      School_CD_list[i].style='display:option';        
+    ListAfterChange = NarrowDownList(OriginalList_School,'schooldivision',SelectSchool_Division);  
+    document.getElementById('School_List').innerHTML = ListAfterChange.innerHTML;
+ 
   }
+
+  TableAfterChange = NarrowDownDataTable(OriginalTable,'schooldivision',SelectSchool_Division);
+
+  document.getElementById('DataInfoTable').innerHTML = TableAfterChange.innerHTML;
+    
+  document.getElementById("TableDataCount").innerHTML = "データ総数["+ (SearchDataTableValidCases(TableAfterChange)) +"件]";
+  
+  
+});
+
+//学校が変更になるとイベントが発生
+$('.School_List').change(function() { 
+
+  var SelectSchool_Division = document.getElementById('School_Division_List').value;
+  var SelectSchool_CD = document.getElementById('School_List').value;
+
+  var OriginalTable = OriginalTable_Member;
+
+  
+
+  if (SelectSchool_CD == 0){
+
+    ListAfterChange = StateChangeList(OriginalList_MajorSubject,0);
+    document.getElementById('MajorSubject_List').innerHTML = ListAfterChange.innerHTML; 
+  
+    ListAfterChange = NarrowDownList(OriginalList_School,'schooldivision',SelectSchool_Division);    
+    document.getElementById('School_List').innerHTML = ListAfterChange.innerHTML;
+  
+    TableAfterChange = NarrowDownDataTable(OriginalTable,'schooldivision',SelectSchool_Division);
+    document.getElementById('DataInfoTable').innerHTML = TableAfterChange.innerHTML;
+
+  }else if(SelectSchool_CD != 0){
+
+    ListAfterChange = StateChangeList(OriginalList_MajorSubject,1);
+    document.getElementById('MajorSubject_List').innerHTML = ListAfterChange.innerHTML; 
+  
+    ListAfterChange = NarrowDownList(OriginalList_MajorSubject,'schoolcd',SelectSchool_CD);  
+    document.getElementById('MajorSubject_List').innerHTML = ListAfterChange.innerHTML;
+ 
+    TableAfterChange = NarrowDownDataTable(OriginalTable,'schoolcd',SelectSchool_CD);
+    document.getElementById('DataInfoTable').innerHTML = TableAfterChange.innerHTML;
+  }
+  
+  var table = document.getElementById('DataInfoTable');  
+  document.getElementById("TableDataCount").innerHTML = "データ総数["+ (SearchDataTableValidCases(table)) +"件]";
+ 
+
+});
+
+//専攻が変更になるとイベントが発生
+$('.MajorSubject_List').change(function() {  
+
+  var SelectSchool_CD = document.getElementById('School_List').value;
+  var SelectMajorSubject_CD = document.getElementById('MajorSubject_List').value;  
+
+  var OriginalTable = OriginalTable_Member;
+
+  if (SelectMajorSubject_CD == 0){    
+        
+    TableAfterChange = NarrowDownDataTable(OriginalTable_Member,'schoolcd',SelectSchool_CD);
+    document.getElementById('DataInfoTable').innerHTML = TableAfterChange.innerHTML;
+
+  }else if(SelectMajorSubject_CD != 0){   
+
+    OriginalTable = NarrowDownDataTable(OriginalTable,'schoolcd',SelectSchool_CD);
+    OriginalTable = NarrowDownDataTable(OriginalTable,'majorsubjectcd',SelectMajorSubject_CD);
+    document.getElementById('DataInfoTable').innerHTML = OriginalTable.innerHTML;
+  }  
+
+  var table = document.getElementById('DataInfoTable');
+  document.getElementById("TableDataCount").innerHTML = "データ総数["+ (SearchDataTableValidCases(table)) +"件]";
+
+});
+
+//List表示状態変更
+function StateChangeList(targetlist,displaystate) {
+  
+  targetlist.value = 0;
+
+  if(displaystate==0){
+    targetlist.style='display:none';   
+  }else{
+    targetlist.style='display:select'; 
+  }
+  
+  return targetlist;
+
 }
 
+//List絞り込み
+function NarrowDownList(targetlist,listtagetname,targetdata) {
+  
+    for(var i= 0;i<targetlist.length;i++){
+
+    ListTagetValue = (targetlist[i].dataset[listtagetname]);
+
+      if(ListTagetValue == '' || targetdata == ListTagetValue || targetdata == 0){
+        targetlist[i].style='display:option';        
+      }else{
+        targetlist[i].style='display:none';          
+      }   
+  }
+
+  return targetlist;
 
 }
 
   //table絞り込み
-  function NarrowDownDataTable() {
-    
-    // table要素を取得
-    var TargetTable = document.getElementById('DataInfoTable');        
-    var TableDataCount = 0;
+  function NarrowDownDataTable(targettable,tagetcolumnname,targetdata) {    
 
-    var SelectSchool_Division = document.getElementById('School_Division').value;
+    var Difference = 0;
 
-    var SelectSchool_CD = document.getElementById('School_CD').value;
+    var test;
+    for(i = 0, len = targettable.rows.length; i < len; i++) {
 
-    var SelectMajorSubject_CD = document.getElementById('MajorSubject_CD').value;
-          
+      var ColumnTargetValue = targettable.rows[i].dataset[tagetcolumnname];         
 
-    if (SelectMajorSubject_CD !=0){
-
-      for(i = 0, len = TargetTable.rows.length; i < len; i++) {
-
-        var TargetMajorSubject_CD = TargetTable.rows[i].dataset["majorsubjectcd"];        
-
-        if(TargetMajorSubject_CD == SelectMajorSubject_CD || TargetMajorSubject_CD==''){
-          TargetTable.rows[i].style='display:table-row';  
-          TableDataCount += 1;        
-        }else{
-          TargetTable.rows[i].style='display:none';       
-        }    
-
-      }
-      
-    }else if (SelectSchool_CD !=0){
-
-      for(i = 0, len = TargetTable.rows.length; i < len; i++) {
-
-        var TargetSchool_CD = TargetTable.rows[i].dataset["schoolcd"];        
-
-        if(TargetSchool_CD == SelectSchool_CD || TargetSchool_CD ==''){
-        TargetTable.rows[i].style='display:table-row';  
-        TableDataCount += 1;        
-        }else{
-        TargetTable.rows[i].style='display:none';       
-        }    
-      
-      }
-
-    }else if (SelectSchool_Division !=0){
-
-      for(i = 0, len = TargetTable.rows.length; i < len; i++) {
-
-        var TargetSchool_Division = TargetTable.rows[i].dataset["schooldivision"];        
-
-        if(TargetSchool_Division == SelectSchool_Division || TargetSchool_Division ==''){
-        TargetTable.rows[i].style='display:table-row';  
-        TableDataCount += 1;        
-        }else{
-        TargetTable.rows[i].style='display:none';       
-        }    
-
-      }
+      if(ColumnTargetValue == '' || ColumnTargetValue == targetdata || targetdata == 0){        
+        // targettable.rows[i].style='display:table-row';                  
+      }else{
+        // targettable.rows[i - Difference].style='display:none';   
+        targettable.rows[i - Difference].remove();
+        Difference -= 1;
+      }    
 
     }
 
+    return targettable;
+    
+  }
 
+  //Table表示件数検索
+  function SearchDataTableValidCases(targettable) {    
 
+    var ValidCases = 0;
+    for(i = 0, len = targettable.rows.length; i < len; i++) {  
+      
+      if(targettable.rows[i].style.display == 'table-row'){      
+        ValidCases += 1;            
+      }    
+    }
 
+    return ValidCases - 1;
 
-
-    document.getElementById("TableDataCount").innerHTML = "データ総数["+ (TableDataCount - 1) +"件]";
   }
      
   //登録用モーダル表示時
@@ -643,8 +661,8 @@ function NarrowDownPullDown() {
     $('#Insert_Birthday').val('');
     $('#Insert_TEL').val('');
     $('#Insert_MailAddress').val('');
-    $('#Insert_School_CD').val('');
-    $('#Insert_MajorSubject_CD').val('');
+    $('#Insert_School_List').val(0);
+    $('#Insert_MajorSubject_List').val(0);
     $('#Insert_AdmissionYearMonth').val('');
     $('#Insert_GraduationYearMonth').val('');
     $('#Insert_Login_ID').val('');
@@ -675,8 +693,8 @@ function NarrowDownPullDown() {
     
     $('#Update_TEL').val(evCon.data('tel')); 
     $('#Update_MailAddress').val(evCon.data('mailaddress')); 
-    $('#Update_School_CD').val(evCon.data('schoolcd')); 
-    $('#Update_MajorSubject_CD').val(evCon.data('majorSubjectcd')); 
+    $('#Update_School_List').val(evCon.data('schoolcd')); 
+    $('#Update_MajorSubject_List').val(evCon.data('majorSubjectcd')); 
     $('#Update_AdmissionYearMonth').val(evCon.data('admissionyearmonth')); 
     $('#Update_GraduationYearMonth').val(evCon.data('graduationyearmonth')); 
     $('#Update_Login_ID').val(evCon.data('loginid')); 
@@ -700,8 +718,8 @@ function NarrowDownPullDown() {
       Birthday: $("#Insert_Birthday").val(),   
       TEL: $("#Insert_TEL").val(),   
       MailAddress: $("#Insert_MailAddress").val(),   
-      School_CD: $("#Insert_School_CD").val(),   
-      MajorSubject_CD: $("#Insert_MajorSubject_CD").val(),   
+      School_CD: $("#Insert_School_List").val(),   
+      MajorSubject_CD: $("#Insert_MajorSubject_List").val(),   
       AdmissionYearMonth: $("#Insert_AdmissionYearMonth").val(),   
       GraduationYearMonth: $("#Insert_GraduationYearMonth").val(),   
       Login_ID: $("#Insert_Login_ID").val(),   
@@ -732,11 +750,21 @@ function NarrowDownPullDown() {
     //ポストするキーと値を格納
     var DataArray = {
       ProcessingType: SelectProcessingType,  
-      Member_ID: $("#Update_Member_ID").val(),
-      Member_Name: $("#Update_Member_Name").val(),
-      Member_NameYomi: $("#Update_Member_NameYomi").val(),
+      Member_Name: $("#Update_Member_LastName").val() + '　' + $("#Update_Member_FirstName").val(),
+      Member_NameYomi: $("#Update_Member_LastNameYomi").val() + '　' + $("#Update_Member_FirstNameYomi").val(),
       Birthday: $("#Update_Birthday").val(),   
-      Remarks: $("#Update_Remarks").val(),      
+      TEL: $("#Update_TEL").val(),   
+      MailAddress: $("#Update_MailAddress").val(),   
+      School_CD: $("#Update_School_List").val(),   
+      MajorSubject_CD: $("#Update_MajorSubject_List").val(),   
+      AdmissionYearMonth: $("#Update_AdmissionYearMonth").val(),   
+      GraduationYearMonth: $("#Update_GraduationYearMonth").val(),   
+      Login_ID: $("#Update_Login_ID").val(),   
+      Password: $("#Update_Password").val(),   
+      EmergencyContactRelations: $("#Update_EmergencyContactRelations").val(),   
+      EmergencyContactTEL: $("#Update_EmergencyContactTEL").val(),   
+      Remarks: $("#Update_Remarks").val(),   
+      RegistrationStatus: $("#Update_RegistrationStatus").val()      
     };
 
     if (!ValueCheck(DataArray)) {
@@ -753,7 +781,7 @@ function NarrowDownPullDown() {
   
   function BeforePosting(DataArray) {
     //common.jsに実装
-    originalpost("frm_Member_M.php", DataArray);
+    Originalpost("frm_Member_M.php", DataArray);
   }
 
 

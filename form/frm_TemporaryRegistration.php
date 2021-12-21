@@ -66,25 +66,25 @@ if (isset($_POST["Key_Code"])) {
   //学校区分のプルダウン作成する為
   $items = $dao_SubCategory_M->GET_SubCategory_m(3);
 
-  $School_Division_PullDown = "<option data-schooldivision='' value = 0 >学校区分選択</option>";
+  $School_Division_List = "<option data-schooldivision='' value = 0 >学校区分選択</option>";
   foreach ($items as $item_val) {
-    $School_Division_PullDown .= "<option data-schooldivision=". $item_val['SubCategory_CD']. " value = ". $item_val['SubCategory_CD'].">".$item_val['SubCategory_Name'] . "</option>";    
+    $School_Division_List .= "<option data-schooldivision=". $item_val['SubCategory_CD']. " value = ". $item_val['SubCategory_CD'].">".$item_val['SubCategory_Name'] . "</option>";    
   }  
 
   //学校のプルダウン作成する為
   $items = $dao_School_M->Get_School_M(0);
   
-  $School_PullDown = "<option value = 0 data-schoolcd='' data-schooldivision=''>学校選択</option>";
+  $School_List = "<option value = 0 data-schoolcd='' data-schooldivision=''>学校選択</option>";
   foreach ($items as $item_val) {
-    $School_PullDown .= "<option data-schoolcd=". $item_val['School_CD']. " data-schooldivision=". $item_val['School_Division']. " value = ". $item_val['School_CD'] . ">". $item_val['School_Name'] . "</option>";        
+    $School_List .= "<option data-schoolcd=". $item_val['School_CD']. " data-schooldivision=". $item_val['School_Division']. " value = ". $item_val['School_CD'] . ">". $item_val['School_Name'] . "</option>";        
   }  
 
   //専攻のプルダウン作成する為
   $items = $dao_MajorSubject_M->GET_Majorsubject_m(0);
 
-  $Majorsubject_PullDown = "<option data-schoolcd='' data-majorsubjectcd='' value = 0 >専攻選択</option>";
+  $Majorsubject_List = "<option data-schoolcd='' data-majorsubjectcd='' value = 0 >専攻選択</option>";
   foreach ($items as $item_val) {
-    $Majorsubject_PullDown .= "<option data-schoolcd=". $item_val['School_CD']. " data-majorsubjectcd=". $item_val['MajorSubject_CD']. " value = ". $item_val['MajorSubject_CD'].">".$item_val['MajorSubject_Name'] . "</option>";    
+    $Majorsubject_List .= "<option data-schoolcd=". $item_val['School_CD']. " data-majorsubjectcd=". $item_val['MajorSubject_CD']. " value = ". $item_val['MajorSubject_CD'].">".$item_val['MajorSubject_Name'] . "</option>";    
   }  
 ?>
 
@@ -134,12 +134,12 @@ if (isset($_POST["Key_Code"])) {
 
           <div class="form-group row">
             <label for="Insert_School_CD" class="col-md-3 col-form-label" style="width: 100%;">学校選択</label>
-            <select name='Insert_School_CD' id='Insert_School_CD' class="form-control col-md-3" ><?php echo $School_PullDown; ?></select>
+            <select name='Insert_School_CD' id='Insert_School_CD' class="form-control col-md-3" ><?php echo $School_List; ?></select>
           </div>
 
           <div class="form-group row">
             <label for="Insert_MajorSubject_CD" class="col-md-3 col-form-label">専攻選択</label>
-            <select name='Insert_MajorSubject_CD' id='Insert_MajorSubject_CD' class="form-control col-md-3" ><?php echo $Majorsubject_PullDown; ?></select>
+            <select name='Insert_MajorSubject_CD' id='Insert_MajorSubject_CD' class="form-control col-md-3" ><?php echo $Majorsubject_List; ?></select>
           </div>
 
           <div class="form-group row">
@@ -167,18 +167,18 @@ if (isset($_POST["Key_Code"])) {
 
 //学校区分が変更になるとイベントが発生
 $('.School_Division').change(function() { 
- NarrowDownSchoolPullDown(); 
+ NarrowDownSchoolList(); 
 });
 
 //学校が変更になるとイベントが発生
 $('.School_CD').change(function() { 
- NarrowDownMajorsubjectPullDown();
+ NarrowDownMajorsubjectList();
  
 });
 
 
 //学校プルダウン絞り込み
-function NarrowDownSchoolPullDown() {
+function NarrowDownSchoolList() {
 
   var SelectSchool_Division = document.getElementById('School_Division').value; 
   
@@ -210,7 +210,7 @@ function NarrowDownSchoolPullDown() {
 }
 
 //専攻プルダウン絞り込み
-function NarrowDownMajorsubjectPullDown() {
+function NarrowDownMajorsubjectList() {
 
 var SelectSchool_CD = document.getElementById('School_CD').value;
 

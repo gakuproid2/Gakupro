@@ -84,17 +84,17 @@ if (isset($_POST["ProcessingType"])) {
   //学校区分のプルダウン作成する為
   $items = $dao_SubCategory_M->GET_SubCategory_m(3);
 
-  $PullDown = "<option value = 0 >学校区分選択</option>";
+  $List = "<option value = 0 >学校区分選択</option>";
   foreach ($items as $item_val) {
 
-    $PullDown .= "<option value = " . $item_val['SubCategory_CD'];
+    $List .= "<option value = " . $item_val['SubCategory_CD'];
 
     if ($School_Division == $item_val['SubCategory_CD']) {
-      $PullDown .= " selected>";
+      $List .= " selected>";
     } else {
-      $PullDown .= " >";
+      $List .= " >";
     }
-    $PullDown  .= $item_val['SubCategory_Name'] . "</option>";
+    $List  .= $item_val['SubCategory_Name'] . "</option>";
   }  
   
 
@@ -158,7 +158,7 @@ $Table .= "</table>";
 <body>
 <div>
     <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
-    <select name='School_Division' id='School_Division' placeholder='Source Type'><?php echo $PullDown; ?></select>
+    <select name='School_Division' id='School_Division' placeholder='Source Type'><?php echo $List; ?></select>
   </div>
   <?php echo $Table; ?>
 
@@ -176,7 +176,7 @@ $Table .= "</table>";
                  
           <div class="form-group row">
             <label for="Insert_School_Division" class="col-md-3 col-form-label">学校区分</label>
-            <select name='Insert_School_Division' id='Insert_School_Division' class="form-control col-md-3" ><?php echo $PullDown; ?></select>
+            <select name='Insert_School_Division' id='Insert_School_Division' class="form-control col-md-3" ><?php echo $List; ?></select>
           </div>
 
 
@@ -228,7 +228,7 @@ $Table .= "</table>";
 
         <div class="form-group row">
             <label for="Update_School_Division" class="col-md-3 col-form-label">学校区分</label>
-            <select name='Update_School_Division' id='Update_School_Division' class="form-control col-md-3" ><?php echo $PullDown; ?></select>
+            <select name='Update_School_Division' id='Update_School_Division' class="form-control col-md-3" ><?php echo $List; ?></select>
           </div>
 
 
