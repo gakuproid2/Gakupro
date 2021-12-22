@@ -161,9 +161,8 @@ if (!empty($_POST["Request"])) {
       // Template画像を取り込み新しくQRチケットを作成する為
       $Create_img = imagecreatefrompng($Template_Dir);
 
-      // 挿入する文字列のフォント(今回はWindowsに入ってたメイリオを使う)   
-      /////Macで作成できるか確認必須///// 
-      $font = "../Fonts/YuGothR.ttc";
+      // 挿入する文字列のフォント      
+      $fontfilefile = "../fonts/YuGothB.ttc";
 
       //日付挿入--開始--
       // 挿入する文字列
@@ -190,7 +189,7 @@ if (!empty($_POST["Request"])) {
         $x,         // 挿入位置 x 座標
         $y,         // 挿入位置 y 座標
         $color,     // 文字の色
-        $font,  // フォントファイル
+        $fontfilefile,  // フォントファイル
         $text
       );     // 挿入文字列
       //日付挿入--終了--
@@ -221,7 +220,7 @@ if (!empty($_POST["Request"])) {
         $x,         // 挿入位置 x 座標
         $y,         // 挿入位置 y 座標
         $color,     // 文字の色
-        $font,  // フォントファイル
+        $fontfilefile,  // フォントファイル
         $text
       );     // 挿入文字列
 
@@ -253,7 +252,7 @@ if (!empty($_POST["Request"])) {
         $x,         // 挿入位置 x 座標
         $y,         // 挿入位置 y 座標
         $color,     // 文字の色
-        $font,  // フォントファイル
+        $fontfilefile,  // フォントファイル
         $text
       );     // 挿入文字列
 
