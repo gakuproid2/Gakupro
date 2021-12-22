@@ -20,7 +20,7 @@ class dao_ImageGetResult
       Key_Code
       ,Password      
       FROM
-      ImageGet_T
+      photoget_t
       WHERE
       Key_Code = '$Key_Code'
       AND

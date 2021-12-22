@@ -8,12 +8,7 @@
   require_once '../php/common.php';
   //クラスの生成
   $common = new common();
-  
-  //クラスファイルの読み込み
-  require_once '../dao/dao_ImageUploadCheck.php';
-  //クラスの生成
-  $dao_ImageUploadCheck = new dao_ImageUploadCheck();
-  
+    
   $HeaderInfo = $common->HeaderCreation('画像アップロード確認画面');  
 
   $JS_Info = $common->Read_JSconnection();

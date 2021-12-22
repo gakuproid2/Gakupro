@@ -1,9 +1,9 @@
 <?php
-class dao_CreateQR
+class dao_photoget_t
 {
 
   //登録処理
-  function Insert_ImageGet_T($Key_Code, $Password)
+  function Insert_photoget_t($Key_Code, $Password)
   {
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
@@ -12,7 +12,7 @@ class dao_CreateQR
 
     $SQL = "
     INSERT INTO 
-    gakupro.imageGet_T (
+    gakupro.photoget_t (
     Key_Code
     ,Password    
     )VALUES(
@@ -43,7 +43,7 @@ class dao_CreateQR
     LEFT(Key_Code,8) 日付
     ,COUNT(LEFT(Key_Code,8))作成数
     FROM
-    gakupro.imageGet_T 
+    gakupro.photoget_t 
     GROUP BY
     LEFT(Key_Code,8)
     )AS WORK
@@ -76,7 +76,7 @@ class dao_CreateQR
     Key_Code
     ,PassWord
     FROM
-    gakupro.imageGet_T 
+    gakupro.photoget_t 
     WHERE
     LEFT(Key_Code,8) = '$Date';
     ";
@@ -88,7 +88,7 @@ class dao_CreateQR
   }
 
   //日付別データ取得
-  function Get_ImageGet_T($Date)
+  function Get_photoget_t($Date)
   {
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
@@ -100,7 +100,7 @@ class dao_CreateQR
     Key_Code
     ,PassWord
     FROM
-    gakupro.imageGet_T
+    gakupro.photoget_t
     WHERE
     LEFT(Key_Code,8) = '$Date'
     ;

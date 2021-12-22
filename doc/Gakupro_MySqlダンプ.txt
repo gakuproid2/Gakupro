@@ -7,6 +7,8 @@
 -- テーブルがあれば削除--
 drop table if exists `company_m`;
 drop table if exists `imageget_t`;
+drop table if exists `photoget_t`;
+
 drop table if exists `mailaddressauthenticate_t`;
 drop table if exists `maincategory_m`;
 drop table if exists `majorsubject_m`;
@@ -66,19 +68,19 @@ INSERT INTO `company_m` (`Company_ID`, `Company_Name`, `TEL1`, `TEL2`, `Address`
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `imageget_t`
+-- テーブルの構造 `photoget_t`
 --
 
-CREATE TABLE `imageget_t` (
-  `Key_Code` varchar(15) NOT NULL COMMENT '画像保存用フォルダのキーコード',
-  `Password` int(11) NOT NULL COMMENT '画像取得用パスワード'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='画像取得用テーブル';
+CREATE TABLE `photoget_t` (
+  `Key_Code` varchar(15) NOT NULL COMMENT '写真保存用フォルダのキーコード',
+  `Password` int(11) NOT NULL COMMENT '写真取得用パスワード'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='社員取得用テーブル';
 
 --
--- テーブルのデータのダンプ `imageget_t`
+-- テーブルのデータのダンプ `photoget_t`
 --
 
-INSERT INTO `imageget_t` (`Key_Code`, `Password`) VALUES
+INSERT INTO `photoget_t` (`Key_Code`, `Password`) VALUES
 ('99999999001', 9999);
 
 -- --------------------------------------------------------
@@ -357,9 +359,9 @@ ALTER TABLE `company_m`
   ADD PRIMARY KEY (`Company_ID`);
 
 --
--- テーブルのインデックス `imageget_t`
+-- テーブルのインデックス `photoget_t`
 --
-ALTER TABLE `imageget_t`
+ALTER TABLE `photoget_t`
   ADD PRIMARY KEY (`Key_Code`);
 
 --

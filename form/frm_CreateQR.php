@@ -10,9 +10,9 @@ require_once '../php/common.php';
 $common = new common();
 
 //クラスファイルの読み込み
-require_once '../dao/dao_CreateQR.php';
+require_once '../dao/dao_photoget_t.php';
 //クラスの生成
-$dao = new dao_CreateQR();
+$dao_photoget_t = new dao_photoget_t();
 
 $HeaderInfo = $common->HeaderCreation(8);
 $JS_Info = $common->Read_JSconnection();
@@ -44,7 +44,7 @@ if (!empty($_POST["Request"])) {
   $Date = str_replace("-", "", $_POST["TargetDate"]);
 
   //日付で現状の作成数を取得
-  $Quantity = $dao->Get_Quantity($Date);
+  $Quantity = $dao_photoget_t->Get_Quantity($Date);
 
   //リクエスト数より作成数が上回っているはアラートを表示
   //リクエスト数が上回っている場合は差分を作成
@@ -55,31 +55,20 @@ if (!empty($_POST["Request"])) {
 
     //基本のディリクトリ
     $Base_Dir = '../File/';
-
-    //基本ディリクトリに日付ディリクトリを作成する為の文字列格納
+    
     $Date_Dir = $Base_Dir . $Date . '/';
-
-    //基本ディリクトリ + 日付ディリクトリの存在チェック
-    if (!file_exists($Date_Dir)) {
-      //存在しないときはフォルダ作成
-      mkDir($Date_Dir, 0777);
-    }
-
-    //日付ディリクトリにQRディリクトリを作成する為に文字列格納
+    $common->CreateDirectory($Date_Dir);
+       
     $QR_Dir = $Date_Dir . 'QR/';
+    $common->CreateDirectory($QR_Dir);
 
-    //日付ディリクトリ + QRディリクトリの存在チェック
-    if (!file_exists($QR_Dir)) {
-      //存在しないときはフォルダ作成    
-      mkDir($QR_Dir, 0777);
-    }
 
     //--パスワード作成処理--開始--
     //パスワード格納用配列宣言
     $Password_array = [];
 
     //日付で既存データのパスワードを取得
-    $Password_Table = $dao->Get_PassWord($Date);
+    $Password_Table = $dao_photoget_t->Get_PassWord($Date);
 
     //パスワードを取得した分パスワード格納用配列に追加
     foreach ($Password_Table as $Pass_val) {
@@ -116,7 +105,7 @@ if (!empty($_POST["Request"])) {
       $Key_Code = $Date  . str_pad($i, 3, 0, STR_PAD_LEFT);
 
       //キーコードとパスワードを登録する
-      $Result = $dao->Insert_ImageGet_T($Key_Code, $Password_array[$i]);
+      $Result = $dao_photoget_t->Insert_photoget_t($Key_Code, $Password_array[$i]);
     }
 
     //後ほど削除予定↓
@@ -130,20 +119,15 @@ if (!empty($_POST["Request"])) {
     }
     //後ほど削除予定↑
 
-
     //QRcodeチケットのテンプレ保存場所
     $Template_Dir = $Base_Dir . 'Template/QR_Template.png';
 
     //QRcodeチケットの保存場所
     $QrTicket_Dir = $Date_Dir . 'QR_Ticket/';
-
-    if (!file_exists($QrTicket_Dir)) {
-      //存在しないときはフォルダ作成
-      mkDir($QrTicket_Dir, 0777);
-    }
+    $common->CreateDirectory($QrTicket_Dir);
 
     //日付でデータ（Key_CodeとPassWord）取得
-    $Key_Code_Table = $dao->Get_ImageGet_T($Date);
+    $Key_Code_Table = $dao_photoget_t->Get_photoget_t($Date);
 
     //データ数分のQRチケットを作成
     foreach ($Key_Code_Table as $value) {

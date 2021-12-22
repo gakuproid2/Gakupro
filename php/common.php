@@ -165,4 +165,16 @@ class common
     ';
     return $Info;
   }
+
+  //Directory(階層/フォルダ)作成処理
+  function CreateDirectory($Directory)
+  {
+    //存在しない場合のみ作成      
+    if (!file_exists($Directory)) {
+      //フォルダ作成
+      mkdir($Directory, 0777);
+    }
+  }
+  
+  
 }
