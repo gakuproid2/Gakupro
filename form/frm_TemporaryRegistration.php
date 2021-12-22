@@ -44,6 +44,7 @@
 
 $Key_Code = 0;
 $DataInfo='';
+
 //データ更新処理実行時  Start--
 if (isset($_POST["Key_Code"])) {
 
@@ -129,17 +130,16 @@ if (isset($_POST["Key_Code"])) {
           <div class="form-group row">         
             <label for="Insert_MailAddress" class="col-md-3 col-form-label" style="width: 100%;">メールアドレス</label>              
             <input type="text" name="Insert_MailAddress" id="Insert_MailAddress" value="" class="form-control col-md-3">          
-          </div>
-
-
-          <div class="form-group row">
-            <label for="Insert_School_CD" class="col-md-3 col-form-label" style="width: 100%;">学校選択</label>
-            <select name='Insert_School_CD' id='Insert_School_CD' class="form-control col-md-3" ><?php echo $School_List; ?></select>
-          </div>
+          </div>     
 
           <div class="form-group row">
-            <label for="Insert_MajorSubject_CD" class="col-md-3 col-form-label">専攻選択</label>
-            <select name='Insert_MajorSubject_CD' id='Insert_MajorSubject_CD' class="form-control col-md-3" ><?php echo $Majorsubject_List; ?></select>
+            <label for="Insert_School_List" class="col-md-3 col-form-label" style="width: 100%;">学校選択</label>
+            <select name='Insert_School_List' id='Insert_School_List' class="form-control col-md-3" ><?php echo $School_List; ?></select>
+          </div>
+
+          <div id="MajorSubjectRow" class="form-group row d-none">
+            <label for="Insert_MajorSubject_List" class="col-md-3 col-form-label">専攻選択</label>
+            <select name='Insert_MajorSubject_List' id='Insert_MajorSubject_List' class="form-control col-md-3" ><?php echo $Majorsubject_List; ?></select>
           </div>
 
           <div class="form-group row">
@@ -165,79 +165,43 @@ if (isset($_POST["Key_Code"])) {
 
 <script>
 
+const OriginalList_School_Division = document.getElementById('School_Division_List');
+const OriginalList_School = document.getElementById('Insert_School_List');
+const OriginalList_MajorSubject = document.getElementById('Insert_MajorSubject_List');
+
+var ListAfterChange;
+
+
 //学校区分が変更になるとイベントが発生
-$('.School_Division').change(function() { 
- NarrowDownSchoolList(); 
+$('.School_Division_List').change(function() { 
+
+  
+
 });
 
 //学校が変更になるとイベントが発生
-$('.School_CD').change(function() { 
- NarrowDownMajorsubjectList();
- 
+$('#Insert_School_List').change(function() { 
+
+  var SelectSchool_CD = document.getElementById('Insert_School_List').value;
+  
+  if (SelectSchool_CD == 0){
+    
+    $('#MajorSubjectRow').addClass('d-none');   
+
+  }else if(SelectSchool_CD != 0){
+
+    $('#MajorSubjectRow').removeClass('d-none'); 
+        
+    ListAfterChange = NarrowDownList(OriginalList_MajorSubject,'schoolcd',SelectSchool_CD);  
+    document.getElementById('MajorSubject_List').innerHTML = ListAfterChange.innerHTML;   
+    
+  }
+
 });
 
 
-//学校プルダウン絞り込み
-function NarrowDownSchoolList() {
-
-  var SelectSchool_Division = document.getElementById('School_Division').value; 
-  
-  document.getElementById('MajorSubject_CD').style='display:none'; 
-
-  if (SelectSchool_Division==0){
-    document.getElementById('School_CD').style='display:none';     
-    return;
-  }else{
-    document.getElementById('School_CD').style='display:select';      
-  }
 
 
-  //select要素をidで取得
-  var list = document.getElementById('School_CD').options;
-
-  for(var i=0;i<list.length;i++){
-
-    TargetSchool_Division = (list[i].dataset["schooldivision"]);
-
-    if(SelectSchool_Division == 0 || TargetSchool_Division == SelectSchool_Division || TargetSchool_Division ==''){
-      list[i].style='display:option';        
-    }else{
-      list[i].style='display:none';          
-    }   
-
-  }
-
-}
-
-//専攻プルダウン絞り込み
-function NarrowDownMajorsubjectList() {
-
-var SelectSchool_CD = document.getElementById('School_CD').value;
-
-if (SelectSchool_CD==0){  
-  document.getElementById('MajorSubject_CD').style='display:none'; 
-  return;
-}else{
-  document.getElementById('MajorSubject_CD').style='display:select';      
-}
-
-
-//select要素をidで取得
-var list = document.getElementById('MajorSubject_CD').options;
-
-for(var i=0;i<list.length;i++){
-
-  TargetSchool_CD = (list[i].dataset["schoolcd"]);
-
-  if(SelectSchool_CD == 0 || TargetSchool_CD == SelectSchool_CD || TargetSchool_CD ==''){
-    list[i].style='display:option';        
-  }else{
-    list[i].style='display:none';          
-  }   
-
-}
-
-}
   //登録用モーダル表示時
   $('#InsertModal').on('show.bs.modal', function(e) {   
   
@@ -252,8 +216,8 @@ for(var i=0;i<list.length;i++){
     $('#Insert_Birthday').val('');
     $('#Insert_TEL').val('');
     $('#Insert_MailAddress').val(evCon.data('mailaddress'));    
-    $('#Insert_School_CD').val('');
-    $('#Insert_MajorSubject_CD').val('');
+    $('#Insert_School_List').val('0');
+    $('#Insert_MajorSubject_List').val('0');
     $('#Insert_AdmissionYearMonth').val('');
     $('#Insert_GraduationYearMonth').val('');
     
@@ -272,8 +236,8 @@ for(var i=0;i<list.length;i++){
       Birthday: $("#Insert_Birthday").val(),   
       TEL: $("#Insert_TEL").val(),   
       MailAddress: $("#Insert_MailAddress").val(),   
-      School_CD: $("#Insert_School_CD").val(),   
-      MajorSubject_CD: $("#Insert_MajorSubject_CD").val(),   
+      School_CD: $("#Insert_School_List").val(),   
+      MajorSubject_CD: $("#Insert_MajorSubject_List").val(),   
       AdmissionYearMonth: $("#Insert_AdmissionYearMonth").val(),   
       GraduationYearMonth: $("#Insert_GraduationYearMonth").val(),        
       RegistrationStatus: $("#Insert_RegistrationStatus").val()      

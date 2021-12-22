@@ -325,6 +325,7 @@ $Table .= "</table>";
 
 <script>
 
+
 //学校区分が変更になるとイベントが発生
 $('.School_Division').change(function() { 
  NarrowDownList();

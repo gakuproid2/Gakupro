@@ -532,7 +532,7 @@ $('.School_List').change(function() {
     ListAfterChange = NarrowDownList(OriginalList_MajorSubject,'schoolcd',SelectSchool_CD);  
     document.getElementById('MajorSubject_List').innerHTML = ListAfterChange.innerHTML;
  
-    TableAfterChange = NarrowDownDataTable(TableAfterChange,'schoolcd',SelectSchool_CD);
+    TableAfterChange = NarrowDownDataTable(OriginalTable,'schoolcd',SelectSchool_CD);
     
   }
 
@@ -541,7 +541,7 @@ $('.School_List').change(function() {
 
 });
 
-//専攻が変更になるとイベントが発生
+//専攻が変更になるとイベントが発生※学校CD & 専攻CDで絞り込む
 $('.MajorSubject_List').change(function() {  
 
   var SelectSchool_CD = document.getElementById('School_List').value;

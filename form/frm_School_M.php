@@ -86,15 +86,7 @@ if (isset($_POST["ProcessingType"])) {
 
   $List = "<option value = 0 >学校区分選択</option>";
   foreach ($items as $item_val) {
-
-    $List .= "<option value = " . $item_val['SubCategory_CD'];
-
-    if ($School_Division == $item_val['SubCategory_CD']) {
-      $List .= " selected>";
-    } else {
-      $List .= " >";
-    }
-    $List  .= $item_val['SubCategory_Name'] . "</option>";
+    $List .= "<option value = " . $item_val['SubCategory_CD']. ">" .$item_val['SubCategory_Name'] . "</option>";    
   }  
   
 
@@ -158,7 +150,7 @@ $Table .= "</table>";
 <body>
 <div>
     <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
-    <select name='School_Division' id='School_Division' placeholder='Source Type'><?php echo $List; ?></select>
+    <select name='School_Division_List' id='School_Division_List' placeholder='Source Type'><?php echo $List; ?></select>
   </div>
   <?php echo $Table; ?>
 
@@ -175,8 +167,8 @@ $Table .= "</table>";
         <div class="modal-body">         
                  
           <div class="form-group row">
-            <label for="Insert_School_Division" class="col-md-3 col-form-label">学校区分</label>
-            <select name='Insert_School_Division' id='Insert_School_Division' class="form-control col-md-3" ><?php echo $List; ?></select>
+            <label for="Insert_School_Division_List" class="col-md-3 col-form-label">学校区分</label>
+            <select name='Insert_School_Division_List' id='Insert_School_Division_List' class="form-control col-md-3" ><?php echo $List; ?></select>
           </div>
 
 
@@ -227,8 +219,8 @@ $Table .= "</table>";
         </div>
 
         <div class="form-group row">
-            <label for="Update_School_Division" class="col-md-3 col-form-label">学校区分</label>
-            <select name='Update_School_Division' id='Update_School_Division' class="form-control col-md-3" ><?php echo $List; ?></select>
+            <label for="Update_School_Division_List" class="col-md-3 col-form-label">学校区分</label>
+            <select name='Update_School_Division_List' id='Update_School_Division_List' class="form-control col-md-3" ><?php echo $List; ?></select>
           </div>
 
 
@@ -297,36 +289,19 @@ $Table .= "</table>";
 
 <script>
 
-  document.getElementById("School_Division").onchange = function() {
-
-    var Select_School_Division = $(this).val();
-    NarrowDownDataTable(Select_School_Division);
-
-  };
-
-  //table絞り込み
-  function NarrowDownDataTable(Select_School_Division) {
+  const OriginalTable = document.getElementById('DataInfoTable'); 
+  var TableAfterChange;
   
-  // table要素を取得
-  var TargetTable = document.getElementById('DataInfoTable');      
+  document.getElementById("School_Division_List").onchange = function() {
 
-  var TableDataCount = 0;
-  for (i = 0, len = TargetTable.rows.length; i < len; i++) {
+    var SelectSchool_Division = document.getElementById('School_Division_List').value;  
 
-    var TargetSchool_Division = TargetTable.rows[i].dataset["schooldivision"];
+    TableAfterChange = NarrowDownDataTable(OriginalTable,'schooldivision',SelectSchool_Division);
+    document.getElementById('DataInfoTable').innerHTML = TableAfterChange.innerHTML;
+    
+    document.getElementById("TableDataCount").innerHTML = "データ総数["+ (SearchDataTableValidCases(TableAfterChange)) +"件]";  
 
-      if(Select_School_Division == 0 || TargetSchool_Division == Select_School_Division || TargetSchool_Division ==''){
-        TargetTable.rows[i].style='display:table-row';  
-        TableDataCount += 1;        
-      }else{
-        TargetTable.rows[i].style='display:none';       
-      }    
-          
-  }
-
-  document.getElementById("TableDataCount").innerHTML = "データ総数["+ (TableDataCount - 1) +"件]";
-
-  }
+  };  
 
   //登録用モーダル表示時
   $('#InsertModal').on('show.bs.modal', function(e) {   
@@ -343,7 +318,7 @@ $Table .= "</table>";
     let evCon = $(e.relatedTarget);
    
     $('#Update_School_CD').val(evCon.data('schoolcd'));
-    $('#Update_School_Division').val(evCon.data('schooldivision'));     
+    $('#Update_School_Division_List').val(evCon.data('schooldivision'));     
     $('#Update_School_Name').val(evCon.data('schoolname'));       
     $('#Update_URL').val(evCon.data('url'));  
     $('#Update_TEL').val(evCon.data('tel'));
@@ -385,7 +360,7 @@ $Table .= "</table>";
     //ポストするキーと値を格納
     var DataArray = {
       ProcessingType: SelectProcessingType,  
-      School_Division: $("#Insert_School_Division").val(),
+      School_Division: $("#Insert_School_Division_List").val(),
       School_Name: $("#Insert_School_Name").val(),
       TEL: $("#Insert_TEL").val(),   
       URL: $("#Insert_URL").val(),      
@@ -412,7 +387,7 @@ $Table .= "</table>";
     var DataArray = {
       ProcessingType: SelectProcessingType,  
       School_CD: $("#Update_School_CD").val(),
-      School_Division: $("#Update_School_Division").val(),
+      School_Division: $("#Update_School_Division_List").val(),
       School_Name: $("#Update_School_Name").val(),
       TEL: $("#Update_TEL").val(),   
       URL: $("#Update_URL").val(),      

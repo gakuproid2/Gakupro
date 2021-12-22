@@ -83,14 +83,14 @@ foreach ($Data_Table as $val) {
     <td>
 
       <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#UpdateModal' 
-      data-maincd='" . $val['MainCategory_CD'] . "'
+      data-maincategorycd='" . $val['MainCategory_CD'] . "'
       data-mainname='" . $val['MainCategory_Name'] . "'        
       data-usage='" . $val['UsageSituation'] . "' >
       <i class='far fa-edit'></i>
       </button> 
    
       <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#ChangeUsageSituationModal'
-      data-maincd='" . $val['MainCategory_CD'] . "'
+      data-maincategorycd='" . $val['MainCategory_CD'] . "'
       data-mainname='" . $val['MainCategory_Name'] . "'
       data-usage='" . $val['UsageSituation'] . "' >
       " . $IconType . "              
@@ -202,14 +202,6 @@ $Table .= "</table>";
     </div>
   </div>
 
-
-
-
-
-
-
-
-
   <?php echo $JS_Info ?>
 </body>
 
@@ -226,7 +218,7 @@ $Table .= "</table>";
     // イベント発生元
     let evCon = $(e.relatedTarget);
 
-    $('#Update_MainCategory_CD').val(evCon.data('maincd'));
+    $('#Update_MainCategory_CD').val(evCon.data('maincategorycd'));
     $('#Update_MainCategory_Name').val(evCon.data('mainname'));
 
   });
@@ -247,10 +239,10 @@ $Table .= "</table>";
       $('#ChangeUsageSituation_ButtonName').html('利用不可にする');
     }
 
-    $('#ChangeUsageSituation_MainCategory_CD').html(evCon.data('maincd'));
+    $('#ChangeUsageSituation_MainCategory_CD').html(evCon.data('maincategorycd'));
     $('#ChangeUsageSituation_MainCategory_Name').html(evCon.data('mainname'));
 
-    $('#ChangeUsageSituation_MainCategory_CD').val(evCon.data('maincd'));
+    $('#ChangeUsageSituation_MainCategory_CD').val(evCon.data('maincategorycd'));
     $('#ChangeUsageSituation_MainCategory_Name').val(evCon.data('mainname'));
     $('#ChangeUsageSituation_UsageSituation').val(evCon.data('usage'));
 

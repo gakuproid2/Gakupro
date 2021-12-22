@@ -15,7 +15,6 @@ require_once '../dao/dao_CreateQR.php';
 $dao = new dao_CreateQR();
 
 $HeaderInfo = $common->HeaderCreation(8);
-
 $JS_Info = $common->Read_JSconnection();
 
 ?>

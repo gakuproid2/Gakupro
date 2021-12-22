@@ -144,7 +144,7 @@ $Table .= "</table>";
 <body>
 <div>
     <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
-    <select name='Authority' id='Authority'><?php echo $List; ?></select>
+    <select name='Authority_List' id='Authority_List'><?php echo $List; ?></select>
   </div>
   <?php echo $Table; ?>
 
@@ -171,8 +171,8 @@ $Table .= "</table>";
           </div>
 
           <div class="form-group row">
-            <label for="Insert_Authority" class="col-md-3 col-form-label">利用可能権限</label>
-            <select name='Insert_Authority' id='Insert_Authority' class="form-control col-md-3"><?php echo $List; ?></select>
+            <label for="Insert_Authority_List" class="col-md-3 col-form-label">利用可能権限</label>
+            <select name='Insert_Authority_List' id='Insert_Authority_List' class="form-control col-md-3"><?php echo $List; ?></select>
           </div>
 
           <div class="modal-footer">
@@ -211,8 +211,8 @@ $Table .= "</table>";
           </div>
 
           <div class="form-group row">
-            <label for="Update_Authority" class="col-md-3 col-form-label">利用可能権限</label>
-            <select name='Update_Authority' id='Update_Authority' class="form-control col-md-3"><?php echo $List; ?></select>
+            <label for="Update_Authority_List" class="col-md-3 col-form-label">利用可能権限</label>
+            <select name='Update_Authority_List' id='Update_Authority_List' class="form-control col-md-3"><?php echo $List; ?></select>
           </div>
 
           <div class="modal-footer">
@@ -264,22 +264,19 @@ $Table .= "</table>";
 
 <script>
 
-  document.getElementById("Authority").onchange = function() {      
-    NarrowDownDataTable();
-  };
+  document.getElementById("Authority_List").onchange = function() {      
+  
+    var Select_Authority = document.getElementById('Authority_List').value;
 
-  //table絞り込み
-  function NarrowDownDataTable() {  
+    // table要素を取得
+    var TargetTable = document.getElementById('DataInfoTable');      
 
-  var Select_Authority = document.getElementById('Authority').value;
+    var TableDataCount = 0;
 
-  // table要素を取得
-  var TargetTable = document.getElementById('DataInfoTable');      
+    //table絞り込み
+    for (i = 0, len = TargetTable.rows.length; i < len; i++) {
 
-  var TableDataCount = 0;
-  for (i = 0, len = TargetTable.rows.length; i < len; i++) {
-
-    var TargetAuthority = TargetTable.rows[i].dataset["authority"];
+      var TargetAuthority = TargetTable.rows[i].dataset["authority"];
 
       if(Select_Authority == 0 || TargetAuthority <= Select_Authority || TargetAuthority ==''){
         TargetTable.rows[i].style='display:table-row';  
@@ -287,11 +284,11 @@ $Table .= "</table>";
       }else{
         TargetTable.rows[i].style='display:none';       
       }              
-  }
-  
-  document.getElementById("TableDataCount").innerHTML = "データ総数["+ (TableDataCount - 1) +"件]";
+    }
 
-  }
+    document.getElementById("TableDataCount").innerHTML = "データ総数["+ (TableDataCount - 1) +"件]";
+
+  };
 
   //登録用モーダル表示時
   $('#InsertModal').on('show.bs.modal', function(e) {
@@ -307,7 +304,7 @@ $Table .= "</table>";
 
     $('#Update_Screen_ID').val(evCon.data('screenid'));
     $('#Update_Screen_Name').val(evCon.data('screenname'));    
-    $('#Update_Authority').val(evCon.data('authority'));
+    $('#Update_Authority_List').val(evCon.data('authority'));
 
   });
 
@@ -348,7 +345,7 @@ $Table .= "</table>";
       ProcessingType: SelectProcessingType,
       Screen_Name: $("#Insert_Screen_Name").val(),
       Screen_Path: $("#Insert_Screen_Path").val(),
-      Authority: $("#Insert_Authority").val()
+      Authority: $("#Insert_Authority_List").val()
     };
 
     if (!ValueCheck(DataArray)) {
@@ -373,7 +370,7 @@ $Table .= "</table>";
       ProcessingType: SelectProcessingType,
       Screen_ID: $("#Update_Screen_ID").val(),     
       Screen_Name: $("#Update_Screen_Name").val(),
-      Authority: $("#Update_Authority").val(),
+      Authority: $("#Update_Authority_List").val(),
     };
 
     if (!ValueCheck(DataArray)) {

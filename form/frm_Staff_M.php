@@ -105,15 +105,7 @@ if (isset($_POST["ProcessingType"])) {
 
   $List = "<option value = 0 >権限選択</option>";
   foreach ($items as $item_val) {
-
-    $List .= "<option value = " . $item_val['SubCategory_CD'];
-
-    if ($Authority == $item_val['SubCategory_CD']) {
-      $List .= " selected>";
-    } else {
-      $List .= " >";
-    }
-    $List  .= $item_val['SubCategory_Name'] . "</option>";
+    $List .= "<option value = " . $item_val['SubCategory_CD']. ">". $item_val['SubCategory_Name'] . "</option>";
   }
   
   
@@ -182,7 +174,7 @@ $Table .= "</table>";
 <body>
 <div>
     <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
-    <select name='Authority' id='Authority' placeholder='Source Type'><?php echo $List; ?></select>
+    <select name='Authority_List' id='Authority_List' placeholder='Source Type'><?php echo $List; ?></select>
   </div>
   <?php echo $Table; ?>
 
@@ -236,8 +228,8 @@ $Table .= "</table>";
           </div>
 
           <div class="form-group row">
-            <label for="Insert_Authority" class="col-md-3 col-form-label">権限</label>
-            <select name='Insert_Authority' id='Insert_Authority' class="form-control col-md-3" ><?php echo $List; ?></select>
+            <label for="Insert_Authority_List" class="col-md-3 col-form-label">権限</label>
+            <select name='Insert_Authority_List' id='Insert_Authority_List' class="form-control col-md-3" ><?php echo $List; ?></select>
           </div>
 
           <div class="modal-footer">
@@ -308,8 +300,8 @@ $Table .= "</table>";
           </div>
 
           <div class="form-group row">
-            <label for="Update_Authority" class="col-md-3 col-form-label">権限</label>
-            <select name='Update_Authority' id='Update_Authority' class="form-control col-md-3"><?php echo $List; ?></select>
+            <label for="Update_Authority_List" class="col-md-3 col-form-label">権限</label>
+            <select name='Update_Authority_List' id='Update_Authority_List' class="form-control col-md-3"><?php echo $List; ?></select>
           </div>
 
           <div class="modal-footer">
@@ -361,36 +353,22 @@ $Table .= "</table>";
 
 <script>
 
-  document.getElementById("Authority").onchange = function() {  
-  NarrowDownDataTable();
+const OriginalTable = document.getElementById('DataInfoTable');
+
+const OriginalList_Authority = document.getElementById('Authority_List');
+var TableAfterChange;
+
+  document.getElementById("Authority_List").onchange = function() { 
+
+    var SelectAuthority = document.getElementById('Authority_List').value;  
+
+    TableAfterChange = NarrowDownDataTable(OriginalTable,'authority',SelectAuthority);
+    document.getElementById('DataInfoTable').innerHTML = TableAfterChange.innerHTML;
+    document.getElementById("TableDataCount").innerHTML = "データ総数["+ (SearchDataTableValidCases(TableAfterChange)) +"件]"; 
+
   };
 
-  //table絞り込み
-  function NarrowDownDataTable() {
-  
-  var Select_Authority = document.getElementById('Authority').value;
-
-  // table要素を取得
-  var TargetTable = document.getElementById('DataInfoTable');      
-
-  var TableDataCount = 0;
-  for (i = 0, len = TargetTable.rows.length; i < len; i++) {
-
-    var TargetAuthority = TargetTable.rows[i].dataset["authority"];
-
-      if(Select_Authority == 0 || TargetAuthority == Select_Authority || TargetAuthority ==''){
-        TargetTable.rows[i].style='display:table-row';  
-        TableDataCount += 1;        
-      }else{
-        TargetTable.rows[i].style='display:none';       
-      }    
-          
-  }
-
-  document.getElementById("TableDataCount").innerHTML = "データ総数["+ (TableDataCount - 1) +"件]";
-
-  }
-  //登録用モーダル表示時
+   //登録用モーダル表示時
   $('#InsertModal').on('show.bs.modal', function(e) {   
 
     $('#Insert_Staff_LastName').val('');
@@ -425,7 +403,7 @@ $Table .= "</table>";
     $('#Update_Password').val(evCon.data('password'));
     $('#Update_TEL').val(evCon.data('tel'));
     $('#Update_MailAddress').val(evCon.data('mailaddress'));    
-    $('#Update_Authority').val(evCon.data('authority'));
+    $('#Update_Authority_List').val(evCon.data('authority'));
 
   });
 
@@ -470,7 +448,7 @@ $Table .= "</table>";
       Password: $("#Insert_Password").val(),
       TEL: $("#Insert_TEL").val(),
       MailAddress: $("#Insert_MailAddress").val(),
-      Authority: $("#Insert_Authority").val() 
+      Authority: $("#Insert_Authority_List").val() 
     };
 
     if (!ValueCheck(DataArray)) {
@@ -501,7 +479,7 @@ $Table .= "</table>";
       Password: $("#Update_Password").val(),
       TEL: $("#Update_TEL").val(),
       MailAddress: $("#Update_MailAddress").val(),
-      Authority: $("#Update_Authority").val() 
+      Authority: $("#Update_Authority_List").val() 
     };
 
     if (!ValueCheck(DataArray)) {

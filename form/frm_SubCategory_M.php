@@ -70,15 +70,7 @@ $items = $dao_MainCategory_M->GET_MainCategory_m();
 //0行目
 $List = "<option value = 0 >大分類選択</option>";
 foreach ($items as $item_val) {
-
-  $List .= "<option value = " . $item_val['MainCategory_CD'];
-
-  if ($MainCategory_CD == $item_val['MainCategory_CD']) {
-    $List .= " selected>";
-  } else {
-    $List .= " >";
-  }
-  $List  .= $item_val['MainCategory_Name'] . "</option>";
+  $List .= "<option value = " . $item_val['MainCategory_CD'].">".$item_val['MainCategory_Name']."</option>";
 }
 
 //表示用Table作成用（メインカテゴリーコードで参照）
@@ -89,7 +81,7 @@ $Data_Count = count($Data_Table);
 //Table作成 Start--
 $Table = "
 <table class='DataInfoTable' id='DataInfoTable'>
-<tr  data-maincd='' >
+<tr  data-maincategorycd='' >
   <th>大分類名</th>
   <th>中分類コード</th>
   <th>中分類名</th>
@@ -105,7 +97,7 @@ foreach ($Data_Table as $val) {
   }
 
   $Table .= "
-  <tr data-maincd='" . $val['MainCategory_CD'] . "' >
+  <tr data-maincategorycd='" . $val['MainCategory_CD'] . "' >
     <td style=display:none>" . $val['MainCategory_CD'] . "</td>
     <td>" . $val['MainCategory_Name'] . "</td>
     <td>" . $val['SubCategory_CD'] . " </td>
@@ -113,19 +105,19 @@ foreach ($Data_Table as $val) {
     <td>
 
       <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#UpdateModal' 
-      data-maincd='" . $val['MainCategory_CD'] . "'
-      data-mainname='" . $val['MainCategory_Name'] . "'  
-      data-subcd='" . $val['SubCategory_CD'] . "'
-      data-subname='" . $val['SubCategory_Name'] . "'               
+      data-maincategorycd='" . $val['MainCategory_CD'] . "'
+      data-maincategoryname='" . $val['MainCategory_Name'] . "'  
+      data-subcategorycd='" . $val['SubCategory_CD'] . "'
+      data-subcategoryname='" . $val['SubCategory_Name'] . "'               
       data-usage='" . $val['UsageSituation'] . "' >
       <i class='far fa-edit'></i>
       </button> 
    
       <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#ChangeUsageSituationModal'
-      data-maincd='" . $val['MainCategory_CD'] . "'
-      data-mainname='" . $val['MainCategory_Name'] . "'  
-      data-subcd='" . $val['SubCategory_CD'] . "'
-      data-subname='" . $val['SubCategory_Name'] . "'                     
+      data-maincategorycd='" . $val['MainCategory_CD'] . "'
+      data-maincategoryname='" . $val['MainCategory_Name'] . "'  
+      data-subcategorycd='" . $val['SubCategory_CD'] . "'
+      data-subcategoryname='" . $val['SubCategory_Name'] . "'                     
       data-usage='" . $val['UsageSituation'] . "' >
       " . $IconType . "              
       </button>
@@ -142,7 +134,7 @@ $Table .= "</table>";
 <body>
   <div>
     <a href="" class="btn btn--red btn--radius btn--cubic" data-bs-toggle='modal' data-bs-target='#InsertModal'><i class='fas fa-plus-circle'></i>新規追加</a>
-    <select name='MainCategory_CD' id='MainCategory_CD'><?php echo $List; ?></select>
+    <select name='MainCategory_List' id='MainCategory_List'><?php echo $List; ?></select>
   </div>
   <?php echo $Table; ?>
 
@@ -159,8 +151,8 @@ $Table .= "</table>";
         <div class="modal-body">
 
           <div class="form-group row">
-            <label for="Insert_MainCategory_CD" class="col-md-3 col-form-label">大分類</label>
-            <select name='Insert_MainCategory_CD' id='Insert_MainCategory_CD' class="form-control col-md-3"><?php echo $List; ?></select>
+            <label for="Insert_MainCategory_List" class="col-md-3 col-form-label">大分類</label>
+            <select name='Insert_MainCategory_List' id='Insert_MainCategory_List' class="form-control col-md-3"><?php echo $List; ?></select>
           </div>
 
           <div class="form-group row">
@@ -257,37 +249,20 @@ $Table .= "</table>";
 </body>
 
 <script>
-  document.getElementById("MainCategory_CD").onchange = function() {
-    
-    NarrowDownDataTable();   
-  };
   
-  //table絞り込み
-  function NarrowDownDataTable() {    
+  const OriginalTable = document.getElementById('DataInfoTable');
+  var TableAfterChange;
 
-  var Select_MainCategory_CD = document.getElementById('MainCategory_CD').value;   
+  document.getElementById("MainCategory_List").onchange = function() {
 
-  // table要素を取得
-  var TargetTable = document.getElementById('DataInfoTable');      
+    var SelectMainCategory_CD = document.getElementById('MainCategory_List').value; 
 
-  var TableDataCount = 0;
-  for (i = 0, len = TargetTable.rows.length; i < len; i++) {
-
-    var Target_MainCategory_CD = TargetTable.rows[i].dataset["maincd"];
-
-      if(Select_MainCategory_CD == 0 || Target_MainCategory_CD == Select_MainCategory_CD || Target_MainCategory_CD ==''){
-        TargetTable.rows[i].style='display:table-row';  
-        TableDataCount += 1;        
-      }else{
-        TargetTable.rows[i].style='display:none';       
-      }    
-          
-  }
-
-  document.getElementById("TableDataCount").innerHTML = "データ総数["+ (TableDataCount - 1) +"件]";
-
-  }
-
+    TableAfterChange = NarrowDownDataTable(OriginalTable,'maincategorycd',SelectMainCategory_CD);
+    document.getElementById('DataInfoTable').innerHTML = TableAfterChange.innerHTML;
+ 
+    document.getElementById("TableDataCount").innerHTML = "データ総数["+ (SearchDataTableValidCases(TableAfterChange)) +"件]";  
+  };
+   
   //登録用モーダル表示時
   $('#InsertModal').on('show.bs.modal', function(e) {
 
@@ -300,10 +275,10 @@ $Table .= "</table>";
     // イベント発生元
     let evCon = $(e.relatedTarget);
 
-    $('#Update_MainCategory_CD').val(evCon.data('maincd'));
-    $('#Update_MainCategory_Name').val(evCon.data('mainname'));
-    $('#Update_SubCategory_CD').val(evCon.data('subcd'));
-    $('#Update_SubCategory_Name').val(evCon.data('subname'));
+    $('#Update_MainCategory_CD').val(evCon.data('maincategorycd'));
+    $('#Update_MainCategory_Name').val(evCon.data('maincategoryname'));
+    $('#Update_SubCategory_CD').val(evCon.data('subcategorycd'));
+    $('#Update_SubCategory_Name').val(evCon.data('subcategoryname'));
 
   });
 
@@ -323,13 +298,13 @@ $Table .= "</table>";
       $('#ChangeUsageSituation_ButtonName').html('利用不可にする');
     }
 
-    $('#ChangeUsageSituation_MainCategory_Name').html(evCon.data('mainname'));
-    $('#ChangeUsageSituation_SubCategory_Name').html(evCon.data('subname'));
+    $('#ChangeUsageSituation_MainCategory_Name').html(evCon.data('maincategoryname'));
+    $('#ChangeUsageSituation_SubCategory_Name').html(evCon.data('subcategoryname'));
 
 
-    $('#ChangeUsageSituation_MainCategory_CD').val(evCon.data('maincd'));
-    $('#ChangeUsageSituation_SubCategory_CD').val(evCon.data('subcd'));
-    $('#ChangeUsageSituation_SubCategory_Name').val(evCon.data('subname'));
+    $('#ChangeUsageSituation_MainCategory_CD').val(evCon.data('maincategorycd'));
+    $('#ChangeUsageSituation_SubCategory_CD').val(evCon.data('subcategorycd'));
+    $('#ChangeUsageSituation_SubCategory_Name').val(evCon.data('subcategoryname'));
     $('#ChangeUsageSituation_UsageSituation').val(evCon.data('usage'));
 
   });
@@ -339,11 +314,11 @@ $Table .= "</table>";
 
     var SelectProcessingType = 1;
 
-    var SelectMainCategory_CD = $("#Insert_MainCategory_CD").val();
+    var SelectMainCategory_CD = $("#Insert_MainCategory_List").val();
     //ポストするキーと値を格納
     var DataArray = {
       ProcessingType: SelectProcessingType,
-      MainCategory_CD: $("#Insert_MainCategory_CD").val(),
+      MainCategory_CD: $("#Insert_MainCategory_List").val(),
       SubCategory_Name: $("#Insert_SubCategory_Name").val()
     };
 
