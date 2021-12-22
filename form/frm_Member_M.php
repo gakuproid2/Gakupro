@@ -469,21 +469,16 @@ const OriginalList_School_Division = document.getElementById('School_Division_Li
 const OriginalList_School = document.getElementById('School_List');
 const OriginalList_MajorSubject = document.getElementById('MajorSubject_List');
 
-const OriginalTable_Member = document.getElementById('DataInfoTable');
-
+const OriginalTable = document.getElementById('DataInfoTable');
 
 var ListAfterChange;
 var TableAfterChange;
 
 
-
-
 //学校区分が変更になるとイベントが発生
 $('.School_Division_List').change(function() { 
 
-  var SelectSchool_Division = document.getElementById('School_Division_List').value;
-
-  var OriginalTable = OriginalTable_Member;
+  var SelectSchool_Division = document.getElementById('School_Division_List').value; 
 
   if (SelectSchool_Division == 0){
     
@@ -507,11 +502,9 @@ $('.School_Division_List').change(function() {
   }
 
   TableAfterChange = NarrowDownDataTable(OriginalTable,'schooldivision',SelectSchool_Division);
-
   document.getElementById('DataInfoTable').innerHTML = TableAfterChange.innerHTML;
     
-  document.getElementById("TableDataCount").innerHTML = "データ総数["+ (SearchDataTableValidCases(TableAfterChange)) +"件]";
-  
+  document.getElementById("TableDataCount").innerHTML = "データ総数["+ (SearchDataTableValidCases(TableAfterChange)) +"件]";  
   
 });
 
@@ -520,11 +513,7 @@ $('.School_List').change(function() {
 
   var SelectSchool_Division = document.getElementById('School_Division_List').value;
   var SelectSchool_CD = document.getElementById('School_List').value;
-
-  var OriginalTable = OriginalTable_Member;
-
   
-
   if (SelectSchool_CD == 0){
 
     ListAfterChange = StateChangeList(OriginalList_MajorSubject,0);
@@ -533,8 +522,7 @@ $('.School_List').change(function() {
     ListAfterChange = NarrowDownList(OriginalList_School,'schooldivision',SelectSchool_Division);    
     document.getElementById('School_List').innerHTML = ListAfterChange.innerHTML;
   
-    TableAfterChange = NarrowDownDataTable(OriginalTable,'schooldivision',SelectSchool_Division);
-    document.getElementById('DataInfoTable').innerHTML = TableAfterChange.innerHTML;
+    TableAfterChange = NarrowDownDataTable(OriginalTable,'schooldivision',SelectSchool_Division);    
 
   }else if(SelectSchool_CD != 0){
 
@@ -544,13 +532,12 @@ $('.School_List').change(function() {
     ListAfterChange = NarrowDownList(OriginalList_MajorSubject,'schoolcd',SelectSchool_CD);  
     document.getElementById('MajorSubject_List').innerHTML = ListAfterChange.innerHTML;
  
-    TableAfterChange = NarrowDownDataTable(OriginalTable,'schoolcd',SelectSchool_CD);
-    document.getElementById('DataInfoTable').innerHTML = TableAfterChange.innerHTML;
+    TableAfterChange = NarrowDownDataTable(TableAfterChange,'schoolcd',SelectSchool_CD);
+    
   }
-  
-  var table = document.getElementById('DataInfoTable');  
-  document.getElementById("TableDataCount").innerHTML = "データ総数["+ (SearchDataTableValidCases(table)) +"件]";
- 
+
+  document.getElementById('DataInfoTable').innerHTML = TableAfterChange.innerHTML;
+  document.getElementById("TableDataCount").innerHTML = "データ総数["+ (SearchDataTableValidCases(TableAfterChange)) +"件]"; 
 
 });
 
@@ -558,101 +545,35 @@ $('.School_List').change(function() {
 $('.MajorSubject_List').change(function() {  
 
   var SelectSchool_CD = document.getElementById('School_List').value;
-  var SelectMajorSubject_CD = document.getElementById('MajorSubject_List').value;  
-
-  var OriginalTable = OriginalTable_Member;
+  var SelectMajorSubject_CD = document.getElementById('MajorSubject_List').value;   
 
   if (SelectMajorSubject_CD == 0){    
         
-    TableAfterChange = NarrowDownDataTable(OriginalTable_Member,'schoolcd',SelectSchool_CD);
-    document.getElementById('DataInfoTable').innerHTML = TableAfterChange.innerHTML;
-
-  }else if(SelectMajorSubject_CD != 0){   
-
-    OriginalTable = NarrowDownDataTable(OriginalTable,'schoolcd',SelectSchool_CD);
-    OriginalTable = NarrowDownDataTable(OriginalTable,'majorsubjectcd',SelectMajorSubject_CD);
+    TableAfterChange = NarrowDownDataTable(OriginalTable,'schoolcd',SelectSchool_CD);
     document.getElementById('DataInfoTable').innerHTML = OriginalTable.innerHTML;
-  }  
 
-  var table = document.getElementById('DataInfoTable');
-  document.getElementById("TableDataCount").innerHTML = "データ総数["+ (SearchDataTableValidCases(table)) +"件]";
+  }else if(SelectMajorSubject_CD != 0){     
+
+    TableAfterChange = OriginalTable;
+    for(i = 0, len = TableAfterChange.rows.length; i < len; i++) {      
+
+      var ColumnTargetSchool_CD = TableAfterChange.rows[i].dataset['schoolcd'];
+      var ColumnMajorSubject_CD = TableAfterChange.rows[i].dataset['majorsubjectcd'];
+
+      if(ColumnTargetSchool_CD == '' || (ColumnTargetSchool_CD == SelectSchool_CD && ColumnMajorSubject_CD == SelectMajorSubject_CD)){        
+        TableAfterChange.rows[i].style='display:table-row';                  
+      }else{
+        TableAfterChange.rows[i].style='display:none';           
+      }    
+    }
+
+    document.getElementById('DataInfoTable').innerHTML = TableAfterChange.innerHTML;
+  }  
+  
+  document.getElementById("TableDataCount").innerHTML = "データ総数["+ (SearchDataTableValidCases(TableAfterChange)) +"件]";
 
 });
 
-//List表示状態変更
-function StateChangeList(targetlist,displaystate) {
-  
-  targetlist.value = 0;
-
-  if(displaystate==0){
-    targetlist.style='display:none';   
-  }else{
-    targetlist.style='display:select'; 
-  }
-  
-  return targetlist;
-
-}
-
-//List絞り込み
-function NarrowDownList(targetlist,listtagetname,targetdata) {
-  
-    for(var i= 0;i<targetlist.length;i++){
-
-    ListTagetValue = (targetlist[i].dataset[listtagetname]);
-
-      if(ListTagetValue == '' || targetdata == ListTagetValue || targetdata == 0){
-        targetlist[i].style='display:option';        
-      }else{
-        targetlist[i].style='display:none';          
-      }   
-  }
-
-  return targetlist;
-
-}
-
-  //table絞り込み
-  function NarrowDownDataTable(targettable,tagetcolumnname,targetdata) {    
-
-    var Difference = 0;
-    
-    for(i = 0, len = targettable.rows.length; i < len; i++) {
-
-      var TargetRow = i - Difference;
-
-      //var ColumnTargetValue = targettable.rows[i].dataset[tagetcolumnname];         
-      var ColumnTargetValue = targettable.rows[TargetRow].dataset[tagetcolumnname];         
-
-      if(ColumnTargetValue == '' || ColumnTargetValue == targetdata || targetdata == 0){        
-        // targettable.rows[i].style='display:table-row';                  
-      }else{
-        // targettable.rows[i].style='display:none';   
-        targettable.rows[TargetRow].remove();
-        Difference -= 1;
-      }    
-
-    }
-
-    return targettable;
-    
-  }
-
-  //Table表示件数検索
-  function SearchDataTableValidCases(targettable) {    
-
-    var ValidCases = 0;
-    for(i = 0, len = targettable.rows.length; i < len; i++) {  
-      
-      if(targettable.rows[i].style.display == 'table-row'){      
-        ValidCases += 1;            
-      }    
-    }
-
-    return ValidCases - 1;
-
-  }
-     
   //登録用モーダル表示時
   $('#InsertModal').on('show.bs.modal', function(e) {   
   

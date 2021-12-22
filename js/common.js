@@ -6,25 +6,26 @@ function screenChange(){
 
 function originalpost(path, params, method = 'post') {
 
-    const form = document.createElement('form');
-    form.method = method;
-    form.action = path;
-    
-    for (const key in params) {
-      if (params.hasOwnProperty(key)) {
-        const hiddenField = document.createElement('input');
-        hiddenField.type = 'hidden';
-        hiddenField.name = key;
-        hiddenField.value = params[key];
-    
-        form.appendChild(hiddenField);
-      }
+  const form = document.createElement('form');
+  form.method = method;
+  form.action = path;
+  
+  for (const key in params) {
+    if (params.hasOwnProperty(key)) {
+      const hiddenField = document.createElement('input');
+      hiddenField.type = 'hidden';
+      hiddenField.name = key;
+      hiddenField.value = params[key];
+  
+      form.appendChild(hiddenField);
     }
-    
-    document.body.appendChild(form);
-    form.submit();
+  }
+  
+  document.body.appendChild(form);
+  form.submit();
 }
 
+//データ更新時のメッセージ
 function ConfirmationMessage(TargetName,ProcessingType) {
 
   var ConfirmationMessage;
@@ -45,5 +46,76 @@ function ConfirmationMessage(TargetName,ProcessingType) {
     return false;
   }
 
+}
+
+
+//Listの表示状態変更
+function StateChangeList(targetlist,displaystate) {
+
+  targetlist.value = 0;
+
+  if(displaystate==0){
+    targetlist.style='display:none';   
+  }else{
+    targetlist.style='display:select'; 
+  }
+
+  return targetlist;
+
+}
+
+//Listの内容絞り込み
+function NarrowDownList(targetlist,listtagetname,targetdata) {
+
+  for(var i= 0;i<targetlist.length;i++){
+
+    ListTagetValue = (targetlist[i].dataset[listtagetname]);
+
+    if(ListTagetValue == '' || targetdata == ListTagetValue || targetdata == 0){
+      targetlist[i].style='display:option';        
+    }else{
+      targetlist[i].style='display:none';          
+    }   
+
+  }
+
+  return targetlist;
+
+}
+
+//tableの表示内容絞り込み
+function NarrowDownDataTable(targettable,tagetcolumnname,targetdata) {    
+  
+  
+  for(i = 0, len = targettable.rows.length; i < len; i++) {      
+
+    var ColumnTargetValue = targettable.rows[i].dataset[tagetcolumnname];                
+
+    if(ColumnTargetValue == '' || ColumnTargetValue == targetdata || targetdata == 0){        
+      targettable.rows[i].style='display:table-row';                  
+    }else{
+      targettable.rows[i].style='display:none';   
+      
+    }    
+
+  }
+
+  return targettable;
   
 }
+
+//Table表示件数検索
+function SearchDataTableValidCases(targettable) {    
+
+  var ValidCases = 0;
+  for(i = 0, len = targettable.rows.length; i < len; i++) {  
+    
+    if(targettable.rows[i].style.display == 'table-row'){      
+      ValidCases += 1;            
+    }    
+  }
+
+  return ValidCases - 1;
+
+}
+    

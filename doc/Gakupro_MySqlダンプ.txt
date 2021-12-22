@@ -46,6 +46,7 @@ CREATE TABLE `company_m` (
   `TEL2` varchar(20) DEFAULT NULL COMMENT '電話番号2',
   `Address` varchar(50) DEFAULT NULL COMMENT '住所',
   `URL` varchar(50) DEFAULT NULL COMMENT 'HP_URL',
+  `MailAddress` varchar(50) NOT NULL COMMENT 'メールアドレス',
   `Login_ID` varchar(8) DEFAULT NULL COMMENT 'ログインID',
   `Password` varchar(8) DEFAULT NULL COMMENT 'ログインパスワード',
   `RegisteredPerson` int(11) DEFAULT NULL COMMENT '登録者',
@@ -58,9 +59,9 @@ CREATE TABLE `company_m` (
 -- テーブルのデータのダンプ `company_m`
 --
 
-INSERT INTO `company_m` (`Company_ID`, `Company_Name`, `TEL1`, `TEL2`, `Address`, `URL`, `Login_ID`, `Password`, `RegisteredPerson`, `RegisteredDate`, `Changer`, `UpdateDate`) VALUES
-(1, '学生応援プロジェクト', '090-6868-2937', '098-937-6856', '沖縄県沖縄市城前町24-7', NULL, '1', '1', 99, NULL, NULL, NULL),
-(2, 'ダミー会社', '098-937-9999', '090-1111-4444', '沖縄県宜野湾市〇〇町3244', NULL, '1', '1', 99, NULL, NULL, NULL);
+INSERT INTO `company_m` (`Company_ID`, `Company_Name`, `TEL1`, `TEL2`, `Address`, `URL`, `MailAddress`,`Login_ID`, `Password`, `RegisteredPerson`, `RegisteredDate`, `Changer`, `UpdateDate`) VALUES
+(1, '学生応援プロジェクト', '090-6868-2937', '098-937-6856', '沖縄県沖縄市城前町24-7', NULL,NULL, '1', '1', 99, NULL, NULL, NULL),
+(2, 'ダミー会社', '098-937-9999', '090-1111-4444', '沖縄県宜野湾市〇〇町3244', NULL,NULL, '1', '1', 99, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -191,7 +192,8 @@ CREATE TABLE `member_m` (
 --
 
 INSERT INTO `member_m` (`Member_ID`, `Member_Name`, `Member_NameYomi`, `Birthday`, `TEL`, `MailAddress`, `School_CD`, `MajorSubject_CD`, `AdmissionYearMonth`, `GraduationYearMonth`, `Login_ID`, `Password`, `EmergencyContactRelations`, `EmergencyContactTEL`, `Remarks`, `RegistrationStatus`, `RegisteredPerson`, `RegisteredDate`, `Changer`, `UpdateDate`) VALUES
-(1, '島　イチロウ', 'シマ　イチロウ', '2005-03-30', '090-6868-2937', 'test@mailcom', 1, 3, '2020-04', '2023-03', NULL, NULL, NULL, NULL, NULL, 1, 99, '2021-11-15 11:04:38', 99, '2021-11-15 11:04:38');
+(1, '島　イチロウ', 'シマ　イチロウ', '2005-03-30', '090-6868-2937', 'test@mailcom', 1, 3, '2020-04', '2023-03', NULL, NULL, NULL, NULL, NULL, 1, 99, '2021-11-15 11:04:38', 99, '2021-11-15 11:04:38'),
+(2, '佐藤　次郎', 'サトウ　ジロウ', '2005-03-30', '090-6868-2937', 'test@mailcom', 2, 1, '2020-04', '2023-03', NULL, NULL, NULL, NULL, NULL, 1, 99, '2021-11-15 11:04:38', 99, '2021-11-15 11:04:38');
 
 -- --------------------------------------------------------
 
