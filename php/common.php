@@ -38,7 +38,7 @@ class common
 
     $SlectForm = '';
     foreach ($Data_Table as $val) {
-      $SlectForm .= " <option value=" . $val['Screen_Path'] . ">" . $val['Screen_Name'] . "</option>";
+      $SlectForm .= " <option value=". $val['Screen_Path'] . ">" . $val['Screen_Name'] . "</option>";
     }
 
     $HeaderInfo = "      

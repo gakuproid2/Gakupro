@@ -162,7 +162,7 @@ if (!empty($_POST["Request"])) {
       $Create_img = imagecreatefrompng($Template_Dir);
 
       // 挿入する文字列のフォント      
-      $fontfilefile = "../fonts/YuGothB.ttc";
+      $fontfilefile = $_SERVER['DOCUMENT_ROOT']."/gakupro/fonts/YuGothB.ttc";
 
       //日付挿入--開始--
       // 挿入する文字列
