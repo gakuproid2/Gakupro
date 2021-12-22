@@ -471,6 +471,7 @@ const OriginalList_MajorSubject = document.getElementById('MajorSubject_List');
 
 const OriginalTable_Member = document.getElementById('DataInfoTable');
 
+
 var ListAfterChange;
 var TableAfterChange;
 
@@ -615,17 +616,19 @@ function NarrowDownList(targetlist,listtagetname,targetdata) {
   function NarrowDownDataTable(targettable,tagetcolumnname,targetdata) {    
 
     var Difference = 0;
-
-    var test;
+    
     for(i = 0, len = targettable.rows.length; i < len; i++) {
 
-      var ColumnTargetValue = targettable.rows[i].dataset[tagetcolumnname];         
+      var TargetRow = i - Difference;
+
+      //var ColumnTargetValue = targettable.rows[i].dataset[tagetcolumnname];         
+      var ColumnTargetValue = targettable.rows[TargetRow].dataset[tagetcolumnname];         
 
       if(ColumnTargetValue == '' || ColumnTargetValue == targetdata || targetdata == 0){        
         // targettable.rows[i].style='display:table-row';                  
       }else{
-        // targettable.rows[i - Difference].style='display:none';   
-        targettable.rows[i - Difference].remove();
+        // targettable.rows[i].style='display:none';   
+        targettable.rows[TargetRow].remove();
         Difference -= 1;
       }    
 
