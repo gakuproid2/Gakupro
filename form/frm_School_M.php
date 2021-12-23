@@ -309,6 +309,8 @@ $Table .= "</table>";
     $('#Insert_School_Name').val('');       
     $('#Insert_TEL').val('');
     $('#Insert_URL').val('');   
+    var SelectSchool_Division = document.getElementById('School_Division_List').value;
+    $('#Insert_School_Division_List').val(SelectSchool_Division);
     
   });
 

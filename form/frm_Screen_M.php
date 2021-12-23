@@ -294,6 +294,8 @@ $Table .= "</table>";
   $('#InsertModal').on('show.bs.modal', function(e) {
 
     $('#Insert_Screen_Name').val('');
+    var SelectAuthority = document.getElementById('Authority_List').value;
+    $('#Insert_Authority_List').val(SelectAuthority);
 
   });
 

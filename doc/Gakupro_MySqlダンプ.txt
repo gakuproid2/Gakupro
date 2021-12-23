@@ -246,8 +246,10 @@ CREATE TABLE `school_m` (
 INSERT INTO `school_m` (`School_CD`, `School_Division`, `School_Name`, `TEL`, `URL`, `UsageSituation`, `Changer`, `UpdateDate`) VALUES
 (1, 1, '沖縄県立西原高等学校', '090-1234-5678', 'http://www.nishihara-h.open.ed.jp/', 1, 1, '2021-08-16 21:47:47'),
 (2, 2, '琉球大学', '090-1234-5678', 'https://www.u-ryukyu.ac.jp/', 1, 2, '2021-08-16 21:47:47'),
-(3, 3, 'サイ・テク・カレッジ', '098-1234-2699', 'https://www.sci-tec.ac.jp/index.php', 1, 1, '2021-08-16 21:47:47');
-
+(3, 3, 'サイ・テク・カレッジ', '098-1234-2699', 'https://www.sci-tec.ac.jp/index.php', 1, 1, '2021-08-16 21:47:47'),
+(4, 1, 'テスト高等学校', '090-1234-5678', 'http://www.nishihara-h.open.ed.jp/', 1, 1, '2021-08-16 21:47:47'),
+(5, 2, 'テスト大学', '090-1234-5678', 'http://www.nishihara-h.open.ed.jp/', 1, 1, '2021-08-16 21:47:47'),
+(6, 3, 'テスト専門', '090-1234-5678', 'http://www.nishihara-h.open.ed.jp/', 1, 1, '2021-08-16 21:47:47');
 -- --------------------------------------------------------
 
 --
