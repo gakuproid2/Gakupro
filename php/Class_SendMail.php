@@ -44,7 +44,7 @@ class Class_SendMail
     ";
 
     //true or false
-    return $this->Sendmail($to,$subject,$message);
+    return $this->SendMail($to,$subject,$message);
 
   }
 
@@ -77,12 +77,12 @@ class Class_SendMail
     ";   
 
     //true or false
-    return $this->Sendmail($to,$subject,$message);
+    return $this->SendMail($to,$subject,$message);
 
   }
 
   //共通メール送信処理
-  function Sendmail($to, $subject, $message)
+  function SendMail($to, $subject, $message)
   {
 
     mb_language("Japanese");

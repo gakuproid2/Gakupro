@@ -1,7 +1,11 @@
 //Headerのプルダウン選択時の画面遷移処理
 function screenChange(){
-    pullSellect = document.pullForm.pullMenu.selectedIndex ;
-    location.href = document.pullForm.pullMenu.options[pullSellect].value ;
+
+  
+    var pullSellect = document.pullForm.pullMenu.selectedIndex ;
+    var NextUrl= document.pullForm.pullMenu.options[pullSellect].value ;
+
+    location.href = NextUrl;
 }
 
 function originalpost(path, params, method = 'post') {
@@ -115,6 +119,7 @@ function SearchDataTableValidCases(targettable) {
     }    
   }
 
+  //Header部分が加算されるため、-1
   return ValidCases - 1;
 
 }

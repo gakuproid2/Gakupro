@@ -285,7 +285,7 @@ INSERT INTO `screen_m` (`Screen_ID`, `Screen_Name`, `Screen_Path`, `Authority`, 
 (14, 'メンバー仮登録画面', 'frm_TemporaryRegistration.php', 3, 1, 1, '2021-09-11 10:27:00'),
 (15, 'メンバー本登録画面', 'frm_Registration.php', 1, 1, 1, '2021-09-11 10:27:00'),
 (16, 'テスト＿メールアドレス認証画面', 'frm_MailAddressAuthenticate.php?Key_Code=23001231001', 3, 1, 1, '2021-09-11 10:27:00'),
-(17, 'テスト＿メール送信画面', 'frm_Sendmail.php', 3, 1, 1, '2021-09-11 10:27:00');
+(17, 'テスト＿メール送信画面', 'frm_SendMail.php', 3, 1, 1, '2021-09-11 10:27:00');
 
 -- --------------------------------------------------------
 
