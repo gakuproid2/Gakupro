@@ -33,9 +33,6 @@ class common
       $Screen_Name = $ScreenInfo;
     }
 
-
-
-
     $SlectForm = '';
     foreach ($Data_Table as $val) {
       $SlectForm .= " <option value=". $val['Screen_Path'] . ">" . $val['Screen_Name'] . "</option>";

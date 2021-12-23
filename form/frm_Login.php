@@ -13,9 +13,9 @@
   $_SESSION = array();
 
   //クラスファイルの読み込み
-  require_once '../dao/dao_Login.php';
+  require_once '../dao/dao_Staff_M.php';
   //クラスの生成
-  $dao = new dao_Login;
+  $dao_Staff_M = new dao_Staff_M;
 
   $alert = "";
   //ポストされた確認する。
@@ -28,7 +28,7 @@
 
     if (isset($_POST['Login'])) {
 
-      $Data_Table = $dao->MatchConfirmation($info);
+      $Data_Table = $dao_Staff_M->MatchConfirmation($info);
 
       $Judgement = false;
 

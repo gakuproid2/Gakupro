@@ -2,9 +2,7 @@
 <html lang="ja">
 
 <?php
-
   session_start(); //セッションスタート
-
   //クラスファイルの読み込み
   require_once '../php/common.php';
   //クラスの生成

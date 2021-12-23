@@ -2,6 +2,35 @@
 class dao_photoget_t
 {
 
+  function PasswordCheck($info)
+  {
+    //クラスファイルの読み込み
+    require_once '../dao/DB_Connection.php';
+    //クラスの生成
+    $DB_Connection = new connect();
+
+    $Key_Code = $info['Key_Code'];
+    $Password = $info['Password'];
+
+
+    //SELECT_SQL文の発行
+    $SQL = "
+      SELECT
+      Key_Code
+      ,Password      
+      FROM
+      photoget_t
+      WHERE
+      Key_Code = '$Key_Code'
+      AND
+      Password = '$Password'
+      ; ";
+
+    //クラスの中の関数の呼び出し
+    $DataTable = $DB_Connection->select($SQL);
+    return $DataTable;
+  }
+
   //登録処理
   function Insert_photoget_t($Key_Code, $Password)
   {
@@ -39,13 +68,13 @@ class dao_photoget_t
     ,作成数
     FROM
     (
-    SELECT 
-    LEFT(Key_Code,8) 日付
-    ,COUNT(LEFT(Key_Code,8))作成数
-    FROM
-    gakupro.photoget_t 
-    GROUP BY
-    LEFT(Key_Code,8)
+      SELECT 
+      LEFT(Key_Code,8) 日付
+      ,COUNT(LEFT(Key_Code,8))作成数
+      FROM
+      gakupro.photoget_t 
+      GROUP BY
+      LEFT(Key_Code,8)
     )AS WORK
     WHERE
     日付 = '$Date';

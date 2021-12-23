@@ -10,9 +10,9 @@
 
 <?php
 //クラスファイルの読み込み
-require_once '../dao/dao_ImageGetResult.php';
+require_once '../dao/dao_photoget_t.php';
 //クラスの生成
-$dao_ImageGetResult = new dao_ImageGetResult();
+$dao_photoget_t = new dao_photoget_t();
 
 $ImageALL = "";
 
@@ -30,7 +30,7 @@ if (isset($_POST['PictureGet'])) {
   );
 
   //キーナンバーとパスワードでフォルダ名取得処理
-  $GetData = $dao_ImageGetResult->PasswordCheck($info);
+  $GetData = $dao_photoget_t->PasswordCheck($info);
 
   $Judge = false;
   foreach ($GetData as $val) {
