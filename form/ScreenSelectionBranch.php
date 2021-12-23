@@ -13,7 +13,7 @@
   if (isset($_SESSION['Staff_ID'])) {
     $PostUrl = 'frm_ImageUpload.php';
   } else {
-    $PostUrl = 'frm_ImageGet.php';
+    $PostUrl = 'frm_PhotoGet.php';
   }
 
   $Key_Code = '';

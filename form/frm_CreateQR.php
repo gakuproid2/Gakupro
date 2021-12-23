@@ -10,9 +10,9 @@ require_once '../php/common.php';
 $common = new common();
 
 //クラスファイルの読み込み
-require_once '../dao/dao_photoget_t.php';
+require_once '../dao/dao_PhotoGet_t.php';
 //クラスの生成
-$dao_photoget_t = new dao_photoget_t();
+$dao_PhotoGet_t = new dao_PhotoGet_t();
 
 $HeaderInfo = $common->HeaderCreation(8);
 $JS_Info = $common->Read_JSconnection();
@@ -44,7 +44,7 @@ if (!empty($_POST["Request"])) {
   $Date = str_replace("-", "", $_POST["TargetDate"]);
 
   //日付で現状の作成数を取得
-  $Quantity = $dao_photoget_t->Get_Quantity($Date);
+  $Quantity = $dao_PhotoGet_t->Get_Quantity($Date);
 
   //リクエスト数より作成数が上回っているはアラートを表示
   //リクエスト数が上回っている場合は差分を作成
@@ -68,7 +68,7 @@ if (!empty($_POST["Request"])) {
     $Password_array = [];
 
     //日付で既存データのパスワードを取得
-    $Password_Table = $dao_photoget_t->Get_PassWord($Date);
+    $Password_Table = $dao_PhotoGet_t->Get_PassWord($Date);
 
     //パスワードを取得した分パスワード格納用配列に追加
     foreach ($Password_Table as $Pass_val) {
@@ -105,7 +105,7 @@ if (!empty($_POST["Request"])) {
       $Key_Code = $Date  . str_pad($i, 3, 0, STR_PAD_LEFT);
 
       //キーコードとパスワードを登録する
-      $Result = $dao_photoget_t->Insert_photoget_t($Key_Code, $Password_array[$i]);
+      $Result = $dao_PhotoGet_t->Insert_PhotoGet_t($Key_Code, $Password_array[$i]);
     }
 
     //後ほど削除予定↓
@@ -127,7 +127,7 @@ if (!empty($_POST["Request"])) {
     $common->CreateDirectory($QrTicket_Dir);
 
     //日付でデータ（Key_CodeとPassWord）取得
-    $Key_Code_Table = $dao_photoget_t->Get_photoget_t($Date);
+    $Key_Code_Table = $dao_PhotoGet_t->Get_PhotoGet_t($Date);
 
     //データ数分のQRチケットを作成
     foreach ($Key_Code_Table as $value) {

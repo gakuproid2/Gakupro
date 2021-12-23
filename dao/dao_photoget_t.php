@@ -1,5 +1,5 @@
 <?php
-class dao_photoget_t
+class dao_PhotoGet_t
 {
 
   function PasswordCheck($info)
@@ -19,7 +19,7 @@ class dao_photoget_t
       Key_Code
       ,Password      
       FROM
-      photoget_t
+      PhotoGet_t
       WHERE
       Key_Code = '$Key_Code'
       AND
@@ -32,7 +32,7 @@ class dao_photoget_t
   }
 
   //登録処理
-  function Insert_photoget_t($Key_Code, $Password)
+  function Insert_PhotoGet_t($Key_Code, $Password)
   {
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
@@ -41,7 +41,7 @@ class dao_photoget_t
 
     $SQL = "
     INSERT INTO 
-    gakupro.photoget_t (
+    gakupro.PhotoGet_t (
     Key_Code
     ,Password    
     )VALUES(
@@ -72,7 +72,7 @@ class dao_photoget_t
       LEFT(Key_Code,8) 日付
       ,COUNT(LEFT(Key_Code,8))作成数
       FROM
-      gakupro.photoget_t 
+      gakupro.PhotoGet_t 
       GROUP BY
       LEFT(Key_Code,8)
     )AS WORK
@@ -105,7 +105,7 @@ class dao_photoget_t
     Key_Code
     ,PassWord
     FROM
-    gakupro.photoget_t 
+    gakupro.PhotoGet_t 
     WHERE
     LEFT(Key_Code,8) = '$Date';
     ";
@@ -117,7 +117,7 @@ class dao_photoget_t
   }
 
   //日付別データ取得
-  function Get_photoget_t($Date)
+  function Get_PhotoGet_t($Date)
   {
     //クラスファイルの読み込み
     require_once '../dao/DB_Connection.php';
@@ -129,7 +129,7 @@ class dao_photoget_t
     Key_Code
     ,PassWord
     FROM
-    gakupro.photoget_t
+    gakupro.PhotoGet_t
     WHERE
     LEFT(Key_Code,8) = '$Date'
     ;

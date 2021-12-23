@@ -50,7 +50,6 @@
       AND
       Screen_m.Authority >=$Authority";
     }
-
    
     $SQL .= "
     ORDER BY

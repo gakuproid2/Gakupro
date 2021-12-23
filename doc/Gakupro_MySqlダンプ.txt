@@ -6,8 +6,8 @@
 
 -- テーブルがあれば削除--
 drop table if exists `company_m`;
-drop table if exists `imageget_t`;
-drop table if exists `photoget_t`;
+drop table if exists `PhotoGet_t`;
+drop table if exists `PhotoGet_t`;
 
 drop table if exists `mailaddressauthenticate_t`;
 drop table if exists `maincategory_m`;
@@ -68,19 +68,19 @@ INSERT INTO `company_m` (`Company_ID`, `Company_Name`, `TEL1`, `TEL2`, `Address`
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `photoget_t`
+-- テーブルの構造 `PhotoGet_t`
 --
 
-CREATE TABLE `photoget_t` (
+CREATE TABLE `PhotoGet_t` (
   `Key_Code` varchar(15) NOT NULL COMMENT '写真保存用フォルダのキーコード',
   `Password` int(11) NOT NULL COMMENT '写真取得用パスワード'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='社員取得用テーブル';
 
 --
--- テーブルのデータのダンプ `photoget_t`
+-- テーブルのデータのダンプ `PhotoGet_t`
 --
 
-INSERT INTO `photoget_t` (`Key_Code`, `Password`) VALUES
+INSERT INTO `PhotoGet_t` (`Key_Code`, `Password`) VALUES
 ('99999999001', 9999);
 
 -- --------------------------------------------------------
@@ -275,7 +275,7 @@ INSERT INTO `screen_m` (`Screen_ID`, `Screen_Name`, `Screen_Path`, `Authority`, 
 (4, '大分類マスタ', 'frm_MainCategory_M.php', 2, 1, 2, '2021-09-04 10:54:31'),
 (5, '中分類マスタ', 'frm_SubCategory_M.php', 2, 1, 1, '2021-09-04 10:54:31'),
 (6, '画像アップロード検証用', 'frm_ImageUpload.php', 1, 1, 2, '2021-09-04 10:54:31'),
-(7, '写真取得検証用', 'frm_ImageGet.php', 1, 1, 1, '2021-09-04 10:54:31'),
+(7, '写真取得検証用', 'frm_PhotoGet.php', 1, 1, 1, '2021-09-04 10:54:31'),
 (8, 'QRチケット作成', 'frm_CreateQR.php', 3, 1, 2, '2021-09-04 10:54:31'),
 (9, '画面管理', 'frm_Screen_M.php', 2, 1, 1, '2021-09-04 10:54:31'),
 (10, '学校マスタ', 'frm_School_M.php', 1, 1, 1, '2021-09-04 10:54:31'),
@@ -359,9 +359,9 @@ ALTER TABLE `company_m`
   ADD PRIMARY KEY (`Company_ID`);
 
 --
--- テーブルのインデックス `photoget_t`
+-- テーブルのインデックス `PhotoGet_t`
 --
-ALTER TABLE `photoget_t`
+ALTER TABLE `PhotoGet_t`
   ADD PRIMARY KEY (`Key_Code`);
 
 --
