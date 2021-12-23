@@ -274,7 +274,7 @@ INSERT INTO `screen_m` (`Screen_ID`, `Screen_Name`, `Screen_Path`, `Authority`, 
 (3, 'DB接続確認', 'frm_DBcc.php', 1, 1, 1, '2021-09-04 10:54:31'),
 (4, '大分類マスタ', 'frm_MainCategory_M.php', 2, 1, 2, '2021-09-04 10:54:31'),
 (5, '中分類マスタ', 'frm_SubCategory_M.php', 2, 1, 1, '2021-09-04 10:54:31'),
-(6, '画像アップロード検証用', 'frm_ImageUpload.php', 1, 1, 2, '2021-09-04 10:54:31'),
+(6, '画像アップロード', 'frm_ImageUpload.php', 1, 1, 2, '2021-09-04 10:54:31'),
 (7, '写真取得検証用', 'frm_PhotoGet.php', 1, 1, 1, '2021-09-04 10:54:31'),
 (8, 'QRチケット作成', 'frm_CreateQR.php', 3, 1, 2, '2021-09-04 10:54:31'),
 (9, '画面管理', 'frm_Screen_M.php', 2, 1, 1, '2021-09-04 10:54:31'),
@@ -282,10 +282,10 @@ INSERT INTO `screen_m` (`Screen_ID`, `Screen_Name`, `Screen_Path`, `Authority`, 
 (11, '専攻マスタ', 'frm_MajorSubject_M.php', 2, 1, 2, '2021-09-04 01:23:59'),
 (12, 'スタッフマスタ', 'frm_Staff_M.php', 2, 1, 2, '2021-09-04 01:30:27'),
 (13, 'メンバーマスタ', 'frm_Member_M.php', 1, 1, 1, '2021-09-11 10:27:00'),
-(14, 'メンバー仮登録画面', 'frm_TemporaryRegistration.php', 3, 1, 1, '2021-09-11 10:27:00'),
-(15, 'メンバー本登録画面', 'frm_Registration.php', 1, 1, 1, '2021-09-11 10:27:00'),
-(16, 'テスト＿メールアドレス認証画面', 'frm_MailAddressAuthenticate.php?Key_Code=23001231001', 3, 1, 1, '2021-09-11 10:27:00'),
-(17, 'テスト＿メール送信画面', 'frm_SendMail.php', 3, 1, 1, '2021-09-11 10:27:00');
+(14, 'メンバー仮登録画面', 'frm_MemberTemporaryRegistration.php', 3, 1, 1, '2021-09-11 10:27:00'),
+(15, 'メンバー本登録画面', 'frm_MemberMainRegistration.php', 1, 1, 1, '2021-09-11 10:27:00'),
+(16, 'メールアドレス認証画面', 'frm_MailAddressAuthenticate.php?Key_Code=23001231001', 3, 1, 1, '2021-09-11 10:27:00'),
+(17, 'メール送信画面', 'frm_SendMail.php', 3, 1, 1, '2021-09-11 10:27:00');
 
 -- --------------------------------------------------------
 

@@ -3,7 +3,7 @@
 class Class_SendMail
 {
   //仮登録時のメールアドレス認証時
-  function TemporaryRegistrationMailSending($MailInfo)
+  function MemberTemporaryRegistrationMailSending($MailInfo)
   {
     //仮登録希望者への自動メール送信処理の結果を格納  true or false
     $Result = $this->MailSendingToMember($MailInfo);  

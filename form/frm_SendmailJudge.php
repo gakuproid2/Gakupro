@@ -59,7 +59,7 @@ if (count($_POST) > 1) {
     );
   }
 
-  $Result = $Class_SendMail->TemporaryRegistrationMailSending($MailInfo);
+  $Result = $Class_SendMail->MemberTemporaryRegistrationMailSending($MailInfo);
 
   if ($Result == true) {
 

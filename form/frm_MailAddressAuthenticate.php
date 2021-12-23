@@ -99,7 +99,7 @@ $(window).on('load', function(event) {
   var Judge = "<?php echo $Judge; ?>";
 
   if (Judge == true) {
-    post("frm_TemporaryRegistration.php", {
+    post("frm_MemberTemporaryRegistration.php", {
     Key_Code: "<?php echo $Key_Code; ?>"
   });
   } 

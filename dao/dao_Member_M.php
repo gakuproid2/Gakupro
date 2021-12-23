@@ -237,7 +237,7 @@
     }
 
     //仮登録処理
-    function TemporaryRegistration($info){
+    function MemberTemporaryRegistration($info){
       
       
       //クラスファイルの読み込み
