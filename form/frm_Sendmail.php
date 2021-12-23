@@ -9,7 +9,7 @@
 
 <body>
 
-  <form action="frm_SendMailJudge.php" method="POST">
+  <form action="frm_SendMailResult.php" method="POST">
     <p>メールアドレス：<input type="email" id="MailAddress" name="MailAddress" autocomplete="off"></p>
     <p>
       氏名

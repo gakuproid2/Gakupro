@@ -28,7 +28,7 @@ if (!empty($_POST["Key_Code"])) {
 
 <body>
    
-  <form action="frm_ImageUploadCheck.php" method="post" enctype="multipart/form-data">
+  <form action="frm_PhotoUploadResult.php" method="post" enctype="multipart/form-data">
     <p>Key_Code:<input type='text' name='Key_Code' value='<?php echo $Key_Code; ?>' readonly></p>
     <input type="file" name="file[]" multiple>
     <input type="submit" name="Upload" value="アップロード">
