@@ -15,7 +15,8 @@ class dao_Company_M{
     ,Company_Name
     ,TEL1
     ,TEL2
-    ,Address
+    ,Address1
+    ,Address2
     ,URL
     ,MailAddress
     ,Login_ID
@@ -80,7 +81,8 @@ class dao_Company_M{
     $Company_Name = $info['Company_Name'];
     $TEL1 = $info['TEL1'];
     $TEL2 = $info['TEL2'];
-    $Address = $info['Address']; 
+    $Address1 = $info['Address1']; 
+    $Address2 = $info['Address2']; 
     $URL = $info['URL']; 
     $MailAddress = $info['MailAddress']; 
     $Login_ID = $info['Login_ID']; 
@@ -103,7 +105,8 @@ class dao_Company_M{
       ,Company_Name
       ,TEL1
       ,TEL2
-      ,Address
+      ,Address1
+      ,Address2
       ,URL
       ,MailAddress
       ,Login_ID
@@ -115,7 +118,8 @@ class dao_Company_M{
       ,'$Company_Name'
       ,'$TEL1'
       ,'$TEL2'
-      ,'$Address'
+      ,'$Address1'
+      ,'$Address2'
       ,'$URL'
       ,'$MailAddress'
       ,'$Login_ID'
@@ -132,7 +136,8 @@ class dao_Company_M{
        Company_Name = '$Company_Name'
       ,TEL1 = '$TEL1'
       ,TEL2 = '$TEL2'      
-      ,Address = '$Address'
+      ,Address = '$Address1'
+      ,Address = '$Address2'
       ,URL = '$URL'
       ,MailAddress = '$MailAddress'
       ,Login_ID = '$Login_ID'

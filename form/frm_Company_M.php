@@ -45,10 +45,40 @@ if (isset($_POST["TEL1"])) {
 } else {
   $TEL1 = '';
 };
+if (isset($_POST["TEL2"])) {
+  $TEL2 = $_POST["TEL2"];
+} else {
+  $TEL2 = '';
+};
+if (isset($_POST["Address1"])) {
+  $Address1 = $_POST["Address1"];
+} else {
+  $Address1 = '';
+};
+if (isset($_POST["Address2"])) {
+  $Address2 = $_POST["Address2"];
+} else {
+  $Address2 = '';
+};
 if (isset($_POST["URL"])) {
   $URL = $_POST["URL"];
 } else {
   $URL = '';
+};
+if (isset($_POST["MailAddress"])) {
+  $MailAddress = $_POST["MailAddress"];
+} else {
+  $MailAddress = '';
+};
+if (isset($_POST["Login_ID"])) {
+  $Login_ID = $_POST["Login_ID"];
+} else {
+  $Login_ID = '';
+};
+if (isset($_POST["Password"])) {
+  $Password = $_POST["Password"];
+} else {
+  $Password = '';
 };
 if (isset($_POST["UsageSituation"])) {
   $UsageSituation = $_POST["UsageSituation"];
@@ -65,9 +95,11 @@ if (isset($_POST["UsageSituation"])) {
       'Company_Name' => $Company_Name,      
       'TEL1' => $TEL1,
       'TEL2' => $TEL2,
-      'Address' => $Address,
-      'URL' => $URL,
+      'Address1' => $Address1,
+      'Address2' => $Address2,
+      'URL' => $URL,            
       'MailAddress' => $MailAddress,
+      'Login_ID' => $Login_ID,
       'Password' => $Password,
       'ProcessingType' => $_POST["ProcessingType"]
     );
@@ -117,7 +149,8 @@ foreach ($Data_Table as $val) {
       data-companyname='" . $val['Company_Name'] . "'
       data-tel1='" . $val['TEL1'] . "'
       data-tel2='" . $val['TEL2'] . "'
-      data-address='" . $val['Address'] . "'
+      data-address1='" . $val['Address1'] . "'
+      data-address2='" . $val['Address2'] . "'
       data-url='" . $val['URL'] . "'
       data-mailaddress='" . $val['MailAddress'] . "'      
       data-usage='" . $val['UsageSituation'] . "' >
@@ -483,6 +516,15 @@ $Table .= "</table>";
     if (DataArray.TEL1 == "" && DataArray.TEL2 == "") {
       ErrorMsg += '電話番号を入力してください。\n';
     }
+
+    if (DataArray.Login_ID == "") {
+      ErrorMsg += 'ログインIDを入力してください。\n';
+    }
+
+    if (DataArray.Password == "") {
+      ErrorMsg += 'パスワードを入力してください。\n';
+    }
+ 
 
     if (!ErrorMsg == "") {
       ErrorMsg = '以下は必須項目です。\n' + ErrorMsg;
