@@ -1,3 +1,4 @@
+
 mysqlパスワード設定
 https://www.javadrive.jp/xampp/mysql/index2.html
 
@@ -7,3 +8,6 @@ https://a5m2.mmatsubara.com/tips/mysql_connect/
 Xデバッグ
 https://freemake.co.jp/4161/
 
+カルーセル参考
+https://webdesignfacts.net/entry/css-carousel8/#gsc.tab=0
+https://www.esz.co.jp/blog/185.html

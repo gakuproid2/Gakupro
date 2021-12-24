@@ -46,11 +46,12 @@ CREATE TABLE `company_m` (
   `Company_Name` varchar(50) NOT NULL COMMENT '会社名',
   `TEL1` varchar(20) DEFAULT NULL COMMENT '電話番号1',
   `TEL2` varchar(20) DEFAULT NULL COMMENT '電話番号2',
-  `Address` varchar(50) DEFAULT NULL COMMENT '住所',
+  `Address1` varchar(50) DEFAULT NULL COMMENT '住所1',
+  `Address2` varchar(50) DEFAULT NULL COMMENT '住所2(建物名など)',
   `URL` varchar(50) DEFAULT NULL COMMENT 'HP_URL',
-  `MailAddress` varchar(50) NOT NULL COMMENT 'メールアドレス',
-  `Login_ID` varchar(8) DEFAULT NULL COMMENT 'ログインID',
-  `Password` varchar(8) DEFAULT NULL COMMENT 'ログインパスワード',
+  `MailAddress` varchar(50) DEFAULT NULL COMMENT 'メールアドレス',
+  `Login_ID` varchar(8) NOT NULL COMMENT 'ログインID',
+  `Password` varchar(8) NOT NULL COMMENT 'ログインパスワード',
   `RegisteredPerson` int(11) DEFAULT NULL COMMENT '登録者',
   `RegisteredDate` datetime DEFAULT NULL COMMENT '登録日',
   `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
@@ -61,9 +62,9 @@ CREATE TABLE `company_m` (
 -- テーブルのデータのダンプ `company_m`
 --
 
-INSERT INTO `company_m` (`Company_ID`, `Company_Name`, `TEL1`, `TEL2`, `Address`, `URL`, `MailAddress`,`Login_ID`, `Password`, `RegisteredPerson`, `RegisteredDate`, `Changer`, `UpdateDate`) VALUES
-(1, '学生応援プロジェクト', '090-6868-2937', '098-937-6856', '沖縄県沖縄市城前町24-7', NULL,NULL, '1', '1', 99, NULL, NULL, NULL),
-(2, 'ダミー会社', '098-937-9999', '090-1111-4444', '沖縄県宜野湾市〇〇町3244', NULL,NULL, '1', '1', 99, NULL, NULL, NULL);
+INSERT INTO `company_m` (`Company_ID`, `Company_Name`, `TEL1`, `TEL2`, `Address1`,`Address2`, `URL`, `MailAddress`,`Login_ID`, `Password`, `RegisteredPerson`, `RegisteredDate`, `Changer`, `UpdateDate`) VALUES
+(1, '学生応援プロジェクト', '090-6868-2937', '098-937-6856', '沖縄県沖縄市城前町24-7','', NULL,NULL, '1', '1', 99, NULL, NULL, NULL),
+(2, 'ダミー会社', '098-937-9999', '090-1111-4444', '沖縄県宜野湾市〇〇町3244','ビル102', NULL,NULL, '2', '2', 99, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
