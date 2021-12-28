@@ -54,7 +54,7 @@ if (!empty($_POST["Request"])) {
   } else {
 
     //基本のディリクトリ
-    $Base_Dir = '../File/';
+    $Base_Dir = '../photo/';
     
     $Date_Dir = $Base_Dir . $Date . '/';
     $common->CreateDirectory($Date_Dir);
@@ -162,7 +162,7 @@ if (!empty($_POST["Request"])) {
       $Create_img = imagecreatefrompng($Template_Dir);
 
       // 挿入する文字列のフォント      
-      $fontfilefile = $_SERVER['DOCUMENT_ROOT']."/gakupro/fonts/YuGothB.ttc";
+      $fontfile = $_SERVER['DOCUMENT_ROOT']."/gakupro/fonts/YuGothB.ttc";
 
       //日付挿入--開始--
       // 挿入する文字列
@@ -189,7 +189,7 @@ if (!empty($_POST["Request"])) {
         $x,         // 挿入位置 x 座標
         $y,         // 挿入位置 y 座標
         $color,     // 文字の色
-        $fontfilefile,  // フォントファイル
+        $fontfile,  // フォントファイル
         $text
       );     // 挿入文字列
       //日付挿入--終了--
@@ -220,7 +220,7 @@ if (!empty($_POST["Request"])) {
         $x,         // 挿入位置 x 座標
         $y,         // 挿入位置 y 座標
         $color,     // 文字の色
-        $fontfilefile,  // フォントファイル
+        $fontfile,  // フォントファイル
         $text
       );     // 挿入文字列
 
@@ -252,7 +252,7 @@ if (!empty($_POST["Request"])) {
         $x,         // 挿入位置 x 座標
         $y,         // 挿入位置 y 座標
         $color,     // 文字の色
-        $fontfilefile,  // フォントファイル
+        $fontfile,  // フォントファイル
         $text
       );     // 挿入文字列
 

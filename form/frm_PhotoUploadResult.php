@@ -27,46 +27,22 @@ if (isset($_POST['Upload'])) {
   }
 
   //画像格納フォルダの階層
-  $BaseDir = '../File/';
+  $BaseDir = '../photo/';
     
   //キーナンバーの日付部分のみ格納(例：2020123101 → 20201231)
   $Date = substr($Key_Code, 0, 8);
   
   $KeyNum = str_replace($Date, '', $Key_Code);
 
-  //FILEディレクトリに日付ディレクトリの存在確認
-  if (file_exists($BaseDir . $Date)) {
-    //存在したときの処理
-  } else {
-    //存在しないときの処理
-    //フォルダ作成
-    mkdir($BaseDir . $Date, 0777);
-  }
+  $common->CreateDirectory($BaseDir . $Date);
+
 
   //日付ディレクトリの次にImageディレクトリ作成の為
   $ImageDir = $BaseDir . $Date .'/Image/';
-
-  //Imageディレクトリ存在確認
-  if (file_exists($ImageDir)) {
-    //存在したときの処理
-  } else {
-    //存在しないときの処理
-    //フォルダ作成
-    mkdir($ImageDir, 0777);
-  }
-
- $CreateDir = $ImageDir . $KeyNum;
-
-  //FILEディレクトリ→日付ディレクトリ→Imageディレクトリの存在確認
-  if (file_exists($CreateDir)) {
-    //存在したときの処理
-  } else {
-    //存在しないときの処理
-    //フォルダ作成
-    mkdir($CreateDir, 0777);
-  }
+  $common->CreateDirectory($ImageDir);
  
-  $CreateDir =$CreateDir .'/';
+  $CreateDir = $ImageDir . $KeyNum.'/';
+  $common->CreateDirectory($CreateDir);  
 
   $Num = 0;
   foreach ($_FILES['file']['tmp_name'] as $no => $tmp_name) {

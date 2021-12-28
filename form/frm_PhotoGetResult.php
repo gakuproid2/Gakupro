@@ -45,7 +45,7 @@ if (isset($_POST['PictureGet'])) {
     $downloadImg = '';
 
 
-    $TargetDir = '../File/' . $date . '/Image/' . $Key_Num . '/';
+    $TargetDir = '../photo/' . $date . '/Image/' . $Key_Num . '/';
     //ターゲットディレクトリにある全ファイル名を取得
     $ImageNameALL = glob($TargetDir . '*');
 
