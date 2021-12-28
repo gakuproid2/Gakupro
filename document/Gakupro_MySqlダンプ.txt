@@ -105,7 +105,7 @@ CREATE TABLE `mailaddressauthenticate_t` (
 --
 
 INSERT INTO `mailaddressauthenticate_t` (`ID`, `Key_Code`, `Password`, `MailAddress`, `Name`, `CreateDateTime`, `AuthenticationsCount`) VALUES
-(0, '23001231001', 9999, 'test@mailcom', '島　一郎', '2300-12-31 01:01:01', 0);
+(0, '23001233001', 9999, 'test@mailcom', '島　一郎', '2300-12-31 01:01:01', 0);
 
 -- --------------------------------------------------------
 
@@ -142,7 +142,7 @@ CREATE TABLE `majorsubject_m` (
   `MajorSubject_CD` int(11) NOT NULL COMMENT '専攻コード',
   `MajorSubject_Name` varchar(30) NOT NULL COMMENT '専攻名',
   `StudyPeriod` int(11) NOT NULL COMMENT '学習期間(月単位)',
-  `Remarks` varchar(100) DEFAULT NULL COMMENT '備考',
+  `Remarks` varchar(300) DEFAULT NULL COMMENT '備考',
   `UsageSituation` int(11) NOT NULL COMMENT '利用状況',
   `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
   `UpdateDate` datetime DEFAULT NULL COMMENT '最終更新日'
@@ -182,7 +182,7 @@ CREATE TABLE `member_m` (
   `Password` varchar(8) DEFAULT NULL COMMENT 'ログインパスワード',
   `EmergencyContactRelations` varchar(15) DEFAULT NULL COMMENT '緊急連絡先相手との続柄',
   `EmergencyContactTEL` varchar(30) DEFAULT NULL COMMENT '緊急連絡先番号',
-  `Remarks` varchar(100) DEFAULT NULL COMMENT '備考',
+  `Remarks` varchar(300) DEFAULT NULL COMMENT '備考',
   `RegistrationStatus` int(11) DEFAULT NULL COMMENT '登録状況(1=仮登録、2=本登録、3=卒業)',
   `RegisteredPerson` int(11) DEFAULT NULL COMMENT '登録者',
   `RegisteredDate` datetime DEFAULT NULL COMMENT '登録日',
@@ -210,13 +210,14 @@ CREATE TABLE `recruitment_m` (
   `Recruitment_Name` varchar(50) NOT NULL COMMENT '求人名',
   `TEL1` varchar(30) DEFAULT NULL COMMENT '問い合わせ電話番号1',
   `TEL2` varchar(30) DEFAULT NULL COMMENT '問い合わせ電話番号2',
-  `WorkPlaceAddress` varchar(100) DEFAULT NULL COMMENT '就業場所の住所',
-  `URL` varchar(100) DEFAULT NULL COMMENT 'HP_URL',  
-  `WorkTime` varchar(100) DEFAULT NULL COMMENT '勤務時間',  
-  `SalaryInfo` varchar(100) DEFAULT NULL COMMENT '給与情報',  
-  `HolidayInfo` varchar(100) DEFAULT NULL COMMENT '休日情報',
-  `Login_ID` varchar(8) DEFAULT NULL COMMENT 'ログインID',
-  `Password` varchar(8) DEFAULT NULL COMMENT 'ログインパスワード',
+  `WorkPlaceAddress` varchar(300) DEFAULT NULL COMMENT '就業場所の住所',
+  `URL` varchar(300) DEFAULT NULL COMMENT 'HP_URL',  
+  `WorkTime` varchar(300) DEFAULT NULL COMMENT '勤務時間',  
+  `SalaryInfo` varchar(300) DEFAULT NULL COMMENT '給与情報',  
+  `HolidayInfo` varchar(300) DEFAULT NULL COMMENT '休日情報',
+  `Login_ID` varchar(8) NOT NULL COMMENT 'ログインID',
+  `Password` varchar(8) NOT NULL COMMENT 'ログインパスワード',
+  `UsageSituation` int(11) NOT NULL COMMENT '利用状況',
   `RegisteredPerson` int(11) DEFAULT NULL COMMENT '登録者',
   `RegisteredDate` datetime DEFAULT NULL COMMENT '登録日',
   `Changer` int(11) DEFAULT NULL COMMENT '最終更新者',
@@ -287,7 +288,7 @@ INSERT INTO `screen_m` (`Screen_CD`, `Screen_Name`, `Screen_Path`, `Authority`, 
 (13, 'メンバーマスタ', 'frm_Member_M.php', 1, 1, 1, '2021-09-11 10:27:00'),
 (14, 'メンバー仮登録画面', 'frm_MemberTemporaryRegistration.php', 3, 1, 1, '2021-09-11 10:27:00'),
 (15, 'メンバー本登録画面', 'frm_MemberMainRegistration.php', 1, 1, 1, '2021-09-11 10:27:00'),
-(16, 'メールアドレス認証画面', 'frm_MailAddressAuthenticate.php?Key_Code=23001231001', 3, 1, 1, '2021-09-11 10:27:00'),
+(16, 'メールアドレス認証画面', 'frm_MailAddressAuthenticate.php?Key_Code=23001233001', 3, 1, 1, '2021-09-11 10:27:00'),
 (17, 'メール送信画面', 'frm_SendMail.php', 3, 1, 1, '2021-09-11 10:27:00');
 
 -- --------------------------------------------------------
