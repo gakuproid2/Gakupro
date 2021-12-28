@@ -30,10 +30,10 @@
 
 
 //非post時は初期値を設定する。['']or[0]
-if (isset($_POST["Screen_ID"])) {
-  $Screen_ID = $_POST["Screen_ID"];
+if (isset($_POST["Screen_CD"])) {
+  $Screen_CD = $_POST["Screen_CD"];
 } else {
-  $Screen_ID = 0;
+  $Screen_CD = 0;
 };
 if (isset($_POST["Screen_Name"])) {
   $Screen_Name = $_POST["Screen_Name"];
@@ -56,7 +56,7 @@ if (isset($_POST["Authority"])) {
 if (isset($_POST["ProcessingType"])) {
 
     $info = array(
-      'Screen_ID' => $Screen_ID,
+      'Screen_CD' => $Screen_CD,
       'Screen_Name' => $Screen_Name,
       'Screen_Path' => $Screen_Path,
       'Authority' => $Authority,
@@ -111,13 +111,13 @@ foreach ($Data_Table as $val) {
   $Table .=
     "
   <tr data-authority=" . $val['Authority'] . ">
-    <td>" . $val['Screen_ID'] . "</td>    
+    <td>" . $val['Screen_CD'] . "</td>    
     <td><a href='" . $val['Screen_Path'] . "' style='text-decoration:none;'>" . $val['Screen_Name'] . "</a></td>
     <td>" . $val['AuthorityInfo'] ." </td>
     <td>
 
       <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#UpdateModal' 
-      data-screenid='" . $val['Screen_ID'] . "'
+      data-screencd='" . $val['Screen_CD'] . "'
       data-screenname='" . $val['Screen_Name'] . "'        
       data-authority='" . $val['Authority'] . "'
       data-usage='" . $val['UsageSituation'] . "' >
@@ -125,7 +125,7 @@ foreach ($Data_Table as $val) {
       </button> 
    
       <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#ChangeUsageSituationModal'
-      data-screenid='" . $val['Screen_ID'] . "'
+      data-screencd='" . $val['Screen_CD'] . "'
       data-screenname='" . $val['Screen_Name'] . "'
       data-authority='" . $val['Authority'] . "'
       data-usage='" . $val['UsageSituation'] . "' >
@@ -201,8 +201,8 @@ $Table .= "</table>";
           
      
           <div class="form-group row">
-            <label for="Update_Screen_ID" class="col-md-3 col-form-label">画面ID</label>
-            <input type="text" name="Update_Screen_ID" id="Update_Screen_ID" value="" class="form-control col-md-3" readonly>
+            <label for="Update_Screen_CD" class="col-md-3 col-form-label">画面ID</label>
+            <input type="text" name="Update_Screen_CD" id="Update_Screen_CD" value="" class="form-control col-md-3" readonly>
           </div>
 
           <div class="form-group row">
@@ -238,9 +238,9 @@ $Table .= "</table>";
 
         <div class="modal-body">
 
-          <p>画面ID = <span id="ChangeUsageSituation_Screen_ID"></span> | 画面名 = <span id="ChangeUsageSituation_Screen_Name"></span></p>
+          <p>画面ID = <span id="ChangeUsageSituation_Screen_CD"></span> | 画面名 = <span id="ChangeUsageSituation_Screen_Name"></span></p>
 
-          <span id="ChangeUsageSituation_Screen_ID" hidden></span>
+          <span id="ChangeUsageSituation_Screen_CD" hidden></span>
           <span id="ChangeUsageSituation_Screen_Name" hidden></span>
           <span id="ChangeUsageSituation_UsageSituation" hidden></span>
           <p><span id="ChangeUsageSituation_Message"></span></p>
@@ -304,7 +304,7 @@ $Table .= "</table>";
     // イベント発生元
     let evCon = $(e.relatedTarget);
 
-    $('#Update_Screen_ID').val(evCon.data('screenid'));
+    $('#Update_Screen_CD').val(evCon.data('screencd'));
     $('#Update_Screen_Name').val(evCon.data('screenname'));    
     $('#Update_Authority_List').val(evCon.data('authority'));
 
@@ -326,11 +326,11 @@ $Table .= "</table>";
       $('#ChangeUsageSituation_ButtonName').html('利用不可にする');
     }
 
-    $('#ChangeUsageSituation_Screen_ID').html(evCon.data('screenid'));
+    $('#ChangeUsageSituation_Screen_CD').html(evCon.data('screencd'));
     $('#ChangeUsageSituation_Screen_Name').html(evCon.data('screenname'));
 
 
-    $('#ChangeUsageSituation_Screen_ID').val(evCon.data('screenid'));
+    $('#ChangeUsageSituation_Screen_CD').val(evCon.data('screencd'));
     $('#ChangeUsageSituation_Screen_Name').val(evCon.data('screenname'));    
     $('#ChangeUsageSituation_UsageSituation').val(evCon.data('usage'));
 
@@ -341,7 +341,7 @@ $Table .= "</table>";
 
     var SelectProcessingType = 1;
 
-    var SelectScreen_ID = $("#Insert_Screen_Path").val();
+    var SelectScreen_CD = $("#Insert_Screen_Path").val();
     //ポストするキーと値を格納
     var DataArray = {
       ProcessingType: SelectProcessingType,
@@ -370,7 +370,7 @@ $Table .= "</table>";
     //ポストするキーと値を格納
     var DataArray = {
       ProcessingType: SelectProcessingType,
-      Screen_ID: $("#Update_Screen_ID").val(),     
+      Screen_CD: $("#Update_Screen_CD").val(),     
       Screen_Name: $("#Update_Screen_Name").val(),
       Authority: $("#Update_Authority_List").val(),
     };
@@ -379,7 +379,7 @@ $Table .= "</table>";
       return;
     }
 
-    if (!ConfirmationMessage('画面ID：' + $("#Update_Screen_ID").val(), SelectProcessingType)) {
+    if (!ConfirmationMessage('画面ID：' + $("#Update_Screen_CD").val(), SelectProcessingType)) {
       return;
     }
 
@@ -401,7 +401,7 @@ $Table .= "</table>";
     //ポストするキーと値を格納
     var DataArray = {
       ProcessingType: SelectProcessingType,
-      Screen_ID: $("#ChangeUsageSituation_Screen_ID").val()  
+      Screen_CD: $("#ChangeUsageSituation_Screen_CD").val()  
     };
 
     BeforePosting(DataArray);

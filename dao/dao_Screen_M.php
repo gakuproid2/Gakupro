@@ -11,7 +11,7 @@
     //SELECT_SQL文の発行
     $SQL ="
     SELECT
-    Screen_m.Screen_ID 
+    Screen_m.Screen_CD 
     ,Screen_m.Screen_Name
     ,Screen_m.Screen_Path
     ,Screen_m.Authority
@@ -53,7 +53,7 @@
    
     $SQL .= "
     ORDER BY
-    Screen_m.Screen_ID       
+    Screen_m.Screen_CD       
     ";
     //クラスの中の関数の呼び出し
     $DataTable=$DB_Connection->select($SQL);
@@ -70,7 +70,7 @@
     //SELECT_SQL文の発行
     $SQL =  " 
     SELECT 
-    IFNULL(MAX(Screen_ID),0)+1 AS Max_CD
+    IFNULL(MAX(Screen_CD),0)+1 AS Max_CD
     FROM
     Screen_m ";
 
@@ -100,7 +100,7 @@
       $UsageSituation = 1;
     }    
 
-    $Screen_ID = $info['Screen_ID'];
+    $Screen_CD = $info['Screen_CD'];
     $Screen_Name = $info['Screen_Name'];
     $Screen_Path = $info['Screen_Path'];
     $Authority = $info['Authority'];
@@ -115,14 +115,14 @@
       $SQL = "
       INSERT INTO 
       gakupro.Screen_M (
-      Screen_ID 
+      Screen_CD 
       ,Screen_Name 
       ,Screen_Path 
       ,Authority      
       ,Changer
       ,UpdateDate
       )VALUES( 
-      '$Screen_ID'
+      '$Screen_CD'
       ,'$Screen_Name'
       ,'$Screen_Path'
       ,'$Authority'      
@@ -143,7 +143,7 @@
       ,Changer = '$Changer'
       ,UpdateDate = '$UpdateDate'
       WHERE
-      Screen_ID = $Screen_ID;
+      Screen_CD = $Screen_CD;
       ";
 
     } else if ($ProcessingType == 3 or $ProcessingType == 4) {
@@ -156,7 +156,7 @@
       ,Changer = '$Changer'
       ,UpdateDate = '$UpdateDate'
       WHERE
-      Screen_ID = $Screen_ID;
+      Screen_CD = $Screen_CD;
       ";
 
     }

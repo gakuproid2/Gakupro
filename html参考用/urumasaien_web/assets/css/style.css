@@ -126,12 +126,18 @@ h1, h2, h3, h4, h5, h6 {
 .nav-menu a {
   display: block;
   position: relative;
-  color: rgb(100, 98, 98);
+  color: rgb(158, 109, 109);  
   transition: 0.3s;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 800;
   padding: 0 3px;
   font-family: "Open Sans", sans-serif;
+  text-shadow:
+  0 0 0.2em antiquewhite,
+  0 0 0.2em powderblue,
+  0 0 0.2em palevioletred,
+  0 0 0.2em rgb(235, 158, 57)
+  ;
 }
 
 .nav-menu > ul > li > a:before {
@@ -152,20 +158,35 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
 }
 
-.nav-menu a:hover, .nav-menu .active > a, .nav-menu li:hover > a {
-  color: #fff;
-}
-
-
 
 @media (min-width: 1280px) {
 
   .nav-menu a {
-    font-size: 24px;
+    font-size: 30px;
   }
 
   .corporatename{
-    font-size: 60px;
+    font-size: 63px;
+  }
+
+  .corporateinfotel{
+    font-size: 44px;
+  }
+
+  .corporateinfotime{
+    font-size: 28px;
+  }
+
+}
+
+@media screen and (min-width:960px) and ( max-width:1279px) {
+
+  .nav-menu a {
+    font-size: 25px;
+  }
+
+  .corporatename{
+    font-size: 53px;
   }
 
   .corporateinfotel{
@@ -178,42 +199,22 @@ h1, h2, h3, h4, h5, h6 {
 
 }
 
-@media screen and (min-width:960px) and ( max-width:1279px) {
-
-  .nav-menu a {
-    font-size: 22px;
-  }
-
-  .corporatename{
-    font-size: 50px;
-  }
-
-  .corporateinfotel{
-    font-size: 38px;
-  }
-
-  .corporateinfotime{
-    font-size: 22px;
-  }
-
-}
-
 @media screen and (min-width:600px) and ( max-width:959px) {
 
   .nav-menu a {
-    font-size: 20px;
+    font-size: 22px;
   }
 
   .corporatename{
-    font-size: 40px;
+    font-size: 41px;
   }
 
   .corporateinfotel{
-    font-size: 35px;
+    font-size: 34px;
   }
 
   .corporateinfotime{
-    font-size: 18px;
+    font-size: 20px;
   }
 
 }
@@ -225,7 +226,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .nav-menu a {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .corporatename{
@@ -269,69 +270,221 @@ h1, h2, h3, h4, h5, h6 {
 /*--------------------------------------------------------------
 # mainpage Section
 --------------------------------------------------------------*/
+
+/* カールセルの設定 Start*/
+.main_imgBox {
+  width: 100%;
+  height:  100%;
+  overflow: hidden;
+  position: relative; }
+
+ .main_img {  
+  opacity: 0;
+  width: 100%;
+  height:  100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  left: 0;
+  top: 0;  
+  animation: anime 30s infinite; }
+
+  .main_img:nth-of-type(2) {    
+    animation-delay: 10s; }
+
+  .main_img:nth-of-type(3) {    
+    animation-delay: 20s; }
+
+    .main_img:nth-of-type(4) {      
+      animation-delay: 30s; } 
+
+ @keyframes anime {
+  0% {
+      opacity: 0;
+  }
+  12% {
+      opacity: 1;
+  }
+  29% {
+      opacity: 1;
+  }
+  49% {
+      opacity: 0;
+       transform: scale(1.1);
+                  z-index:0;
+  }
+  100% { opacity: 0 }
+}
+/* カールセルの設定 End*/
+
+
+
+
+
+
+
+
 #mainpage {
   width: 100%;
   height: 100vh;
-  background:  url("../img/urumasaien_gazo/001.JPG");
+  /* background:  url("../img/urumasaien_gazo/001.JPG"); */
   background-size: cover;
   background-position: center center;
+  
+  
+}
+
+.mainpage-val{
+  z-index:1000000;
 }
 
 .mainpagemessage{
-  margin-top: 20%;
+  margin-top: 25%;
+  
 }
 
 .mainpagemessage h1{
+  z-index:1000000;
   font-size: 60px;
   text-align: center;
   font-weight:bold;
   color:antiquewhite;
   text-shadow:
-    0 0 0.10em #2962FF,
-    0 0 0.15em #2962FF,
-    0 0 0.80em #2962FF,
-    0 0 1.00em #2962FF;
+    0 0 0.10em #4674f3,
+    0 0 0.15em #215bfa,
+    0 0 0.80em #114ff8,
+    0 0 1.00em #021d69;
+}
+
+/*indepage Navigation Menu*/
+
+.indexpage-nav-menu ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.indexpage-nav-menu > ul {
+  display: flex;
+}
+
+.indexpage-nav-menu > ul > li {
+  position: relative;
+  white-space: nowrap;
+  padding: 10px 13px 10px 13px;
+}
+
+.indexpage-nav-menu a {
+  display: block;
+  position: relative;
+  color: rgb(158, 109, 109);  
+  transition: 0.3s;
+  font-size: 16px;
+  font-weight: 800;
+  padding: 0 3px;
+  font-family: "Open Sans", sans-serif;
+  text-shadow:
+  0 0 0.2em antiquewhite,
+  0 0 0.2em powderblue,
+  0 0 0.2em palevioletred,
+  0 0 0.2em rgb(235, 158, 57)
+  ;
+}
+
+.indexpage-nav-menu > ul > li > a:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: -5px;
+  left: 0;
+  background-color: #fff;
+  visibility: hidden;
+  width: 0px;
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.indexpage-nav-menu a:hover:before, .indexpage-nav-menu li:hover > a:before, .indexpage-nav-menu .active > a:before {
+  visibility: visible;
+  width: 100%;
+}
+
+
+@media (min-width: 1280px) {
+
+  #mainpage h1{
+    font-size: 60px;
+  }
+  .indexpage-nav-menu a {
+    font-size: 43px;
+  } 
+
+}
+
+@media screen and (min-width:960px) and ( max-width:1279px) {
+
+ #mainpage h1{
+    font-size: 55px;
+  }
+
+  .indexpage-nav-menu a {
+    font-size: 35px;
+  }
+
+}
+
+@media screen and (min-width:600px) and ( max-width:959px) {
+
+ #mainpage h1{
+    font-size: 37px;
+  }
+
+  .indexpage-nav-menu a {
+    font-size: 30px;
+  } 
+
+}
+
+@media screen and (min-width:480px) and ( max-width:599px) {
+
+ #mainpage h1{
+    font-size: 32px;
+  }
+
+  .indexpage-nav-menu > ul > li {
+    padding: 10px 7px 10px 7px;
+  }
+
+  .indexpage-nav-menu a {
+    font-size: 25px;
+  }
+ 
+}
+
+@media screen and (min-width:0px) and ( max-width:479px) {
+
+ #mainpage h1{
+    font-size: 22px;
+  }
+
+  .indexpage-nav-menu > ul > li {
+    padding: 10px 5px 10px 5px;
+  }
+
+  .indexpage-nav-menu a {
+    font-size: 15px;
+  }
+
+
 }
 
 @media screen and (min-height:0px) and ( max-height:375px) {
 
   .mainpagemessage{
     margin-top: 5%;
-  }  
-
-}
-
-
-
-@media (min-width: 1280px) {
-  #mainpage h1{
-    font-size: 60px;
   }
-}
 
-@media screen and (min-width:960px) and ( max-width:1279px) {
-  #mainpage h1{
-    font-size: 55px;
-  }
-}
-
-@media screen and (min-width:600px) and ( max-width:959px) {
-  #mainpage h1{
-    font-size: 37px;
-  }
-}
-
-@media screen and (min-width:480px) and ( max-width:599px) {
-  #mainpage h1{
-    font-size: 32px;
-  }
-}
-
-@media screen and (min-width:0px) and ( max-width:479px) {
-
-  #mainpage h1{
-    font-size: 22px;
-  }
 }
 
 /*--------------------------------------------------------------
@@ -403,7 +556,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* urumasaiengazo */
 .urumasaiengazo {
-  background:  url("../img/urumasaien_gazo/002.JPG");
+  background:  url("../img/urumasaien_gazo/010.JPG");
   width: 100%;
   height: 603px;
   background-size: cover;
@@ -618,8 +771,8 @@ info-box
 
 @media screen and (min-width:480px) and ( max-width:599px) {
   #footer {
-    
-    font-size: 13px;    
+
+    font-size: 13px;
     margin-top: 10px;
     padding: 5px;
   }
@@ -627,8 +780,8 @@ info-box
 
 @media screen and (min-width:0px) and ( max-width:479px) {
 
-  #footer {    
-    font-size: 11px;    
+  #footer {
+    font-size: 11px;
     margin-top: 10px;
     padding: 5px;
   }

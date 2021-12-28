@@ -34,7 +34,7 @@ class common
       
       foreach ($Data_Table as $val) {
         //表示する画面名取得
-        if($ScreenInfo == $val['Screen_ID']){
+        if($ScreenInfo == $val['Screen_CD']){
           $Screen_Name = $val['Screen_Name'];
           break;
         }      

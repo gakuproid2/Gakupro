@@ -75,7 +75,7 @@ INSERT INTO `company_m` (`Company_ID`, `Company_Name`, `TEL1`, `TEL2`, `Address1
 CREATE TABLE `PhotoGet_t` (
   `Key_Code` varchar(15) NOT NULL COMMENT '写真保存用フォルダのキーコード',
   `Password` int(11) NOT NULL COMMENT '写真取得用パスワード'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='社員取得用テーブル';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='写真取得用テーブル';
 
 --
 -- テーブルのデータのダンプ `PhotoGet_t`
@@ -206,7 +206,7 @@ INSERT INTO `member_m` (`Member_ID`, `Member_Name`, `Member_NameYomi`, `Birthday
 
 CREATE TABLE `recruitment_m` (
   `Company_ID` int(11) NOT NULL COMMENT '会社ID',
-  `Recruitment_ID` int(11) NOT NULL COMMENT '会社求人募集ID',
+  `Recruitment_CD` int(11) NOT NULL COMMENT '会社求人募集ID',
   `Recruitment_Name` varchar(50) NOT NULL COMMENT '求人名',
   `TEL1` varchar(30) DEFAULT NULL COMMENT '問い合わせ電話番号1',
   `TEL2` varchar(30) DEFAULT NULL COMMENT '問い合わせ電話番号2',
@@ -258,7 +258,7 @@ INSERT INTO `school_m` (`School_CD`, `School_Division`, `School_Name`, `TEL`, `U
 --
 
 CREATE TABLE `screen_m` (
-  `Screen_ID` int(11) NOT NULL COMMENT '画面ID',
+  `Screen_CD` int(11) NOT NULL COMMENT '画面ID',
   `Screen_Name` varchar(50) DEFAULT NULL COMMENT '画面名',
   `Screen_Path` varchar(200) DEFAULT NULL COMMENT 'スクリーンパス',
   `Authority` int(11) DEFAULT NULL COMMENT '閲覧可能権限(権限以上)',
@@ -271,7 +271,7 @@ CREATE TABLE `screen_m` (
 -- テーブルのデータのダンプ `screen_m`
 --
 
-INSERT INTO `screen_m` (`Screen_ID`, `Screen_Name`, `Screen_Path`, `Authority`, `UsageSituation`, `Changer`, `UpdateDate`) VALUES
+INSERT INTO `screen_m` (`Screen_CD`, `Screen_Name`, `Screen_Path`, `Authority`, `UsageSituation`, `Changer`, `UpdateDate`) VALUES
 (1, 'ログイン', 'frm_Login.php', 3, 1, 1, '2021-09-04 10:54:31'),
 (2, 'メインメニュー', 'frm_MainMenu.php', 3, 1, 2, '2021-09-04 10:54:31'),
 (3, 'DB接続確認', 'frm_DBcc.php', 1, 1, 1, '2021-09-04 10:54:31'),
@@ -395,7 +395,7 @@ ALTER TABLE `member_m`
 -- テーブルのインデックス `recruitment_m`
 --
 ALTER TABLE `recruitment_m`
-  ADD PRIMARY KEY (`Company_ID`,`Recruitment_ID`);
+  ADD PRIMARY KEY (`Company_ID`,`Recruitment_CD`);
 
 --
 -- テーブルのインデックス `school_m`
@@ -407,7 +407,7 @@ ALTER TABLE `school_m`
 -- テーブルのインデックス `screen_m`
 --
 ALTER TABLE `screen_m`
-  ADD PRIMARY KEY (`Screen_ID`);
+  ADD PRIMARY KEY (`Screen_CD`);
 
 --
 -- テーブルのインデックス `staff_m`

@@ -31,36 +31,32 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/urumasaien_web/navi.php');
                   <td class="text-left">公益財団法人　うるま斎苑</td>
                 </tr>
                 <tr>
-                  <th class="">理事長</th>
-                  <td class="text-left"><ruby><rb>中村 正人</rb><rp>（</rp><rt>ナカムラ マサト</rt><rp>）</rp></ruby></td>
+                  <th class="">代表理事</th>
+                  <td class="text-left"><ruby><rb>中村　正人</rb><rp>（</rp><rt>ナカムラ マサト</rt><rp>）</rp></ruby></td>
                 </tr>              
                 <tr>
                   <th class="">設立年月日</th>
-                  <td class="text-left">昭和〇〇年〇〇月〇〇日</td>
+                  <td class="text-left">平成6年11月</td>
                 </tr>
                 <tr>
                   <th class="">公益法人移行登記</th>
-                  <td class="text-left">平成〇〇年〇〇月〇〇日</td>
+                  <td class="text-left">平成25年3月</td>
                 </tr>
                 <tr>
                   <th class="">所管官庁</th>
                   <td class="text-left">沖縄県 保健医療部 衛生薬務課</td>
-                </tr>
-                <tr>
-                  <th class="">基本財産</th>
-                  <td class="text-left">12,345,678円（2021年3月31日現在）</td>
-                </tr>
-                <tr>
-                  <th class="">正味財産</th>
-                  <td class="text-left">12,345,678円（2021年3月31日現在）</td>
-                </tr>
+                </tr>            
                 <tr>
                   <th class="">住所</th>
                   <td class="text-left">沖縄県うるま市具志川1508</td>
                 </tr>
-                <tr>
+                <tr>                 
                   <th class="">電話番号</th>
-                  <td class="text-left">098-974-6941</td>
+                  <td class="text-left"><a href="tel:098-974-6941" style="color:black">098-974-6941</a></td>                  
+                </tr>
+                <tr>
+                  <th class="">FAX番号</th>
+                  <td class="text-left">098-975-6848</td>
                 </tr>
                 <tr>
                   <th class="">受付時間</th>
@@ -69,11 +65,11 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/urumasaien_web/navi.php');
                 <tr>
                 <th class="">事業内容</th>
                 <td class="text-left">
-                <p>・火葬上の経営に関する事業</p>
+                <p>・火葬場の経営に関する事業</p>
                 <p>・納骨堂の経営に関する事業</p>             
                 <p>・その他この法人の目的を達成する為に必要な事業</p>             
                 </td>
-                </tr>              
+                </tr>                                               
               </table>
             </div>
           </div>
@@ -87,6 +83,94 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/urumasaien_web/navi.php');
 
         </div>
 
+        
+        <div class="row">              
+          <div class="col-lg-6">
+            <div class="info-box mb-4 px-2">
+            <p><h4 class="alert-primary p-3">役員名簿</h4></p>
+            <table class="table">
+
+              <tr>
+                  <th class="">代表理事</th>
+                  <td class="text-left">中村　正人</td>
+              </tr>
+
+              <tr>
+                  <th class="">副代表理事</th>
+                  <td class="text-left">名波　博</td>
+              </tr>
+
+              <tr>
+                  <th class="">専務理事</th>
+                  <td class="text-left">徳田　尚弥</td>
+              </tr>
+
+              <tr>
+                  <th class="">理事</th>
+                  <td class="text-left">禰保　信榮<br>佐久田　朝太</td>
+              </tr>
+            
+              <tr>
+                  <th class="">評議員</th>
+                  <td class="text-left">池根　勝雄<br>天願　雅充<br>兼城　辰男</td>
+              </tr>
+        
+              <tr>
+                  <th class="">監事</th>
+                  <td class="text-left">天願　常敏<br>糸数　学</td>
+              </tr>      
+
+              </table> 
+
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="info-box mb-4 px-2" style="height:95%">
+            <p><h4 class="alert-primary p-3">沿革</h4></p>
+            <table class="table">
+
+                <tr>
+                    <th class="">昭和46年 5月</th>
+                    <td class="text-left">具志川火葬場　建立</td>
+                </tr>
+
+                <tr>
+                    <th class="">昭和47年 2月</th>
+                    <td class="text-left">具志川火葬場　許可</td>
+                </tr>
+
+                <tr>
+                    <th class=""></th>
+                    <td class=""><br></td>
+                </tr>
+
+                <tr>
+                    <th class="">平成6年 11月</th>
+                    <td class="text-left">財団法人具志川火葬場　設立</td>
+                </tr>
+
+                <tr>
+                    <th class="">平成7年 1月</th>
+                    <td class="text-left">財団法人具志川火葬場・納骨堂　許可</td>
+                </tr>
+
+                <tr>
+                    <th class=""></th>
+                    <td class=""><br></td>
+                </tr>
+
+                <tr>
+                    <th class="">平成25年 3月</th>
+                    <td class="text-left">公益財団法人うるま斎苑　移行</td>
+                </tr>                        
+
+              </table>
+             </div>
+          </div>
+
+        </div>
+
         <div class="row"> 
           <div class="col">
             <div class="info-box mb-4 px-2">
@@ -95,34 +179,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/urumasaien_web/navi.php');
           </div>
         </div>
 
-        <div class="row">       
-          <div class="col">
-            <div class="info-box mb-4 px-2">
-              <h3>沿革</h3>
-              <table class="table">
-
-                <tr>
-                    <th class="">1994（平成6）年 11月</th>
-                    <td class="">財団法人うるま斎苑設立</td>
-                </tr>
-                <tr>
-                    <th class="">1995（平成7）年 11月</th>
-                    <td class="">財団法人うるま斎苑設立</td>
-                </tr>
-                <tr>
-                    <th class="">1996（平成8）年 11月</th>
-                    <td class="">財団法人うるま斎苑設立</td>
-                </tr>
-                <tr>
-                    <th class="">1997（平成9）年 11月</th>
-                    <td class="">財団法人うるま斎苑設立</td>
-                </tr>
-
-              </table>
-            </div>
-          </div>
-
-        </div>
+                
 
       </div>
     </section><!-- End corporateinfo Section -->

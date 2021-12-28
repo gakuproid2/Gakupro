@@ -16,8 +16,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/urumasaien_web/navi.php');
 
   <main id="main">
    
-    <section id="memorialservice" class="memorialservice">
-      <div class="container" >
+    <section id="memorialservice" class="memorialservice">        
+    <div class="container" >
+      <h4 class="p-3" style="font-weight: 700;">【お申込み、ご相談等ございましたらご連絡ください】</h4>
       <p class="mx-4">※支払い方法は、現金払いのみになります。</p>
         <p>         
 
@@ -94,7 +95,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/urumasaien_web/navi.php');
                   </thead>
                   <tbody>
                     <tr><td>契約料</td><td class="pricetable_Price_td">¥46,200</td></tr>
-                    <tr><td>三寸骨壺代金</td><td class="pricetable_Price_td">¥5,500</></tr>
+                    <tr><td>3寸骨壺代金</td><td class="pricetable_Price_td">¥5,500</></tr>
                     <tr><td>骨壺、残骨処分料金</td><td class="pricetable_Price_td">¥11,000</></tr>
                     <tr class="pricetable_totalPrice_tr"><td></td><td class="pricetable_Price_td">¥62,700</></tr>                   
                   </tbody>

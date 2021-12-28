@@ -24,7 +24,7 @@
               <li class="<?php if($uri == '/cremation.php'){echo 'active';}?>"><a href="<?php if($uri == '/cremation.php'){echo '#';}?>cremation.php">火葬について</a></li>
               <li class="<?php if($uri == '/memorialservice.php'){echo 'active';}?>"><a href="<?php if($uri == '/memorialservice.php'){echo '#';}?>memorialservice.php">納骨堂について</a></li>
               <li class="<?php if($uri == '/corporateinfo.php'){echo 'active';}?>"><a href="<?php if($uri == '/corporateinfo.php'){echo '#';}?>corporateinfo.php">法人情報</a></li>              
-              <li id="displaystate_change" class="active"><a><i id="displaystate_change_icon" class="fas fa-sort-up"></i></a></li>              
+              <li id="displaystate_change"><a><i id="displaystate_change_icon" class="fas fa-sort-up"></i></a></li>              
             </ul>
           </nav><!-- .nav-menu -->
 
