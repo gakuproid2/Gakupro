@@ -17,17 +17,13 @@
   //クラスファイルの読み込み
   require_once '../dao/dao_SubCategory_M.php';
   //クラスの生成
-  $dao_SubCategory_M = new dao_SubCategory_M();
-  
-  // $HeaderInfo = $common->HeaderCreation(10);  
+  $dao_SubCategory_M = new dao_SubCategory_M();  
 
   define("title" ,"学校マスタ");
   require_once($_SERVER['DOCUMENT_ROOT'] . '/Gakupro/form/head.php');
 
   $JS_Info = $common->Read_JSconnection();
 ?>
-
-<?php echo $HeaderInfo; ?>
 
 <?php 
 
