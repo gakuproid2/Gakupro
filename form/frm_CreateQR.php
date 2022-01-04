@@ -54,7 +54,7 @@ if (!empty($_POST["Request"])) {
   } else {
 
     //基本のディリクトリ
-    $Base_Dir = '../photo/';
+    $Base_Dir = '../QRTicket/';
     
     $Date_Dir = $Base_Dir . $Date . '/';
     $common->CreateDirectory($Date_Dir);

@@ -38,18 +38,19 @@ if (isset($_POST['Upload'])) {
 
 
   //日付ディレクトリの次にImageディレクトリ作成の為
-  $ImageDir = $BaseDir . $Date .'/Image/';
+  $ImageDir = $BaseDir . $Date;
   $common->CreateDirectory($ImageDir);
  
-  $CreateDir = $ImageDir . $KeyNum.'/';
+  $CreateDir = $ImageDir .'/'. $KeyNum.'/';
   $common->CreateDirectory($CreateDir);  
 
   $Num = 0;
   foreach ($_FILES['file']['tmp_name'] as $no => $tmp_name) {
+
+    $FileName = $Num + 1 .'.jpeg';        
+    $FileFullDir = $CreateDir . $FileName;
     
-    $filename = $CreateDir . "gakupro" .$Date . $KeyNum . $Num + 1 . ".jpeg";
-    
-    if (move_uploaded_file($tmp_name, $filename)) {      
+    if (move_uploaded_file($tmp_name, $FileFullDir)) {      
       $Num += 1;
     } else {
       //エラー処理
@@ -73,7 +74,7 @@ if (isset($_POST['Upload'])) {
 
   <?php echo $ImageALL; ?> <br>
 
-  <a href="frm_ImageUpload.php">画像アップロード画面に戻る</a>
+  <a href="frm_PhotoUpload.php">画像アップロード画面に戻る</a>
 
   <?php echo $JS_Info?>
 </body>

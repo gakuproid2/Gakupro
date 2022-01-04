@@ -119,6 +119,7 @@ foreach ($Data_Table as $val) {
       <button class='ModalButton' data-bs-toggle='modal' data-bs-target='#UpdateModal' 
       data-screencd='" . $val['Screen_CD'] . "'
       data-screenname='" . $val['Screen_Name'] . "'        
+      data-screenpath='" . $val['Screen_Path'] . "'     
       data-authority='" . $val['Authority'] . "'
       data-usage='" . $val['UsageSituation'] . "' >
       <i class='far fa-edit'></i>
@@ -208,6 +209,11 @@ $Table .= "</table>";
           <div class="form-group row">
             <label for="Update_Screen_Name" class="col-md-3 col-form-label">画面名</label>
             <input type="text" name="Update_Screen_Name" id="Update_Screen_Name" value="" class="form-control col-md-3">
+          </div>
+
+          <div class="form-group row">
+            <label for="Update_Screen_Path" class="col-md-3 col-form-label">URL</label>
+            <input type="text" name="Update_Screen_Path" id="Update_Screen_Path" value="" class="form-control col-md-3">
           </div>
 
           <div class="form-group row">
@@ -307,6 +313,7 @@ $Table .= "</table>";
     $('#Update_Screen_CD').val(evCon.data('screencd'));
     $('#Update_Screen_Name').val(evCon.data('screenname'));    
     $('#Update_Authority_List').val(evCon.data('authority'));
+    $('#Update_Screen_Path').val(evCon.data('screenpath'));
 
   });
 
@@ -372,6 +379,7 @@ $Table .= "</table>";
       ProcessingType: SelectProcessingType,
       Screen_CD: $("#Update_Screen_CD").val(),     
       Screen_Name: $("#Update_Screen_Name").val(),
+      Screen_Path: $("#Update_Screen_Path").val(),
       Authority: $("#Update_Authority_List").val(),
     };
 
