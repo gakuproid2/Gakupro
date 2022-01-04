@@ -8,7 +8,10 @@
   //クラスの生成
   $common = new common();
   
-  $HeaderInfo = $common->HeaderCreation(6);  
+  // $HeaderInfo = $common->HeaderCreation(6);  
+
+  define("title" ,"画像アップロード");
+  require_once($_SERVER['DOCUMENT_ROOT'] . '/Gakupro/form/head.php');
 
   $JS_Info = $common->Read_JSconnection();
 ?>
