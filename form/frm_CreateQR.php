@@ -33,7 +33,7 @@ $json_Judge = json_encode($Judge);
 if (!empty($_POST["Request"])) {  
 
   // QRcode作成用「QrCodeHelper.php」の読み込み
-  require("../php/QRCode/Create_QRCode.php");
+  require("../php/Class_QrCodeHelper.php");
   // インスタンスの作成
   $qrcode = new QrCodeHelper;
 
