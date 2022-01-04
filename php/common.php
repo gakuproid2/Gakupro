@@ -119,7 +119,7 @@ class common
     <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" href="../css/Header.css">        
     <link rel="stylesheet" href="../css/all.css">    
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/Original.css">
     ';
     return $Info;
   }
