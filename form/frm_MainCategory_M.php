@@ -15,7 +15,10 @@ require_once '../dao/dao_MainCategory_M.php';
 //クラスの生成
 $dao_MainCategory_M = new dao_MainCategory_M();
 
-$HeaderInfo = $common->HeaderCreation(4);
+$Screen_Name = '大分類マスタ';
+$HeaderInfo = $common->HeaderCreation($Screen_Name);  
+define("title" ,$Screen_Name);
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Gakupro/form/head.php');
 
 $JS_Info = $common->Read_JSconnection();
 ?>

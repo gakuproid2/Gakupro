@@ -35,10 +35,12 @@
   //クラスの生成
   $dao_Member_M = new dao_Member_M(); 
  
-  $CSS_Info = $common->Read_CssConnection();
+  $Screen_Name = '登録画面';
+  define("title" ,$Screen_Name);
+  require_once($_SERVER['DOCUMENT_ROOT'] . '/Gakupro/form/head.php');
   $JS_Info = $common->Read_JSConnection();
 ?>
-<?php echo $CSS_Info ?>
+
 
 <?php
 

@@ -36,10 +36,14 @@
   //クラスの生成
   $dao_Member_M = new dao_Member_M();
    
-  $HeaderInfo = $common->HeaderCreation(13); 
-  
+  $Screen_Name = 'メンバーマスタ';
+  $HeaderInfo = $common->HeaderCreation($Screen_Name);  
+  define("title" ,$Screen_Name);
+  require_once($_SERVER['DOCUMENT_ROOT'] . '/Gakupro/form/head.php');
+
   $JS_Info = $common->Read_JSConnection();
 ?>
+
 
 <?php echo $HeaderInfo; ?>
 

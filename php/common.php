@@ -4,7 +4,7 @@
 class common
 {  
   //ヘッダ部分の設定、画面遷移の為のプルダウン作成
-  function HeaderCreation($ScreenInfo)
+  function HeaderCreation($Screen_Name)
   {   
      //クラスファイルの読み込み
      require_once '../dao/dao_Screen_M.php';
@@ -28,21 +28,7 @@ class common
 
     //Css情報取得
     $CssInfo = $this->Read_CssConnection();
-
-    //ScreenInfoが数値ならScreenIDと判断しマスタから取得。数値以外(文字列)なら画面名と判断しそのまま画面名にセット
-    if (is_numeric($ScreenInfo)) {
-      
-      foreach ($Data_Table as $val) {
-        //表示する画面名取得
-        if($ScreenInfo == $val['Screen_CD']){
-          $Screen_Name = $val['Screen_Name'];
-          break;
-        }      
-      }
-
-    } else {
-      $Screen_Name = $ScreenInfo;
-    }
+  
 
     $SlectForm = '';
     foreach ($Data_Table as $val) {
@@ -50,12 +36,7 @@ class common
     }
 
     $HeaderInfo = "      
-      <head> 
-        <meta charset='UTF-8'>
-        <meta name='viewport' content='width=device-width, initial-scale=1.0'>      
-        <title>" . $Screen_Name . "</title>"
-      . $CssInfo .
-      "<div class ='Header'>
+        <div class ='Header'>
           <div class='Header_PullMenu'>
             <form name='pullForm'>
             <select name='pullMenu' id='' onChange='screenChange()'>
@@ -68,8 +49,7 @@ class common
             </div>      
           <div class ='Header_StaffName'><p>" . $NickName . "</p></div>        
           <div class ='Header_ScreenName'><p>" . $Screen_Name . "</p></div>
-        </div>
-      </head>      
+        </div>          
     ";
     return $HeaderInfo;
   }

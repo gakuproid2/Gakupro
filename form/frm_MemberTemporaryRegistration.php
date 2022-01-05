@@ -35,10 +35,11 @@
   //クラスの生成
   $dao_Member_M = new dao_Member_M(); 
  
-  $CSS_Info = $common->Read_CssConnection();
-  $JS_Info = $common->Read_JSConnection();
+  $Screen_Name = 'QRチケット作成';   
+  define("title" ,$Screen_Name);
+  require_once($_SERVER['DOCUMENT_ROOT'] . '/Gakupro/form/head.php');
 ?>
-<?php echo $CSS_Info ?>
+
 
 <?php
 

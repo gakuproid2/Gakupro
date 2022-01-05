@@ -18,8 +18,11 @@
   require_once '../dao/dao_SubCategory_M.php';
   //クラスの生成
   $dao_SubCategory_M = new dao_SubCategory_M();
-  
-  $HeaderInfo = $common->HeaderCreation(12);  
+
+  $Screen_Name = 'スタッフマスタ';
+  $HeaderInfo = $common->HeaderCreation($Screen_Name);  
+  define("title" ,$Screen_Name);
+  require_once($_SERVER['DOCUMENT_ROOT'] . '/Gakupro/form/head.php');
 
   $JS_Info = $common->Read_JSconnection();
 ?>

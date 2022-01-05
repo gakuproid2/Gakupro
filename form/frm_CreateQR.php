@@ -14,7 +14,11 @@ require_once '../dao/dao_PhotoGet_t.php';
 //クラスの生成
 $dao_PhotoGet_t = new dao_PhotoGet_t();
 
-$HeaderInfo = $common->HeaderCreation(8);
+$Screen_Name = 'QRチケット作成';
+$HeaderInfo = $common->HeaderCreation($Screen_Name);  
+define("title" ,$Screen_Name);
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Gakupro/form/head.php');
+
 $JS_Info = $common->Read_JSconnection();
 
 ?>
