@@ -339,6 +339,7 @@ CREATE TABLE `subcategory_m` (
 -- テーブルのデータのダンプ `subcategory_m`
 --
 
+
 INSERT INTO `subcategory_m` (`MainCategory_CD`, `SubCategory_CD`, `SubCategory_Name`, `UsageSituation`, `Changer`, `UpdateDate`) VALUES
 (1, 1, '男性', 1, 1, '2021-08-06 22:30:15'),
 (1, 2, '女性', 1, 1, '2021-08-06 22:30:22'),
